@@ -1,0 +1,33 @@
+<section id="billboard" class="two-column-swiper slide-clip slide-in py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="swiper overflow-hidden" #swiper>
+                <div class="swiper-wrapper">
+                    @for (banner of banners; track banner.id) {
+                    <div class="swiper-slide">
+                        <div class="row banner-item text-center align-items-center">
+                            <div class="col-lg-6">
+                                <div class="image-holder">
+                                    <img [src]="banner.imageUrl" [alt]="banner.altText" class="product-image img-fluid">
+                                </div>
+                            </div>
+                            <div class="banner-content col-lg-6 p-5">
+                                <h2 class="display-2 text-uppercase txt-fx slide-up">{{banner.headline}}</h2>
+                                <p>{{banner.subHeadline}}</p>
+                                <a href="#" class="btn btn-outline-dark text-uppercase mt-3">{{"BANNER.BUTTON" |
+                                    translate}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="icon-arrow icon-arrow-left" #arrowLeft><svg width="50" height="50" viewBox="0 0 24 24">
+                    <use xlink:href="#angle-left"></use>
+                </svg></div>
+            <div class="icon-arrow icon-arrow-right" #arrowRight><svg width="50" height="50" viewBox="0 0 24 24">
+                    <use xlink:href="#angle-right"></use>
+                </svg></div>
+        </div>
+    </div>
+</section>

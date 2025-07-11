@@ -1,0 +1,32 @@
+<section id="login-form" class="py-5">
+    <div class="container-sm">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <h2 class="section-title text-uppercase">Login</h2>
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-group flex-wrap">
+                    <div class="col-12 pb-3">
+                        <label for="username">Username *</label>
+                        <input type="text" formControlName="username" id="username"
+                            placeholder="Write your username here" class="form-control" autocomplete="username">
+                    </div>
+                    <div class="col-12 pb-3">
+                        <label>Password *</label>
+                        <input type="password" formControlName="password" placeholder="Enter your password"
+                            class="form-control" autocomplete="current-password">
+                    </div>
+                    <div class="col-12 pb-3">
+                        <label>
+                            <input type="checkbox" required="">
+                            <span class="label-body">Remember me</span>
+                        </label>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" name="submit" class="btn btn-dark btn-large text-uppercase"
+                            [disabled]="loginForm.invalid">Login</button>
+                        <p><a href="#">Lost your password?</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

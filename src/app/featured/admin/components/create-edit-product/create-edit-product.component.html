@@ -1,0 +1,134 @@
+<!-- product-create.component.html -->
+<div class="container py-5" style="margin-top: 62px">
+    <h3>Tạo sản phẩm mới</h3>
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+        <div class="mb-3">
+            <label class="form-label">Danh mục</label>
+            @for (category of categories; track category.id) {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [value]="category.id"
+                    (change)="onCategoryChange(category)" />
+                <label class="form-check-label">{{ category.name }}</label>
+            </div>
+            }
+        </div>
+
+        <div class="mb-3">
+            <label for="brand_id" class="form-label">Thương hiệu</label>
+            <input type="number" class="form-control" formControlName="brand_id" id="brand_id" />
+        </div>
+
+        <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" formControlName="is_favorite" id="is_favorite" />
+            <label class="form-check-label" for="is_favorite">Yêu thích</label>
+        </div>
+
+        <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" formControlName="best_seller" id="best_seller" />
+            <label class="form-check-label" for="best_seller">Bán chạy</label>
+        </div>
+
+        <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" formControlName="best_reviewed" id="best_reviewed" />
+            <label class="form-check-label" for="best_reviewed">Đánh giá cao</label>
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" formControlName="is_new_arrival" id="is_new_arrival" />
+            <label class="form-check-label" for="is_new_arrival">Hàng mới về</label>
+        </div>
+
+        <!-- Translations -->
+        <div formArrayName="translations" class="border p-3 mt-4">
+            <label class="form-label fw-bold">Translations</label>
+
+            @for (trans of translationsArray.controls; track $index) {
+            <div [formGroupName]="$index" class="mb-3 border-bottom pb-3">
+                <div class="mb-2">
+                    <label class="form-label">Language Code</label>
+                    <input type="text" class="form-control" formControlName="language_code" />
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" formControlName="name" />
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" formControlName="description"></textarea>
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Slug</label>
+                    <input type="text" class="form-control" formControlName="slug" />
+                </div>
+            </div>
+            }
+        </div>
+
+        <div formArrayName="variants">
+            @for (variant of variantsArray.controls; track $index) {
+            <div [formGroupName]="$index" class="border p-3 mb-4 rounded shadow-sm">
+                <div class="d-flex justify-content-between">
+                    <h5>Biến thể {{ $index + 1 }}</h5>
+                    <button type="button" class="btn-close text-reset" (click)="deleteVariant($index)"></button>
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <label class="form-label">SKU</label>
+                        <input formControlName="sku" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Color ID</label>
+                        <input formControlName="color_id" type="number" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Size ID</label>
+                        <input formControlName="size_id" type="number" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Price</label>
+                        <input formControlName="price" type="number" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Discount (%)</label>
+                        <input formControlName="discount_percentage" type="number" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Quantity</label>
+                        <input formControlName="quantity_in_stock" type="number" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Weight (kg)</label>
+                        <input formControlName="weight_kg" type="number" class="form-control" />
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label">Dimensions (cm)</label>
+                        <input formControlName="dimensions_cm" class="form-control" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Upload images</label>
+                        <input type="file" (change)="onImageChange($event, $index)" multiple class="form-control" />
+                    </div>
+                </div>
+
+                <div formArrayName="images" class="mt-3">
+                    @for (imgCtrl of getImageControls(variant); track $index) {
+                    <div [formGroupName]="$index" class="d-flex align-items-center gap-2 mt-2">
+                        <img [src]="imgCtrl.get('image_url')?.value || ''" width="60" class="rounded" />
+                        <small class="text-muted">{{ imgCtrl.get('public_id')?.value || '' }}</small>
+                    </div>
+                    }
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" (click)="addVariant()">➕ Thêm biến thể</button>
+
+            </div>
+            }
+        </div>
+
+        <button class="btn btn-primary" type="submit" [disabled]="productForm.invalid">Tạo sản phẩm</button>
+    </form>
+</div>

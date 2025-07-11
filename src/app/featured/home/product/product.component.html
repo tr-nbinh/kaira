@@ -1,0 +1,14 @@
+<section class="product-grid py-5 clearfix">
+    <div class="container">
+        <div class="row">
+            <div id="filters" class="button-group d-flex gap-4 justify-content-center py-5">
+                @for (item of filterButtons; track $index) {
+                <button type="button" class="btn-link text-uppercase" [class.is-checked]="item.isChecked"
+                    (click)="onFilterChange(item.value)">{{item.label |
+                    translate}}</button>
+                }
+            </div>
+            <app-product-list [totalColumns]="4" [products]="this.products"></app-product-list>
+        </div>
+    </div>
+</section>

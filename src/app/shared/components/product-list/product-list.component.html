@@ -1,0 +1,7 @@
+<div class="row">
+    @for (product of products; track product.id) {
+    <div class="mb-3 product-item" [class]="gridClassColumns">
+        <app-product-item [product]="product"></app-product-item>
+    </div>
+    }
+</div>
