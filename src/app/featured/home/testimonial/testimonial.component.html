@@ -1,0 +1,19 @@
+<section class="testimonials py-5">
+    <div class="section-header text-center">
+        <h3 class="section-title text-uppercase">{{"TESTIMONIAL.TITLE" | translate}}</h3>
+    </div>
+    <div class="swiper testimonial-swiper overflow-hidden" #swiperEle>
+        <div class="swiper-wrapper d-flex">
+            @for (quote of quotes; track quote.id) {
+            <div class="swiper-slide">
+                <div class="testimonial-item text-center">
+                    <blockquote>
+                        <p>“{{quote.content}}”</p>
+                        <div class="review-title text-uppercase">{{quote.author}}</div>
+                    </blockquote>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>

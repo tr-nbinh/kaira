@@ -1,0 +1,147 @@
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="page-title pb-2">{{"CART.TITLE" | translate}}</h1>
+            <nav class="breadcrumb fs-6">
+                <a class="breadcrumb-item nav-link" href="#">Home</a>
+                <a class="breadcrumb-item nav-link" href="#">Pages</a>
+                <span class="breadcrumb-item active" aria-current="page">Cart</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="cart-table">
+                    <div class="cart-header">
+                        <div class="row d-flex">
+                            <h6 class="cart-title text-uppercase text-muted col-lg-4 pb-3">{{"COMMON.PRODUCT" |
+                                translate}}</h6>
+                            <h6 class="cart-title text-uppercase text-muted col-lg-3 pb-3">{{"COMMON.QUANTITY" |
+                                translate}}</h6>
+                            <h6 class="cart-title text-uppercase text-muted col-lg-4 pb-3">{{"COMMON.SUBTOTAL" |
+                                translate}}</h6>
+                            <h6 class="col-1">
+                                <input type="checkbox" class="form-check-input" [indeterminate]="isIndeterminate" (change)="
+                                    toggleSelectAllCartItems($any($event.target).checked)" [checked]="selectAllItems">
+                            </h6>
+                        </div>
+                    </div>
+                    @for (item of cartItems; track $index) {
+                    <div class="cart-item border-top border-bottom">
+                        <div class="row align-items-center">
+                            <div class="col-lg-4 col-md-3">
+                                <div class="cart-info d-flex flex-wrap align-items-center mb-4">
+                                    <div class="col-lg-5">
+                                        <div class="card-image">
+                                            <a [routerLink]="['/product', item.productId, item.slug]">
+                                                <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="card-detail ps-3">
+                                            <h5 class="card-title">
+                                                <a [routerLink]="['/product', item.productId, item.slug]"
+                                                    class="text-decoration-none">{{item.name}}</a>
+                                            </h5>
+                                            <div class="card-price">
+                                                <span class="money text-dark">{{item.price | currency}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-7">
+                                <div class="row d-flex">
+                                    <div class="col-md-4">
+                                        <div class="input-group product-qty">
+                                            <span class="input-group-btn">
+                                                <button type="button" (click)="decreaseQuantity(item)"
+                                                    class="quantity-left-minus btn btn-light btn-number">
+                                                    <svg width="16" height="16">
+                                                        <use xlink:href="#minus"></use>
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                            <input type="text" id="quantity" name="quantity"
+                                                class="form-control input-number text-center" readonly
+                                                [value]="item.quantity" min="1">
+                                            <span class="input-group-btn">
+                                                <button type="button"
+                                                    class="quantity-right-plus btn btn-light btn-number"
+                                                    (click)="increaseQuantity(item)">
+                                                    <svg width="16" height="16">
+                                                        <use xlink:href="#plus"></use>
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 text-center">
+                                        <div class="total-price">
+                                            <span class="money text-dark">{{item.finalPrice * item.quantity|
+                                                currency}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 col-md-2">
+                                <ng-container *appLoadingToggle="'cart-remove-' + item.variantId">
+                                    <button class="btn text-dark" (click)="removeFromCart(item.variantId)">
+                                        <svg width="32px">
+                                            <use xlink:href="#trash"></use>
+                                        </svg>
+                                    </button>
+                                </ng-container>
+                            </div>
+                            <div class="col-1">
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="item.selected" (change)="
+                                    updateSelectAllStatus()">
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="cart-totals bg-grey py-5">
+                    <h4 class="text-dark pb-4">{{"COMMON.CART_TOTAL" | translate}}</h4>
+                    <div class="total-price pb-5">
+                        <table cellspacing="0" class="table text-uppercase">
+                            <tbody>
+                                <tr class="subtotal pt-2 pb-2 border-top border-bottom">
+                                    <th>{{"COMMON.SUBTOTAL" | translate}}</th>
+                                    <td data-title="Subtotal">
+                                        <span class="price-amount amount text-dark ps-5">
+                                            <bdi>
+                                                {{subTotal | currency}}
+                                            </bdi>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="button-wrap row g-2">
+                        <div class="col-md-6"><a href="#"
+                                class="btn btn-dark text-uppercase btn-rounded-none w-100">{{"CART.UPDATE_CART" |
+                                translate}}
+                            </a></div>
+                        <div class="col-md-6"><a href="#"
+                                class="btn btn-dark text-uppercase btn-rounded-none w-100">{{"CART.CONTINUE_SHOPPING" |
+                                translate}}</a>
+                        </div>
+                        <div class="col-md-12"><a class="btn btn-primary text-uppercase btn-rounded-none w-100"
+                                (click)="goToCheckout()">{{"CART.PROCEED_CHECKOUT"
+                                | translate}}</a></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

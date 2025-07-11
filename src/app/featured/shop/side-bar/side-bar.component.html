@@ -1,0 +1,100 @@
+<div class="sidebar">
+    <div class="sidebar-categories border-animation-left mb-5">
+        <div class="text-dark text-uppercase">{{"SHOP.BROWSE_BY_CATEGORIES" | translate}}:</div>
+        <ul class="list-unstyled text-dark">
+            <li>
+                <span class="item-anchor cursor-pointer" [class.active]="allCategoriesChecked"
+                    (click)="toggleCategorySelection()">All</span>
+            </li>
+            @for (category of categories; track category.id) {
+            <li>
+                <span class="item-anchor cursor-pointer" [class.active]="category.checked"
+                    (click)="toggleCategorySelection(category)">{{category.name}}</span>
+            </li>
+            }
+            <li>
+                <span class="item-anchor cursor-pointer">New arrivals</span>
+            </li>
+            <li>
+                <span class="item-anchor cursor-pointer">New sale</span>
+            </li>
+        </ul>
+    </div>
+    <div class="product-filter padding-small">
+        <div class="text-dark text-uppercase">{{"SHOP.FILTER_BY" | translate}}:</div>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <div class="accordion-header" id="heading-one">
+                    <button class="accordion-button py-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
+                        <span class="accordion-title fs-3">{{"COMMON.COLOR" | translate}}</span>
+                    </button>
+                </div>
+                <div id="collapse-one" class="accordion-collapse collapse show" aria-labelledby="heading-one">
+                    <div class="accordion-body">
+                        @for (color of colors; track color.id) {
+                        <div class="form-check">
+                            <label class="form-check-label" [for]="'color-id-' + color.id">
+                                {{color.name}}
+                                <input class="form-check-input" type="checkbox" name="color-option"
+                                    [id]="'color-id-' + color.id" [checked]="color.checked"
+                                    (change)="toggleColorSelection(color)">
+                                <span class="checkmark" [style.background-color]="color.hexCode"></span>
+                            </label>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" id="heading-two">
+                    <button class="accordion-button py-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse-two" aria-expanded="true" aria-controls="collapse-two">
+                        <span class="accordion-title fs-3">{{"COMMON.SIZE" | translate}}</span>
+                    </button>
+                </div>
+                <div id="collapse-two" class="accordion-collapse collapse show" aria-labelledby="heading-two">
+                    <div class="accordion-body">
+                        @for (size of sizes; track size.id) {
+                        <span class="accordion-content text-dark cursor-pointer" [class.active]="size.checked"
+                            (click)="toggleSizeSelection(size)">{{size.name}}</span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" id="heading-three">
+                    <button class="accordion-button py-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse-three" aria-expanded="true" aria-controls="collapse-three">
+                        <span class="accordion-title fs-3">{{"COMMON.PRICE" | translate}}</span>
+                    </button>
+                </div>
+                <div id="collapse-three" class="accordion-collapse collapse show" aria-labelledby="heading-three">
+                    <div class="accordion-body">
+                        @for (price of priceRanges; track price.id) {
+                            <span class="accordion-content cursor-pointer text-dark" [class.active]="price.checked" 
+                            (click)="togglePriceSelection(price)">{{price.text}}</span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" id="heading-four">
+                    <button class="accordion-button py-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse-four" aria-expanded="true" aria-controls="collapse-four">
+                        <span class="accordion-title fs-3">{{"COMMON.BRAND" | translate}}</span>
+                    </button>
+                </div>
+                <div id="collapse-four" class="accordion-collapse collapse show" aria-labelledby="heading-four">
+                    <div class="accordion-body">
+                        @for (brand of brands; track brand.id) {
+                        <span class="accordion-content text-dark cursor-pointer" [class.active]="brand.checked"
+                            (click)="toggleBrandSelection(brand)">{{brand.name}}</span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="btn-link text-uppercase item-anchor">{{"SHOP.RESET_FILTER" | translate}}</a>
+        </div>
+    </div>
+</div>

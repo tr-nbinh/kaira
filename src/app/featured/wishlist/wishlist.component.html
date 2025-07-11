@@ -1,0 +1,62 @@
+<section class="hero-section bg-light py-4" style="margin-top: 62px">
+    <div class="hero-content">
+        <div class="container">
+            <div class="row">
+                <div class="text-center">
+                    <div class="breadcrumbs">
+                        <span class="item">
+                            <a routerLink="/home">Home /</a>
+                        </span>
+                        <span class="item">Wishlist</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="Wishlist" class="py-5 my-5">
+    <div class="container">
+        <div class="row text-dark my-3">
+            <div class="col-6 text-uppercase">{{"COMMON.PRODUCT" | translate}}</div>
+            <div class="col-2 text-uppercase">{{"WISHLIST.STOCK_STATUS" | translate}}</div>
+        </div>
+        <div class="product-wrapper">
+            @for (item of wishlistItems; track item.id) {
+            <div class="product-item row align-items-center mb-4">
+                <div class="col-4 col-md-1 d-flex align-items-center text-left">
+                    <a [routerLink]="['/product',item.productId, item.slug]">
+                        <img [src]="item.imageUrl" alt="wishlist" class="img-fluid">
+                    </a>
+                </div>
+                <div class="col-10 col-md-5">
+                    <h3 class="item-title text-uppercase fs-5">
+                        <a [routerLink]="['/product',item.productId, item.slug]">{{item.name}}</a>
+                    </h3>
+                </div>
+                <div class="col-3 col-md-2 product-price text-left">
+                    <span class="item-price">In Stock</span>
+                </div>
+                <div class="col-3 col-md-2 wishlist-add text-left">
+                    <ng-container *appLoadingToggle="'cart-add-' + item.variantId">
+                        <button class="btn btn-outline-dark text-uppercase" title="Add to Cart"
+                            (click)="addToCart(item.variantId)">{{"WISHLIST.ADD_TO_CART"
+                            | translate}}</button>
+                    </ng-container>
+                </div>
+                <div class="col-3 col-md-1 text-left">
+                    <div class="cart-remove">
+                        <ng-container *appLoadingToggle="'wishlist-remove-' + item.variantId">
+                            <button class="btn text-dark" (click)="removeFromWishlist(item.variantId)">
+                                <svg width="32px">
+                                    <use xlink:href="#trash"></use>
+                                </svg>
+                            </button>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>

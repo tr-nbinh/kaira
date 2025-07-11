@@ -1,0 +1,20 @@
+{
+    "/api-provinces": {
+        "target": "https://provinces.open-api.vn",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/api-provinces": "/api"
+        }
+    },
+    "/api-nominatim": {
+        "target": "https://nominatim.openstreetmap.org",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/api-nominatim": ""
+        }
+    }
+}

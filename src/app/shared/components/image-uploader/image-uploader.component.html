@@ -1,0 +1,37 @@
+<div class="container">
+    <h1>Quản lý ảnh biến thể sản phẩm</h1>
+
+    <div class="variant-id-section">
+        <label for="variantIdInput">ID Biến thể (Variant ID): </label>
+        <input id="variantIdInput" type="number" [(ngModel)]="currentVariantId" placeholder="Nhập ID biến thể"
+            class="input-field" (change)="onVariantIdChange()" />
+        <p class="info-text">Nhập ID biến thể sản phẩm để xem và tải ảnh lên cho biến thể đó.</p>
+    </div>
+
+    <hr>
+
+    <h2>Tải ảnh mới lên cho biến thể {{ currentVariantId }}</h2>
+    <div class="upload-section">
+        <input type="file" (change)="onFileSelected($event)" accept="image/*">
+        <button (click)="onUpload()" class="upload-button" [disabled]="!selectedFile || !currentVariantId">
+            Tải lên ảnh
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>Ảnh của biến thể {{ currentVariantId }}</h2>
+    <div *ngIf="variantImages.length === 0" class="no-images-text">
+        <p>Chưa có ảnh nào cho biến thể này.</p>
+    </div>
+    <div class="image-grid">
+        <div *ngFor="let image of variantImages" class="image-item">
+            <img [src]="image.imageUrl" alt="Ảnh sản phẩm'" class="product-image">
+            <p class="image-description">Không có mô tả</p>
+            <p class="image-public-id">ID Cloudinary: {{ image.publicId }}</p>
+            <button (click)="deleteImage(image.id)" class="delete-button">
+                Xóa ảnh
+            </button>
+        </div>
+    </div>
+</div>

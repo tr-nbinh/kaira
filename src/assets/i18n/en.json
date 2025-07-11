@@ -1,0 +1,153 @@
+{
+    "NAV": {
+        "HOME": "Home",
+        "SHOP": "Shop",
+        "BLOG": "Blog",
+        "PAGE": "Page",
+        "CONTACT": "Contact"
+    },
+    "LANGUAGE": {
+        "ENGLISH": "English (EN)",
+        "VIETNAMESE": "Vietnamese (VN)"
+    },
+    "BANNER": {
+        "BUTTON": "Shop Collection"
+    },
+    "FEATURES": {
+        "FEATURE_1": {
+            "TITLE": "Book an appointment",
+            "SUBTITLE": "Pick your service and time, and confirm instantly."
+        },
+        "FEATURE_2": {
+            "TITLE": "Pick up in store",
+            "SUBTITLE": "Order online and collect at the store, saving on shipping fees"
+        },
+        "FEATURE_3": {
+            "TITLE": "Special packaging",
+            "SUBTITLE": "Transforms any gift into a unique experience."
+        },
+        "FEATURE_4": {
+            "TITLE": "Free Global Returns",
+            "SUBTITLE": "Return items for free from anywhere in the world."
+        }
+    },
+    "CATEGORY": {
+        "BUTTON": "Shop it now"
+    },
+    "TESTIMONIAL": {
+        "TITLE": "We love good compliments"
+    },
+    "NEWSLETTER": {
+        "TITLE": "Sign up for our newsletter",
+        "EMAIL_PLACEHOLDER": "Your email address",
+        "BUTTON": "Sign up"
+    },
+    "SHOP": {
+        "RESULTS_SUMMARY": "Showing {{start}}-{{end}} of {{total}} results",
+        "DEFAULT_SORT": "Default sorting",
+        "BROWSE_BY_CATEGORIES": "Browse by categories",
+        "FILTER_BY": "Filter By",
+        "RESET_FILTER": "Rest all filters",
+        "IN_STOCK": "{{quantity}} in stock",
+        "NO_PRODUCT": "Oops! No products match your search."
+    },
+    "CONTACT": {
+        "TITLE": "Contact",
+        "CONTACT_INFORMATION": "Contact information",
+        "CONTACT_DESC": "Tortor dignissim convallis aenean et tortor at risus viverra adipiscing.",
+        "HEAD_OFFICE": "Head office",
+        "BRAND_OFFICE": "Branch Office",
+        "SOCIAL_INFO": "Social info",
+        "ANY_QUESTION": "Got any questions?",
+        "FORM_DESC": "Use the form below to get in touch with us.",
+        "NAME_PLACEHOLDER": "Write your name here",
+        "EMAIL_PLACEHOLDER": "Write your email here",
+        "PHONE_PLACEHOLDER": "Phone number",
+        "SUBJECT_PLACEHOLDER": "Write your subject here",
+        "MESSAGE_PLACEHOLDER": "Write your message here"
+    },
+    "CART": {
+        "TITLE": "Cart",
+        "UPDATE_CART": "Update cart",
+        "CONTINUE_SHOPPING": "Continue shopping",
+        "PROCEED_CHECKOUT": "Proceed to checkout"
+    },
+    "WISHLIST": {
+        "UNIT_PRICE": "Unit price",
+        "STOCK_STATUS": "Stock status",
+        "ADD_TO_CART": "Add to cart"
+    },
+    "CHECKOUT": {
+        "TITLE": "Checkout",
+        "BILLING_DETAILS": "Billing Details",
+        "FNAME": "First Name",
+        "LNAME": "Last Name",
+        "FULL_NAME": "Full Name",
+        "COMPANY_NAME": "Company Name",
+        "COUNTRY_REGION": "Country / Region",
+        "DISTRICT": "District",
+        "WARD": "Ward",
+        "STREET_ADDRESS": "Street Address",
+        "ADDR_PLACEHOLDER": "House number and street name",
+        "ADDR_PLACEHOLDER_2": "Appartments, suite, etc.",
+        "TOWN_CITY": "Town / City",
+        "STATE": "State",
+        "ZIP_CODE": "Zip code",
+        "ADDITIONAL_INFO": "Additional information",
+        "ORDER_NOTES": "Order notes",
+        "NOTE_PLACEHOLDER": "Notes about your order. Like special notes for delivery",
+        "METHOD": {
+            "BANK": "Direct bank transfer",
+            "BANK_DECS": "Make your payment directly into our bank account. Please use your Order ID. Your order will shipped after funds have cleared in our account",
+            "CHECK_PAYMENTS": "Check payments",
+            "CHECK_PAYMENTS_DESC": "Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.",
+            "CASH": "Cash on delivery",
+            "CASH_DESC": "Pay with cash upon delivery.",
+            "PAYPAL": "Paypal",
+            "PAYPAL_DESC": "Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account."
+        },
+        "ORDER_BUTTON": "Place an order"
+    },
+    "PRICE": {
+        "LESS_THAN": "Less than {{price}}",
+        "FROM_TO": "{{minPrice}} - {{maxPrice}}",
+        "MORE_THAN": "More than {{price}}"
+    },
+    "VALIDATION": {
+        "REQUIRED": "This field is required",
+        "EMAIL": "Please enter a valid email address",
+        "PHONE": "Please enter a valid phone number",
+        "MIN_LENGTH": "Please enter at least {{min}} characters",
+        "MAX_LENGTH": "Please enter no more than {{max}} characters",
+        "MIN_VALUE": "Please enter a value greater than or equal to {{min}}",
+        "MAX_VALUE": "Please enter a value less than or equal to {{max}}",
+        "GENERIC_ERROR": "An error occurred, please try again later"
+    },
+    "COMMON": {
+        "WISHLIST": "Wishlist",
+        "CART": "Cart",
+        "CATEGORY": "Category",
+        "BEST_SELLERS": "Best Sellers",
+        "NEW_ARRIVALS": "New Arrivals",
+        "BEST_REVIEWED": "Best Reviewed",
+        "ADD_TO_CART": "Add to Cart",
+        "FOLLOW_US": "Follow us on Instagram",
+        "COLOR": "Color",
+        "SIZE": "Size",
+        "PRICE": "Price",
+        "BRAND": "Brand",
+        "SHARE": "Share",
+        "COMING_SOON": "Coming soon",
+        "BACK_HOME": "Go back to home",
+        "ERROR_404": "Error 404",
+        "ERROR_PAGE_DESC": "Sorry, the page that you’re looking for doesn’t exist.",
+        "SUBMIT": "Submit",
+        "PRODUCT": "Product",
+        "CART_TOTAL": "Cart total",
+        "QUANTITY": "Quantity",
+        "SUBTOTAL": "Subtotal",
+        "TOTAL": "Total",
+        "PHONE": "Phone",
+        "EMAIL_ADDRESS": "Email address"
+    }
+}

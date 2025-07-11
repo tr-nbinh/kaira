@@ -1,0 +1,164 @@
+{
+    "NAV": {
+        "HOME": "Trang chủ",
+        "SHOP": "Sản phẩm",
+        "BLOG": "Bài viết",
+        "PAGE": "Trang",
+        "CONTACT": "Liên Hệ"
+    },
+    "LANGUAGE": {
+        "ENGLISH": "Tiếng Anh (EN)",
+        "VIETNAMESE": "Tiếng Việt (VN)"
+    },
+    "BANNER": {
+        "BUTTON": "Bộ sưu tập"
+    },
+    "FEATURES": {
+        "FEATURE_1": {
+            "TITLE": "Đặt lịch",
+            "SUBTITLE": "Chọn dịch vụ và thời gian của bạn và được xác nhận ngay lập tức"
+        },
+        "FEATURE_2": {
+            "TITLE": "Nhận tại của hàng",
+            "SUBTITLE": "Đặt online, lấy tại cửa hàng, tiết kiệm phí ship và thời gian chờ đợi."
+        },
+        "FEATURE_3": {
+            "TITLE": "Hộp Quà Sang Trọng",
+            "SUBTITLE": "Biến mọi món quà thành một trải nghiệm độc đáo."
+        },
+        "FEATURE_4": {
+            "TITLE": "Trả Hàng Miễn Phí",
+            "SUBTITLE": "Trả hàng miễn phí từ mọi nơi trên thế giới."
+        }
+    },
+    "CATEGORY": {
+        "MEN": {
+            "TITLE": "Nam",
+            "BUTTON": "Mua ngay"
+        },
+        "WOMEN": {
+            "TITLE": "Nữ",
+            "BUTTON": "Mua ngay"
+        },
+        "ACCESSORI": {
+            "TITLE": "Phụ kiện",
+            "BUTTON": "Mua ngay"
+        }
+    },
+    "TESTIMONIAL": {
+        "TITLE": "Chúng tôi yêu những lời khen hay"
+    },
+    "NEWSLETTER": {
+        "TITLE": "Đăng ký nhận bản tin",
+        "EMAIL_PLACEHOLDER": "Địa chỉ email của bạn",
+        "BUTTON": "Đăng ký"
+    },
+    "SHOP": {
+        "RESULTS_SUMMARY": "Hiển thị {{start}}-{{end}} trong tổng số {{total}}",
+        "DEFAULT_SORT": "Sắp xếp mặc định",
+        "BROWSE_BY_CATEGORIES": "Duyệt theo danh mục",
+        "FILTER_BY": "Lọc theo",
+        "RESET_FILTER": "Đặt lại bộ lọc",
+        "IN_STOCK": "{{quantity}} trong kho",
+        "NO_PRODUCT": "Oops! Không có sản phẩm trùng khớp với tìm kiếm."
+    },
+    "CONTACT": {
+        "TITLE": "Liên hệ",
+        "CONTACT_INFORMATION": "Thông tin liên hệ",
+        "CONTACT_DESC": "Tortor dignissim convallis aenean et tortor at risus viverra adipiscing.",
+        "HEAD_OFFICE": "Trụ sở chính",
+        "BRAND_OFFICE": "Chi nhánh",
+        "SOCIAL_INFO": "Mạng xã hội",
+        "ANY_QUESTION": "Đặt câu hỏi bất kỳ?",
+        "FORM_DESC": "Sử dụng mẫu dưới đây để liên hệ với chúng tôi.",
+        "NAME_PLACEHOLDER": "Tên",
+        "EMAIL_PLACEHOLDER": "Email",
+        "PHONE_PLACEHOLDER": "Số điện thoại",
+        "SUBJECT_PLACEHOLDER": "Chủ đề",
+        "MESSAGE_PLACEHOLDER": "Tin nhắn"
+    },
+    "CART": {
+        "TITLE": "Giỏ hàng",
+        "UPDATE_CART": "Cập nhật giỏ hàng",
+        "CONTINUE_SHOPPING": "Tiếp tục mua sắm",
+        "PROCEED_CHECKOUT": "Thanh toán"
+    },
+    "WISHLIST": {
+        "UNIT_PRICE": "Đơn giá",
+        "STOCK_STATUS": "Tình trạng",
+        "ADD_TO_CART": "Thêm giỏ hàng"
+    },
+    "CHECKOUT": {
+        "TITLE": "Thanh toán",
+        "BILLING_DETAILS": "Chi tiết thanh toán",
+        "FNAME": "Tên",
+        "LNAME": "Họ",
+        "FULL_NAME": "Họ và tên",
+        "COMPANY_NAME": "Công ty",
+        "COUNTRY_REGION": "Quốc gia / Khu vực",
+        "STREET_ADDRESS": "Địa chỉ",
+        "DISTRICT": "Quận / Huyện",
+        "WARD": "Phường / Xã",
+        "ADDR_PLACEHOLDER": "Số nhà, tên đường",
+        "ADDR_PLACEHOLDER_2": "Căn hộ, số phòng, v.v.",
+        "TOWN_CITY": "Thị trấn / Thành phố",
+        "STATE": "Bang",
+        "ZIP_CODE": "Mã bưu điện",
+        "ADDITIONAL_INFO": "Thông tin bổ sung",
+        "ORDER_NOTES": "Ghi chú",
+        "NOTE_PLACEHOLDER": "Ghi chú cho đơn hàng của bạn",
+        "METHOD": {
+            "BANK": "Chuyển khoản",
+            "BANK_DECS": "Vui lòng chuyển khoản trực tiếp vào tài khoản ngân hàng của chúng tôi. Hãy sử dụng Mã đơn hàng của bạn khi thanh toán. Đơn hàng sẽ được gửi đi sau khi chúng tôi nhận được tiền.",
+            "CHECK_PAYMENTS": "Thanh toán bằng séc",
+            "CHECK_PAYMENTS_DESC": "Vui lòng gửi séc đến địa chỉ: [Tên cửa hàng], [Địa chỉ đường], [Thị trấn/Thành phố], [Tỉnh/Bang], [Mã bưu điện].",
+            "CASH": "Thanh toán khi nhận hàng",
+            "CASH_DESC": "Trả tiền mặt khi nhận hàng.",
+            "PAYPAL": "Paypal",
+            "PAYPAL_DESC": "Thanh toán bằng PayPal – nếu bạn không có tài khoản, vẫn có thể dùng thẻ tín dụng để thanh toán."
+        },
+        "ORDER_BUTTON": "Đặt hàng"
+    },
+    "PRICE": {
+        "LESS_THAN": "Dưới {{price}}",
+        "FROM_TO": "{{minPrice}} - {{maxPrice}}",
+        "MORE_THAN": "Trên {{price}}"
+    },
+    "VALIDATION": {
+        "REQUIRED": "Trường này là bắt buộc",
+        "EMAIL": "Vui lòng nhập địa chỉ email hợp lệ",
+        "PHONE": "Vui lòng nhập số điện thoại hợp lệ",
+        "MIN_LENGTH": "Vui lòng nhập ít nhất {{min}} ký tự",
+        "MAX_LENGTH": "Vui lòng nhập tối đa {{max}} ký tự",
+        "MIN_VALUE": "Vui lòng nhập giá trị lớn hơn hoặc bằng {{min}}",
+        "MAX_VALUE": "Vui lòng nhập giá trị nhỏ hơn hoặc bằng {{max}}",
+        "GENERIC_ERROR": "Đã xảy ra lỗi, vui lòng thử lại sau"
+    },
+    "COMMON": {
+        "WISHLIST": "Yêu thích",
+        "CART": "Giỏ hàng",
+        "CATEGORY": "Category",
+        "BEST_SELLERS": "Bán chạy nhất",
+        "NEW_ARRIVALS": "Sản phẩm mới",
+        "BEST_REVIEWED": "Đánh giá tốt nhất",
+        "ADD_TO_CART": "Thêm vào giỏ hàng",
+        "FOLLOW_US": "Theo dõi chúng tôi trên Instagram",
+        "COLOR": "Màu sắc",
+        "SIZE": "Kích thước",
+        "PRICE": "Giá",
+        "BRAND": "Thương hiệu",
+        "SHARE": "Chia sẻ",
+        "COMING_SOON": "Sắp ra mắt",
+        "BACK_HOME": "Về trang chủ",
+        "ERROR_404": "Lỗi 404",
+        "ERROR_PAGE_DESC": "Xin lỗi, trang bạn tìm không tồn tại",
+        "SUBMIT": "Gửi",
+        "PRODUCT": "Sản phẩm",
+        "CART_TOTAL": "Tổng giỏ hàng",
+        "QUANTITY": "Số lượng",
+        "SUBTOTAL": "Tạm tính",
+        "TOTAL": "Tổng cộng",
+        "PHONE": "Điện thoại",
+        "EMAIL_ADDRESS": "Địa chỉ email"
+    }
+}

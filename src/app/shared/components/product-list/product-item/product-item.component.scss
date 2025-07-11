@@ -1,0 +1,18 @@
+button {
+    padding: 0;
+    margin: 0;
+    border: inherit;
+    background-color: unset;
+}
+
+.swatch-circle {
+    display: block;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+}
+
+.swatch-circle:hover,
+.swatch-circle.active {
+    border: 2px solid black;
+}
