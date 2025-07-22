@@ -4,12 +4,12 @@
     </div>
     <div class="swiper testimonial-swiper overflow-hidden" #swiperEle>
         <div class="swiper-wrapper d-flex">
-            @for (quote of quotes; track quote.id) {
+            @for (quote of testimonials | async; track quote.id) {
             <div class="swiper-slide">
                 <div class="testimonial-item text-center">
                     <blockquote>
                         <p>“{{quote.content}}”</p>
-                        <div class="review-title text-uppercase">{{quote.author}}</div>
+                        <div class="review-title text-uppercase">{{quote.authorName}}</div>
                     </blockquote>
                 </div>
             </div>

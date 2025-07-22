@@ -4,12 +4,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { finalize, takeUntil } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
 import { CartItem } from '../../models/cart.interface';
-import { WishlistService } from '../../services/wishlist.service';
 import { CartService } from '../../services/cart.service';
-import { ApiResponse } from '../../models/api-response.interface';
-import { ToastService } from '../../services/toast.service';
-import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
 import { LoadingService } from '../../services/loading.service';
+import { ToastService } from '../../services/toast.service';
+import { WishlistService } from '../../services/wishlist.service';
+import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
 
 @Component({
     selector: 'app-wishlist',
@@ -48,7 +47,7 @@ export class WishlistComponent extends BaseComponent {
                 finalize(() => this.loading.hide(key))
             )
             .subscribe({
-                next: (res: ApiResponse) => {
+                next: (res) => {
                     this.toast.success(res.message);
                 },
                 error: (err) => {
@@ -67,7 +66,7 @@ export class WishlistComponent extends BaseComponent {
                 finalize(() => this.loading.hide(key))
             )
             .subscribe({
-                next: (res: ApiResponse) => {
+                next: (res) => {
                     this.wishlistItems = this.wishlistItems.filter(
                         (item) => item.variantId !== variantId
                     );

@@ -1,19 +1,19 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { takeUntil } from 'rxjs';
-import Swiper from 'swiper';
+import { Observable, of } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
-import { Quote } from '../../../models/quote.interface';
 import { TestimonialService } from '../../../services/testimonial.service';
+import { Testimonial } from '../../../models/testimonial';
 
 @Component({
     selector: 'app-testimonial',
-    imports: [TranslateModule],
+    imports: [TranslateModule, AsyncPipe],
     templateUrl: './testimonial.component.html',
     styleUrl: './testimonial.component.scss',
 })
 export class TestimonialComponent extends BaseComponent {
-    quotes: Quote[] = [];
+    testimonials: Observable<Testimonial[]> = of([]);
     @ViewChild('swiperEle') swiperEle!: ElementRef<any>;
 
     constructor(private testimonialService: TestimonialService) {
@@ -21,18 +21,16 @@ export class TestimonialComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.testimonialService
-            .getTestimonials()
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((res) => {
-                this.quotes = res;
-                this.initializeSwiper(this.swiperEle.nativeElement, {
-                    effect: 'coverflow',
-                    grabCursor: true,
-                    centeredSlides: true,
-                    // loop: true, //error: not enough slide to loop
-                    slidesPerView: 'auto',
-                });
-            });
+        this.testimonials = this.testimonialService.getTestimonials();
+    }
+
+    ngAfterViewInit() {
+        this.initializeSwiper(this.swiperEle.nativeElement, {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            // loop: true, //error: not enough slide to loop
+            slidesPerView: 'auto',
+        });
     }
 }

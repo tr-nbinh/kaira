@@ -1,23 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { fromEvent, map, Observable, take, takeUntil } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
+import { Language } from '../../models/language.interface';
 import { MenuItem } from '../../models/menu.interface';
+import { CartService } from '../../services/cart.service';
 import { MenuService } from '../../services/menu.service';
 import { UserService } from '../../services/user.service';
-import { CartService } from '../../services/cart.service';
-import { WishlistComponent } from '../../featured/wishlist/wishlist.component';
 import { WishlistService } from '../../services/wishlist.service';
-
-interface Language {
-    code: string;
-    name: string;
-    flagIcon: string;
-    flagIconSm: string;
-}
+import { LANGUAGES } from '../../shared/constants/languages.constant';
 
 @Component({
     selector: 'app-header',
@@ -26,26 +20,16 @@ interface Language {
     styleUrl: './header.component.scss',
 })
 export class HeaderComponent extends BaseComponent implements OnInit {
-    menu: Observable<MenuItem[]> | undefined;
-    languages: Language[] = [
-        {
-            code: 'en',
-            name: 'LANGUAGE.ENGLISH',
-            flagIcon: 'flag-usa',
-            flagIconSm: 'flag-usa-sm',
-        },
-        {
-            code: 'vi',
-            name: 'LANGUAGE.VIETNAMESE',
-            flagIcon: 'flag-vietnam',
-            flagIconSm: 'flag-vietnam-sm',
-        },
-    ];
+    @ViewChild('headerElement') headerRef!: ElementRef<HTMLElement>;
+    private resize$!: ResizeObserver;
+    headerHeight: number = 0;
+    menu$: Observable<MenuItem[]> = of([]);
+    languages = LANGUAGES;
     activeCurrentLanguage!: Language;
+    isAuthenticated$: Observable<boolean> = of(false);
+    cartItemCount$: Observable<number> = of(0);
+    wishlistItemCount$: Observable<number> = of(0);
     isScrolled: boolean = false;
-    isAuthenticated: boolean = false;
-    cartItemCount: number = 0;
-    wishlistItemCount: number = 0;
 
     constructor(
         private translate: TranslateService,
@@ -62,21 +46,32 @@ export class HeaderComponent extends BaseComponent implements OnInit {
         this.activeCurrentLanguage = this.languages.find(
             (item) => item.code === this.translate.currentLang
         )!;
-        this.getCartItemCount();
-        this.getWishlistItemCount();
-        this.menu = this.menuService
-            .getMenu()
-            .pipe(takeUntil(this.ngUnsubscribe));
+        this.menu$ = this.menuService.getMenu();
+        this.cartItemCount$ = this.cartService.cartItemCount$;
+        this.wishlistItemCount$ = this.wishlishService.wishlistItemCount$;
+        this.isAuthenticated$ = this.userService.isAuthenticated$;
+    }
 
-        this.userService.isAuthenticated$
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((res) => {
-                this.isAuthenticated = res;
-            });
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.headerHeight = this.headerRef.nativeElement.offsetHeight;
+        });
+        this.resize$ = new ResizeObserver(() => {
+            if (
+                this.headerHeight != this.headerRef.nativeElement.offsetHeight
+            ) {
+                this.headerHeight = this.headerRef.nativeElement.offsetHeight;
+            }
+        });
+
+        this.resize$.observe(this.headerRef.nativeElement);
     }
 
     switchLanguage(code: string) {
+        if (code == this.translate.currentLang) return;
         this.translate.use(code);
+        localStorage.setItem('userLanguage', code);
+        window.location.reload();
         this.activeCurrentLanguage = this.languages.find(
             (item) => item.code === code
         )!;
@@ -94,22 +89,6 @@ export class HeaderComponent extends BaseComponent implements OnInit {
         this.userService.logout();
     }
 
-    getCartItemCount() {
-        this.cartService.cartItemCount$
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((itemCount) => {
-                this.cartItemCount = itemCount;
-            });
-    }
-
-    getWishlistItemCount() {
-        this.wishlishService.wishlistItemCount$
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((itemCount) => {
-                this.wishlistItemCount = itemCount;
-            });
-    }
-
     checkScroll() {
         // fromEvent(window, 'scroll')
         //     .pipe(
@@ -119,5 +98,10 @@ export class HeaderComponent extends BaseComponent implements OnInit {
         //     .subscribe((isScrolled) => {
         //         this.isScrolled = isScrolled;
         //     });
+    }
+
+    override ngOnDestroy(): void {
+        this.resize$.disconnect();
+        super.ngOnDestroy();
     }
 }

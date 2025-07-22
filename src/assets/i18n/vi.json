@@ -32,32 +32,21 @@
         }
     },
     "CATEGORY": {
-        "MEN": {
-            "TITLE": "Nam",
-            "BUTTON": "Mua ngay"
-        },
-        "WOMEN": {
-            "TITLE": "Nữ",
-            "BUTTON": "Mua ngay"
-        },
-        "ACCESSORI": {
-            "TITLE": "Phụ kiện",
-            "BUTTON": "Mua ngay"
-        }
+        "ALL": "Tất cả",
+        "BUTTON": "Xem ngay"
     },
     "TESTIMONIAL": {
         "TITLE": "Chúng tôi yêu những lời khen hay"
     },
     "NEWSLETTER": {
         "TITLE": "Đăng ký nhận bản tin",
-        "EMAIL_PLACEHOLDER": "Địa chỉ email của bạn",
         "BUTTON": "Đăng ký"
     },
     "SHOP": {
         "RESULTS_SUMMARY": "Hiển thị {{start}}-{{end}} trong tổng số {{total}}",
         "DEFAULT_SORT": "Sắp xếp mặc định",
         "BROWSE_BY_CATEGORIES": "Duyệt theo danh mục",
-        "FILTER_BY": "Lọc theo",
+        "FILTER_BY": "Bộ lọc",
         "RESET_FILTER": "Đặt lại bộ lọc",
         "IN_STOCK": "{{quantity}} trong kho",
         "NO_PRODUCT": "Oops! Không có sản phẩm trùng khớp với tìm kiếm."
@@ -72,7 +61,6 @@
         "ANY_QUESTION": "Đặt câu hỏi bất kỳ?",
         "FORM_DESC": "Sử dụng mẫu dưới đây để liên hệ với chúng tôi.",
         "NAME_PLACEHOLDER": "Tên",
-        "EMAIL_PLACEHOLDER": "Email",
         "PHONE_PLACEHOLDER": "Số điện thoại",
         "SUBJECT_PLACEHOLDER": "Chủ đề",
         "MESSAGE_PLACEHOLDER": "Tin nhắn"
@@ -90,7 +78,6 @@
     },
     "CHECKOUT": {
         "TITLE": "Thanh toán",
-        "BILLING_DETAILS": "Chi tiết thanh toán",
         "FNAME": "Tên",
         "LNAME": "Họ",
         "FULL_NAME": "Họ và tên",
@@ -117,22 +104,52 @@
             "PAYPAL": "Paypal",
             "PAYPAL_DESC": "Thanh toán bằng PayPal – nếu bạn không có tài khoản, vẫn có thể dùng thẻ tín dụng để thanh toán."
         },
-        "ORDER_BUTTON": "Đặt hàng"
+        "ORDER_BUTTON": "Đặt hàng",
+        "DELIVERY_ADDRESS": "Địa chỉ nhận hàng",
+        "SELECT_ADDRESS": "Chọn địa chỉ",
+        "ADD_ADDRESS": "Thêm địa chỉ",
+        "DEFAULT": "Default",
+        "CHANGE": "Thay đổi",
+        "CART_SUMMARY": "Tóm tắt giỏ hàng",
+        "UPDATE": "Cập nhật",
+        "ADD_NEW_ADDRESS": "Thêm địa chỉ mới",
+        "DEFAULT_ADDRESS": "Đặt làm địa chỉ mặc định"
+
     },
     "PRICE": {
         "LESS_THAN": "Dưới {{price}}",
         "FROM_TO": "{{minPrice}} - {{maxPrice}}",
         "MORE_THAN": "Trên {{price}}"
     },
-    "VALIDATION": {
+    "FORM_MESSAGE": {
         "REQUIRED": "Trường này là bắt buộc",
         "EMAIL": "Vui lòng nhập địa chỉ email hợp lệ",
         "PHONE": "Vui lòng nhập số điện thoại hợp lệ",
-        "MIN_LENGTH": "Vui lòng nhập ít nhất {{min}} ký tự",
-        "MAX_LENGTH": "Vui lòng nhập tối đa {{max}} ký tự",
-        "MIN_VALUE": "Vui lòng nhập giá trị lớn hơn hoặc bằng {{min}}",
-        "MAX_VALUE": "Vui lòng nhập giá trị nhỏ hơn hoặc bằng {{max}}",
-        "GENERIC_ERROR": "Đã xảy ra lỗi, vui lòng thử lại sau"
+        "PATTERN": "Sai định dạng",
+        "PASSWORD_PATTERN": "At least one number, one uppercase letter and one special character",
+        "EMAIL_PARTTERN": "Email is invalid format",
+        "MIN_LENGTH": "Vui lòng nhập ít nhất {{requiredLength}} ký tự",
+        "MAX_LENGTH": "Vui lòng nhập tối đa {{requiredLength}} ký tự",
+        "PASSWORD_MIS_MATCH": "Mật khẩu không trùng khớp",
+        "GENERIC_ERROR": "Lỗi không xác định"
+    },
+    "USER": {
+        "MY_PURCHASE": "Đơn mua",
+        "MY_ACCOUNT": "Tài khoản của tôi"
+    },
+    "AUTH": {
+        "USERNAME": "Tên đăng nhập",
+        "USERNAME_PLACEHOLDER": "Tên đăng nhập",
+        "PASSWORD": "Mật khẩu",
+        "PASSWORD_PLACEHOLDER": "Nhập mật khẩu",
+        "CONFIRM_PASSWORD": "Xác nhận mật khẩu",
+        "CF_PASSWORD_PLACEHOLDER": "Nhập lại mật khẩu",
+        "HAS_ACCOUNT": "Đã có tài khoản",
+        "REMEMBER_ME": "Ghi nhớ đăng nhập",
+        "FORGOT_PASSWORD": "Quên mật khẩu",
+        "CREATE_ACCOUNT": "Tạo tài khoản",
+        "EMAIL_NOTI": "Vui lòng điền email",
+        "RESET_PASSWORD": "Đặt lại mật khẩu"
     },
     "COMMON": {
         "WISHLIST": "Yêu thích",
@@ -159,6 +176,11 @@
         "SUBTOTAL": "Tạm tính",
         "TOTAL": "Tổng cộng",
         "PHONE": "Điện thoại",
-        "EMAIL_ADDRESS": "Địa chỉ email"
+        "EMAIL_ADDRESS": "Địa chỉ email",
+        "SIGN_IN": "Đăng nhập",
+        "SIGN_UP": "Đăng ký",
+        "SIGN_OUT": "Đăng xuất",
+        "EMAIL_PLACEHOLDER": "Email",
+        "CONFIRM": "Xác nhận"
     }
 }

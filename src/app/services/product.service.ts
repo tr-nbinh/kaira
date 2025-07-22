@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import { BaseService } from '../base/base.service';
 import { PaginatedResponse } from '../models/paginatedResponse.interface';
 import {

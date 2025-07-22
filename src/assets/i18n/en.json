@@ -32,6 +32,7 @@
         }
     },
     "CATEGORY": {
+        "ALL": "All",
         "BUTTON": "Shop it now"
     },
     "TESTIMONIAL": {
@@ -39,7 +40,6 @@
     },
     "NEWSLETTER": {
         "TITLE": "Sign up for our newsletter",
-        "EMAIL_PLACEHOLDER": "Your email address",
         "BUTTON": "Sign up"
     },
     "SHOP": {
@@ -61,7 +61,6 @@
         "ANY_QUESTION": "Got any questions?",
         "FORM_DESC": "Use the form below to get in touch with us.",
         "NAME_PLACEHOLDER": "Write your name here",
-        "EMAIL_PLACEHOLDER": "Write your email here",
         "PHONE_PLACEHOLDER": "Phone number",
         "SUBJECT_PLACEHOLDER": "Write your subject here",
         "MESSAGE_PLACEHOLDER": "Write your message here"
@@ -79,7 +78,6 @@
     },
     "CHECKOUT": {
         "TITLE": "Checkout",
-        "BILLING_DETAILS": "Billing Details",
         "FNAME": "First Name",
         "LNAME": "Last Name",
         "FULL_NAME": "Full Name",
@@ -106,22 +104,51 @@
             "PAYPAL": "Paypal",
             "PAYPAL_DESC": "Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account."
         },
-        "ORDER_BUTTON": "Place an order"
+        "ORDER_BUTTON": "Place an order",
+        "DELIVERY_ADDRESS": "Deliver address",
+        "SELECT_ADDRESS": "Select address",
+        "ADD_ADDRESS": "Add address",
+        "DEFAULT": "Default",
+        "CHANGE": "Change",
+        "CART_SUMMARY": "Cart summary",
+        "UPDATE": "Update",
+        "ADD_NEW_ADDRESS": "Add new address",
+        "DEFAULT_ADDRESS": "Set as default address"
     },
     "PRICE": {
         "LESS_THAN": "Less than {{price}}",
         "FROM_TO": "{{minPrice}} - {{maxPrice}}",
         "MORE_THAN": "More than {{price}}"
     },
-    "VALIDATION": {
+    "FORM_MESSAGE": {
         "REQUIRED": "This field is required",
         "EMAIL": "Please enter a valid email address",
         "PHONE": "Please enter a valid phone number",
-        "MIN_LENGTH": "Please enter at least {{min}} characters",
-        "MAX_LENGTH": "Please enter no more than {{max}} characters",
-        "MIN_VALUE": "Please enter a value greater than or equal to {{min}}",
-        "MAX_VALUE": "Please enter a value less than or equal to {{max}}",
+        "PATTERN": "Invalid format",
+        "PASSWORD_PATTERN": "At least one number, one uppercase letter and one special character",
+        "EMAIL_PATTERN": "Email is invalid format",
+        "MIN_LENGTH": "Please enter at least {{requiredLength}} characters",
+        "MAX_LENGTH": "Please enter no more than {{requiredLength}} characters",
+        "PASSWORD_MIS_MATCH": "Password does not match",
         "GENERIC_ERROR": "An error occurred, please try again later"
+    },
+    "USER": {
+        "MY_PURCHASE": "My purchase",
+        "MY_ACCOUNT": "My account"
+    },
+    "AUTH": {
+        "USERNAME": "Username",
+        "USERNAME_PLACEHOLDER": "Write your username here",
+        "PASSWORD": "Password",
+        "PASSWORD_PLACEHOLDER": "Enter your password",
+        "CONFIRM_PASSWORD": "Confirm password",
+        "CF_PASSWORD_PLACEHOLDER": "Confirm your password",
+        "HAS_ACCOUNT": "I have aldready account",
+        "REMEMBER_ME": "Remember me",
+        "FORGOT_PASSWORD": "Forgot password",
+        "CREATE_ACCOUNT": "Create an account",
+        "EMAIL_NOTI": "Please enter your email",
+        "RESET_PASSWORD": "Reset password"
     },
     "COMMON": {
         "WISHLIST": "Wishlist",
@@ -148,6 +175,11 @@
         "SUBTOTAL": "Subtotal",
         "TOTAL": "Total",
         "PHONE": "Phone",
-        "EMAIL_ADDRESS": "Email address"
+        "EMAIL_ADDRESS": "Email address",
+        "SIGN_IN": "Sign in",
+        "SIGN_UP": "Sign up",
+        "SIGN_OUT": "Sign out",
+        "EMAIL_PLACEHOLDER": "Write your email here",
+        "CONFIRM": "CONFIRM"
     }
 }

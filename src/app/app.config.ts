@@ -9,8 +9,9 @@ import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { routes } from './app.routes';
 import { HttpLoaderFactory } from './translate-loader';
-import { JwtInterceptor } from './interceptors/jw.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { LanguageInterceptor } from './interceptors/language.interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -23,6 +24,11 @@ export const appConfig: ApplicationConfig = {
             })
         ),
         provideHttpClient(withInterceptorsFromDi()),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LanguageInterceptor,
+            multi: true,
+        },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptor,

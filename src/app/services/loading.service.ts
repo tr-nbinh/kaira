@@ -18,7 +18,6 @@ export class LoadingService {
     }
 
     toggle(key: string, loading: boolean) {
-        console.log(key, loading);
         this._loadingMap.update((map) => new Map(map).set(key, loading));
     }
 

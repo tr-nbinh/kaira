@@ -1,18 +1,5 @@
 <section class="py-5">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1 class="page-title pb-2">{{"CART.TITLE" | translate}}</h1>
-            <nav class="breadcrumb fs-6">
-                <a class="breadcrumb-item nav-link" href="#">Home</a>
-                <a class="breadcrumb-item nav-link" href="#">Pages</a>
-                <span class="breadcrumb-item active" aria-current="page">Cart</span>
-            </nav>
-        </div>
-    </div>
-</section>
-
-<section class="py-5">
-    <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <div class="cart-table">
@@ -25,7 +12,8 @@
                             <h6 class="cart-title text-uppercase text-muted col-lg-4 pb-3">{{"COMMON.SUBTOTAL" |
                                 translate}}</h6>
                             <h6 class="col-1">
-                                <input type="checkbox" class="form-check-input" [indeterminate]="isIndeterminate" (change)="
+                                <input type="checkbox" class="form-check-input" [indeterminate]="isIndeterminate"
+                                    (change)="
                                     toggleSelectAllCartItems($any($event.target).checked)" [checked]="selectAllItems">
                             </h6>
                         </div>
@@ -127,11 +115,11 @@
                         </table>
                     </div>
                     <div class="button-wrap row g-2">
-                        <div class="col-md-6"><a href="#"
+                        <div class="col-md-6"><a [routerLink]="['/shop']"
                                 class="btn btn-dark text-uppercase btn-rounded-none w-100">{{"CART.UPDATE_CART" |
                                 translate}}
                             </a></div>
-                        <div class="col-md-6"><a href="#"
+                        <div class="col-md-6"><a [routerLink]="['/shop']"
                                 class="btn btn-dark text-uppercase btn-rounded-none w-100">{{"CART.CONTINUE_SHOPPING" |
                                 translate}}</a>
                         </div>

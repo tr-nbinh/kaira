@@ -1,15 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { finalize, takeUntil } from 'rxjs';
-import { BaseComponent } from '../../../../base/base.component';
-import { ApiResponse } from '../../../../models/api-response.interface';
-import { Color } from '../../../../models/product-filter.interface';
-import { Product, ProductVariant } from '../../../../models/product.interface';
-import { LoadingService } from '../../../../services/loading.service';
-import { ToastService } from '../../../../services/toast.service';
-import { WishlistService } from '../../../../services/wishlist.service';
-import { LoadingToggleDirective } from '../../../directives/loading-toggle.directive';
-import { CartService } from '../../../../services/cart.service';
+import { BaseComponent } from '../../../base/base.component';
+import { Product, ProductVariant } from '../../../models/product.interface';
+import { CartService } from '../../../services/cart.service';
+import { LoadingService } from '../../../services/loading.service';
+import { ToastService } from '../../../services/toast.service';
+import { WishlistService } from '../../../services/wishlist.service';
+import { LoadingToggleDirective } from '../../directives/loading-toggle.directive';
+import { ColorSelectItem } from '../../../models/product-filter.interface';
 
 @Component({
     selector: 'app-product-item',
@@ -20,8 +19,8 @@ import { CartService } from '../../../../services/cart.service';
 export class ProductItemComponent extends BaseComponent {
     @Input() product!: Product;
     currentVariant!: ProductVariant;
-    colors: Color[] = [];
-    colorChecked: Color | undefined;
+    colors: ColorSelectItem[] = [];
+    colorChecked: ColorSelectItem | undefined;
 
     constructor(
         private wishlistService: WishlistService,
@@ -38,7 +37,7 @@ export class ProductItemComponent extends BaseComponent {
         this.setCurrentVariant();
     }
 
-    changeColor(color: Color) {
+    changeColor(color: ColorSelectItem) {
         if (color.id === this.colorChecked?.id) return;
         if (this.colorChecked) this.colorChecked.checked = false;
         color.checked = true;
@@ -63,7 +62,7 @@ export class ProductItemComponent extends BaseComponent {
                 finalize(() => this.loading.hide(key))
             )
             .subscribe({
-                next: (res: ApiResponse) => {
+                next: (res) => {
                     this.toast.success(res.message);
                 },
                 error: (err) => {
@@ -82,7 +81,7 @@ export class ProductItemComponent extends BaseComponent {
                 finalize(() => this.loading.hide(key))
             )
             .subscribe({
-                next: (res: ApiResponse) => {
+                next: (res) => {
                     this.toast.success(res.message);
                 },
                 error: (err) => {

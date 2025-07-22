@@ -2,33 +2,46 @@
     <div class="container-sm">
         <div class="row justify-content-center">
             <div class="col-4">
-                <h2 class="section-title text-uppercase">Sign up</h2>
+                <h2 class="section-title text-uppercase">{{'COMMON.SIGN_UP' | translate}}</h2>
                 <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="form-group flex-wrap">
                     <div class="col-12 pb-3">
-                        <label for="username">Username *</label>
-                        <input type="text" formControlName="username" id="username"
-                            placeholder="Write your username here" class="form-control">
+                        <label for="username">{{'AUTH.USERNAME' | translate}} *</label>
+                        <input type="text" formControlName="username" id="username" autocomplete="username"
+                            [placeholder]="'AUTH.USERNAME_PLACEHOLDER' | translate" class="form-control"
+                            [formControlError]>
                     </div>
                     <div class="col-12 pb-3">
-                        <label for="email">Email address *</label>
-                        <input type="email" formControlName="email" id="email" placeholder="Write email address here"
-                            class="form-control">
+                        <label for="email">{{'COMMON.EMAIL_ADDRESS' | translate}} *</label>
+                        <input type="email" formControlName="email" id="email"
+                            [placeholder]="'COMMON.EMAIL_PLACEHOLDER' | translate" class="form-control"
+                            [formControlError] [errorMessages]="{'pattern': 'FORM_MESSAGE.EMAIL_PATTERN'}">
                     </div>
                     <div class="col-12 pb-3">
-                        <label>Password *</label>
-                        <input type="password" formControlName="password" placeholder="Enter your password"
-                            class="form-control">
+                        <label>{{'AUTH.PASSWORD' | translate}} *</label>
+                        <input type="password" formControlName="password"
+                            [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate" class="form-control"
+                            autocomplete="current-password" [formControlError]
+                            [errorMessages]="{'pattern': 'FORM_MESSAGE.PASSWORD_PATTERN'}">
                     </div>
                     <div class="col-12 pb-3">
-                        <label>
-                            <input type="checkbox" required="">
-                            <span class="label-body">Remember me</span>
-                        </label>
+                        <label>{{'AUTH.CONFIRM_PASSWORD' | translate}} *</label>
+                        <input type="password" formControlName="confirmPassword"
+                            [placeholder]="'AUTH.CF_PASSWORD_PLACEHOLDER' | translate" class="form-control"
+                            autocomplete="confirm-password"
+                            [class.is-invalid]="registrationForm.errors?.['passwordMismatch'] && registrationForm.get('confirmPassword')?.touched">
+                        <div class="invalid-feedback">
+                            {{'FORM_MESSAGE.PASSWORD_MIS_MATCH' | translate}}
+                        </div>
+                    </div>
+                    <div class="col-12 pb-3">
+                        <ng-container *appLoadingToggle="'submitBtn'">
+                            <button type="submit" class="btn btn-dark btn-large text-uppercase"
+                                [disabled]="registrationForm.invalid">{{'COMMON.SIGN_UP' | translate}}</button>
+                        </ng-container>
                     </div>
                     <div class="col-12">
-                        <button type="submit" name="submit" class="btn btn-dark btn-large text-uppercase"
-                            [disabled]="registrationForm.invalid">Sign up</button>
-                        <p><a href="#">Lost your password?</a></p>
+                        <a [routerLink]="['/auth/login']" class="btn-link d-inline-block">{{'AUTH.HAS_ACCOUNT' |
+                            translate}}</a>
                     </div>
                 </form>
             </div>

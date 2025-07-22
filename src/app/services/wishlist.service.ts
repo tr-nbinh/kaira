@@ -4,6 +4,7 @@ import { BaseService } from '../base/base.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
 import { CartItem } from '../models/cart.interface';
+import { ApiResponse } from '../models/api-response.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -28,21 +29,25 @@ export class WishlistService extends BaseService {
         return this.get(this._endpoint);
     }
 
-    addToWishlist(variantId: number): Observable<any> {
-        return this.post(this._endpoint, { variantId }).pipe(
-            tap((res: any) => {
-                if (res && res.totalItems) {
-                    this.updateWishlistCounts(res.totalItems);
+    addToWishlist(variantId: number): Observable<ApiResponse<number>> {
+        return this.post<ApiResponse<number>>(this._endpoint, {
+            variantId,
+        }).pipe(
+            tap((res) => {
+                if (res && res.data) {
+                    this.updateWishlistCounts(res.data);
                 }
             })
         );
     }
 
-    removeFromWishlist(variantId: number): Observable<any> {
-        return this.delete(`${this._endpoint}/${variantId}`).pipe(
-            tap((res: any) => {
-                if (res && res.totalItems !== null) {
-                    this.updateWishlistCounts(res.totalItems);
+    removeFromWishlist(variantId: number): Observable<ApiResponse<number>> {
+        return this.delete<ApiResponse<number>>(
+            `${this._endpoint}/${variantId}`
+        ).pipe(
+            tap((res) => {
+                if (res && res.data) {
+                    this.updateWishlistCounts(res.data || 0);
                 }
             })
         );
@@ -53,11 +58,11 @@ export class WishlistService extends BaseService {
             this.updateWishlistCounts(0);
             return;
         }
-        this.get<number>(`${this._endpoint}/item-count`)
+        this.get<ApiResponse<number>>(`${this._endpoint}/item-count`)
             .pipe(
-                tap((wishlistItemCount: number) => {
-                    if (wishlistItemCount != null) {
-                        this.updateWishlistCounts(wishlistItemCount);
+                tap((res) => {
+                    if (res && res.data) {
+                        this.updateWishlistCounts(res.data || 0);
                     }
                 }),
                 catchError((error) => {

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -11,14 +12,12 @@ import {
     takeUntil,
 } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
-import { ApiResponse } from '../../models/api-response.interface';
 import { CartItem } from '../../models/cart.interface';
 import { CartService } from '../../services/cart.service';
+import { CheckoutService } from '../../services/checkout.service';
 import { LoadingService } from '../../services/loading.service';
 import { ToastService } from '../../services/toast.service';
 import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
-import { CheckoutService } from '../../services/checkout.service';
-import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-cart',
@@ -74,7 +73,7 @@ export class CartComponent extends BaseComponent {
                 finalize(() => this.loading.hide(key))
             )
             .subscribe({
-                next: (res: ApiResponse) => {
+                next: (res) => {
                     const subject = this._quantityMap.get(variantId);
                     if (subject) {
                         subject.complete();

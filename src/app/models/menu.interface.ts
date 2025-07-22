@@ -3,14 +3,6 @@ export interface MenuItem {
     name: string;
     path: string;
     icon: string;
-    order_index: number;
-    submenus: SubmenuItem[];
-}
-
-export interface SubmenuItem {
-    id: number;
-    name: string;
-    path: string;
-    icon: string;
-    order_index: number;
+    order: number;
+    submenus: MenuItem[];
 }

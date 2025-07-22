@@ -3,5 +3,11 @@ export interface ApiResponse<T = any> {
     statusCode?: number;
     message: string;
     data?: T;
-    error?: string;
+}
+
+export interface ApiError<T = any> {
+    message: string;
+    status?: number;
+    data?: T;
+    raw?: any;
 }

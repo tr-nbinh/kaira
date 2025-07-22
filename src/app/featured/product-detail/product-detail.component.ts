@@ -1,27 +1,19 @@
-import {
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, map, takeUntil } from 'rxjs';
-import Swiper from 'swiper';
 import { BaseComponent } from '../../base/base.component';
 // import { Thumbs, Pagination, EffectFade } from 'swiper/modules';
 // Swiper.use([Thumbs, Pagination, EffectFade]);
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Color } from '../../models/product-filter.interface';
 import { ProductDetail, ProductVariant } from '../../models/product.interface';
 import { CartService } from '../../services/cart.service';
+import { LoadingService } from '../../services/loading.service';
 import { ProductService } from '../../services/product.service';
+import { ToastService } from '../../services/toast.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
-import { ToastService } from '../../services/toast.service';
-import { LoadingService } from '../../services/loading.service';
-import { ApiResponse } from '../../models/api-response.interface';
+import { ColorSelectItem } from '../../models/product-filter.interface';
 
 @Component({
     selector: 'app-product-detail',
@@ -36,7 +28,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     product!: ProductDetail;
     private _swiperInitialized = false;
     currentVariant!: ProductVariant;
-    selectedColor: Color | undefined;
+    selectedColor: ColorSelectItem | undefined;
     selectedQuantity: number = 1;
     variantId!: number;
 
@@ -97,7 +89,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         }
     }
 
-    onColorChange(color: Color) {
+    onColorChange(color: ColorSelectItem) {
         color.checked = true;
         this.selectedColor = color;
         this.currentVariant = this.product.variants.find(
@@ -115,7 +107,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 finalize(() => this.loading.hide(key))
             )
             .subscribe({
-                next: (res: ApiResponse) => {
+                next: (res) => {
                     this.toast.success(res.message);
                 },
                 error: (err) => {
@@ -134,7 +126,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 finalize(() => this.loading.hide(key))
             )
             .subscribe({
-                next: (res: ApiResponse) => {
+                next: (res) => {
                     this.toast.success(res.message);
                 },
                 error: (err) => {

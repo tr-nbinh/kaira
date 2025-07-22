@@ -16,26 +16,25 @@ export const authGuard: CanActivateFn = (
 ): MaybeAsync<GuardResult> => {
     const userService = inject(UserService);
     const router = inject(Router);
+
+    if (!userService.isLoggedIn()) {
+        return router.createUrlTree(['/auth/login'], {
+            queryParams: { returnUrl: state.url },
+        });
+    }
+
     if (userService.isLoggedIn() && userService.isAccessTokenValid()) {
         return true;
     }
 
-    const refreshToken = userService.getRefreshToken();
-
-    if (refreshToken) {
-        return userService.refreshAccessToken(refreshToken).pipe(
-            map(() => true),
-            catchError(() =>
-                of(
-                    router.createUrlTree(['/auth/login'], {
-                        queryParams: { returnUrl: state.url },
-                    })
-                )
-            )
-        );
-    }
-
-    return router.createUrlTree(['/auth/login'], {
-        queryParams: { returnUrl: state.url },
-    });
+    return userService.refreshAccessToken().pipe(
+        map(() => true),
+        catchError(() => {
+            return of(
+                router.createUrlTree(['/auth/login'], {
+                    queryParams: { returnUrl: state.url },
+                })
+            );
+        })
+    );
 };

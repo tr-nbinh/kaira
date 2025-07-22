@@ -1,5 +1,5 @@
 export interface Address {
-    addressId: number;
+    id: number;
     receiverName: string;
     provinceCode: number;
     districtCode: number;

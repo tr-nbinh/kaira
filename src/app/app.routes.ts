@@ -80,19 +80,6 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'not-found',
-        loadComponent: () =>
-            import('./nolayout/nolayout.component').then(
-                (m) => m.NolayoutComponent
-            ),
-        data: { title: 'COMMON.ERROR_404', desc: 'COMMON.ERROR_PAGE_DESC' },
-    },
-    {
-        path: 'admin',
-        loadChildren: () =>
-            import('./featured/admin/admin.routes').then((m) => m.adminRoutes),
-    },
-    {
         path: 'auth',
         children: [
             {
@@ -109,7 +96,36 @@ export const routes: Routes = [
                         (m) => m.LoginComponent
                     ),
             },
+            {
+                path: 'pending-verify',
+                loadComponent: () =>
+                    import(
+                        './featured/auth/pages/pending-verify/pending-verify.component'
+                    ).then((m) => m.PendingVerifyComponent),
+            },
+            {
+                path: 'forgot-password',
+                loadComponent: () =>
+                    import(
+                        './featured/auth/pages/forgot-password/forgot-password.component'
+                    ).then((m) => m.ForgotPasswordComponent),
+            },
+            {
+                path: 'reset-password',
+                loadComponent: () =>
+                    import(
+                        './featured/auth/pages/reset-password/reset-password.component'
+                    ).then((m) => m.ResetPasswordComponent),
+            },
         ],
+    },
+    {
+        path: 'not-found',
+        loadComponent: () =>
+            import('./nolayout/nolayout.component').then(
+                (m) => m.NolayoutComponent
+            ),
+        data: { title: 'COMMON.ERROR_404', desc: 'COMMON.ERROR_PAGE_DESC' },
     },
     {
         path: '**',

@@ -1,5 +1,5 @@
 import { PaginatedRequest } from './paginatedRequest.interface';
-import { Color } from './product-filter.interface';
+import { ColorSelectItem } from './product-filter.interface';
 
 export interface Product {
     id: number;
@@ -7,7 +7,7 @@ export interface Product {
     description: string;
     price: number;
     variants: ProductVariant[];
-    colors: Color[];
+    colors: ColorSelectItem[];
     sizes: Size[];
     categories: string[];
     quantity: number;
@@ -23,7 +23,7 @@ export interface Product {
 
 export interface ProductDetail extends Product {
     variants: ProductVariant[];
-    colors: Color[];
+    colors: ColorSelectItem[];
     sizes: Size[];
     categories: string[];
 }

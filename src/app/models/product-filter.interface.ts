@@ -1,16 +1,10 @@
 import { BaseSelectableItem } from './baseSelectableItem.interface';
+import { Category } from './category.interface';
+import { Color } from './color.interface';
 
-export interface Category extends BaseSelectableItem {
-    id: number;
-    name: string;
-    imageUrl: string;
-}
+export interface CategorySelectItem extends Category, BaseSelectableItem {}
 
-export interface Color extends BaseSelectableItem {
-    id: number;
-    name: string;
-    hexCode: string;
-}
+export interface ColorSelectItem extends Color,BaseSelectableItem {}
 
 export interface Size extends BaseSelectableItem {
     id: number;
@@ -25,5 +19,4 @@ export interface Brand extends BaseSelectableItem {
 export interface Price extends BaseSelectableItem {
     minPrice?: number;
     maxPrice?: number;
-    filterParam: string;
 }

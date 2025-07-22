@@ -2,13 +2,29 @@
     <div class="container">
         <div class="row">
             <div id="filters" class="button-group d-flex gap-4 justify-content-center py-5">
-                @for (item of filterButtons; track $index) {
-                <button type="button" class="btn-link text-uppercase" [class.is-checked]="item.isChecked"
-                    (click)="onFilterChange(item.value)">{{item.label |
-                    translate}}</button>
+                @for (item of productHightlightFilter; track $index) {
+                <button type="button" class="btn-link text-uppercase" [class.is-checked]="item.checked"
+                    (click)="onFilterChange(item.value)">{{item.text! | translate}}
+                </button>
                 }
             </div>
-            <app-product-list [totalColumns]="4" [products]="this.products"></app-product-list>
+            <div class="product-carousel product-element swiper-menu position-relative overflow-hidden">
+                <div class="swiper product-swiper" #swiper>
+                    <div class="swiper-wrapper d-flex">
+                        @for (product of products$ | async; track $index) {
+                        <div class="swiper-slide">
+                            <app-product-item [product]="product"></app-product-item>
+                        </div>
+                        }
+                    </div>
+                </div>
+                <div class="icon-arrow icon-arrow-left" #arrowLeft><svg width="50" height="50" viewBox="0 0 24 24">
+                        <use xlink:href="#angle-left"></use>
+                    </svg></div>
+                <div class="icon-arrow icon-arrow-right" #arrowRight><svg width="50" height="50" viewBox="0 0 24 24">
+                        <use xlink:href="#angle-right"></use>
+                    </svg></div>
+            </div>
         </div>
     </div>
 </section>

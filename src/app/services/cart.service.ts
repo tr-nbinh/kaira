@@ -4,6 +4,7 @@ import { BaseService } from '../base/base.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
 import { CartItem } from '../models/cart.interface';
+import { ApiResponse } from '../models/api-response.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -28,30 +29,35 @@ export class CartService extends BaseService {
         return this.get(this._endpoint);
     }
 
-    addToCart(variantId: number, quantity: number = 1): Observable<any> {
-        return this.post(this._endpoint, { variantId, quantity }).pipe(
-            tap((res: any) => {
-                if (res && res.totalItems) {
-                    this.updateCartCounts(res.totalItems);
-                }
-            })
-        );
-    }
-
-    removeFromCart(variantId: number): Observable<any> {
-        return this.delete(`${this._endpoint}/${variantId}`).pipe(
-            tap((res: any) => {
-                if (res && res.totalItems !== null) {
-                    this.updateCartCounts(res.totalItems);
-                }
-            })
-        );
-    }
-
-    updateQuantityInCart(
+    addToCart(
         variantId: number,
-        quantity: number
-    ): Observable<any> {
+        quantity: number = 1
+    ): Observable<ApiResponse<number>> {
+        return this.post<ApiResponse<number>>(this._endpoint, {
+            variantId,
+            quantity,
+        }).pipe(
+            tap((res) => {
+                if (res && (res.data || res.data == 0)) {
+                    this.updateCartCounts(res.data);
+                }
+            })
+        );
+    }
+
+    removeFromCart(variantId: number): Observable<ApiResponse<number>> {
+        return this.delete<ApiResponse<number>>(
+            `${this._endpoint}/${variantId}`
+        ).pipe(
+            tap((res) => {
+                if (res && (res.data || res.data == 0)) {
+                    this.updateCartCounts(res.data);
+                }
+            })
+        );
+    }
+
+    updateQuantityInCart(variantId: number, quantity: number): Observable<any> {
         return this.patch(`${this._endpoint}/${variantId}`, { quantity });
     }
 
@@ -60,15 +66,14 @@ export class CartService extends BaseService {
             this.updateCartCounts(0);
             return;
         }
-        this.get(`${this._endpoint}/item-count`)
+        this.get<ApiResponse<number>>(`${this._endpoint}/item-count`)
             .pipe(
-                tap((res: any) => {
-                    if (res && res.cartItemCount) {
-                        this.updateCartCounts(res.cartItemCount);
+                tap((res) => {
+                    if (res && (res.data || res.data == 0)) {
+                        this.updateCartCounts(res.data);
                     }
                 }),
                 catchError((error) => {
-                    console.error('Failed to fetch cart counts:', error);
                     this.updateCartCounts(0);
                     throw error;
                 })

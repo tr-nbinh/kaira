@@ -19,6 +19,7 @@ import { ToastComponent } from './shared/components/toast/toast.component';
 import { ToastService } from './services/toast.service';
 import { DialogService } from './services/dialog.service';
 import { MapComponent } from './shared/components/map/map.component';
+import { UserService } from './services/user.service';
 
 @Component({
     selector: 'app-root',
@@ -46,6 +47,7 @@ export class AppComponent extends BaseComponent implements OnInit {
         '/error',
         '/not-found',
         '/404',
+        '/admin',
     ];
 
     constructor(
@@ -84,24 +86,29 @@ export class AppComponent extends BaseComponent implements OnInit {
         );
 
         // Configure language translation
-        this.translate.addLangs(['en', 'vi']);
-        this.translate.setDefaultLang('en');
+        const savedLang = localStorage.getItem('userLanguage');
+        if (savedLang) {
+            this.translate.use(savedLang);
+        } else {
+            this.translate.addLangs(['en', 'vi']);
+            this.translate.setDefaultLang('en');
 
-        const browserLang = translate.getBrowserLang();
-        this.currentLang =
-            browserLang && browserLang.match(/en|vi/) ? browserLang : 'en';
-        this.translate.use(this.currentLang);
-
+            const browserLang = translate.getBrowserLang();
+            console.log(browserLang);
+            this.currentLang =
+                browserLang && browserLang.match(/en|vi/) ? browserLang : 'en';
+            this.translate.use(this.currentLang);
+        }
         this.translate.onLangChange.subscribe((event) => {
             this.currentLang = event.lang;
         });
     }
 
     ngOnInit(): void {
-        AOS.init({
-            duration: 1200,
-            disable: 'mobile',
-        });
+        // AOS.init({
+        //     duration: 1200,
+        //     disable: 'mobile',
+        // });
     }
 
     @ViewChild('bodyTemplate', { static: true })
@@ -112,14 +119,5 @@ export class AppComponent extends BaseComponent implements OnInit {
     ngAfterViewInit() {
         // Khởi tạo root container để dialog service tạo vào
         this.dialogService.init(this.dialogPlaceholder);
-    }
-
-    openDialog() {
-        this.dialogService.open({
-            title: 'Xác nhận xoá',
-            body: this.bodyTemplate,
-            onConfirm: () => console.log('Đã đồng ý'),
-            onCancel: () => console.log('Đã huỷ'),
-        });
     }
 }

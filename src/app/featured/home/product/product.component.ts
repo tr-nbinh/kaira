@@ -1,44 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { PaginatedRequest } from '../../../models/paginatedRequest.interface';
+import {
+    BehaviorSubject,
+    map,
+    Observable,
+    of,
+    switchMap,
+    takeUntil,
+} from 'rxjs';
+import { BaseComponent } from '../../../base/base.component';
 import { Product, ProductRequest } from '../../../models/product.interface';
 import { ProductService } from '../../../services/product.service';
 import { ProductListComponent } from '../../../shared/components/product-list/product-list.component';
-import { BaseComponent } from '../../../base/base.component';
-import { takeUntil } from 'rxjs';
-
-enum FilterValue {
-    best_seller = 'best_seller',
-    new_arrivals = 'new_arrivals',
-    best_reviewed = 'best_reviewed',
-}
+import { PRODUCT_HIGHLIGHT_FILTERS } from '../../../shared/constants/product-hightlight-filters.constant';
+import { ProductHighlightFilterValue } from '../../../shared/enums/product-highlight-filter-value.enum';
+import { ProductItemComponent } from '../../../shared/components/product-item/product-item.component';
 
 @Component({
     selector: 'app-product',
-    imports: [TranslateModule, ProductListComponent],
+    imports: [TranslateModule, ProductItemComponent, AsyncPipe],
     templateUrl: './product.component.html',
     styleUrl: './product.component.scss',
 })
 export class ProductComponent extends BaseComponent implements OnInit {
-    products: Product[] = [];
-    filterButtons = [
-        {
-            label: 'COMMON.BEST_SELLERS',
-            isChecked: true,
-            value: FilterValue.best_seller,
-        },
-        {
-            label: 'COMMON.NEW_ARRIVALS',
-            isChecked: false,
-            value: FilterValue.new_arrivals,
-        },
-        {
-            label: 'COMMON.BEST_REVIEWED',
-            isChecked: false,
-            value: FilterValue.best_reviewed,
-        },
-    ];
-    params: ProductRequest = { page: 1, limit: 8, bestSeller: true, lang: 'en' };
+    products$: Observable<Product[]> = of([]);
+    productHightlightFilter = PRODUCT_HIGHLIGHT_FILTERS;
+    params: ProductRequest = {
+        page: 1,
+        limit: 8,
+        bestSeller: true,
+        lang: 'en',
+    };
+    private paramsSubject = new BehaviorSubject<ProductRequest>(this.params);
+    @ViewChild('swiper') swiper!: ElementRef<HTMLElement>;
+    @ViewChild('arrowLeft') arrowLeft!: ElementRef<HTMLElement>;
+    @ViewChild('arrowRight') arrowRight!: ElementRef<HTMLElement>;
 
     constructor(private productService: ProductService) {
         super();
@@ -49,34 +46,64 @@ export class ProductComponent extends BaseComponent implements OnInit {
     }
 
     getProducts() {
-        this.productService
-            .getProducts(this.params)
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((res) => {
-                this.products = res.data;
-            });
+        this.products$ = this.paramsSubject.pipe(
+            switchMap((params) =>
+                this.productService
+                    .getProducts(params)
+                    .pipe(map((res) => res.data))
+            )
+        );
     }
 
-    onFilterChange(filter: string) {
-        this.filterButtons.forEach((btn) => {
-            btn.isChecked = btn.value === filter;
+    onFilterChange(filter: ProductHighlightFilterValue) {
+        this.productHightlightFilter.forEach((btn) => {
+            btn.checked = btn.value === filter;
         });
-        if (filter === FilterValue.best_seller) {
+        if (filter === ProductHighlightFilterValue.best_seller) {
             this.params.bestSeller = true;
             this.params.isNewArrival = false;
             this.params.bestReviewed = false;
         }
-        if (filter === FilterValue.new_arrivals) {
+        if (filter === ProductHighlightFilterValue.new_arrivals) {
             this.params.bestSeller = false;
             this.params.isNewArrival = true;
             this.params.bestReviewed = false;
         }
-        if (filter === FilterValue.best_reviewed) {
+        if (filter === ProductHighlightFilterValue.best_reviewed) {
             this.params.bestSeller = false;
             this.params.isNewArrival = false;
             this.params.bestReviewed = true;
         }
 
-        this.getProducts();
+        this.paramsSubject.next(this.params);
+    }
+
+    ngAfterViewInit() {
+        this.initializeSwiper(this.swiper.nativeElement, {
+            slidesPerView: 4,
+            spaceBetween: 20,
+            navigation: {
+                nextEl: this.arrowRight.nativeElement,
+                prevEl: this.arrowLeft.nativeElement,
+            },
+            breakpoints: {
+                0: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                },
+                999: {
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                },
+                1366: {
+                    slidesPerView: 4,
+                    spaceBetween: 40,
+                },
+            },
+        });
     }
 }

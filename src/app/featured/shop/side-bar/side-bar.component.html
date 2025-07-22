@@ -4,7 +4,7 @@
         <ul class="list-unstyled text-dark">
             <li>
                 <span class="item-anchor cursor-pointer" [class.active]="allCategoriesChecked"
-                    (click)="toggleCategorySelection()">All</span>
+                    (click)="toggleCategorySelection()">{{'CATEGORY.ALL' | translate}}</span>
             </li>
             @for (category of categories; track category.id) {
             <li>
@@ -12,12 +12,6 @@
                     (click)="toggleCategorySelection(category)">{{category.name}}</span>
             </li>
             }
-            <li>
-                <span class="item-anchor cursor-pointer">New arrivals</span>
-            </li>
-            <li>
-                <span class="item-anchor cursor-pointer">New sale</span>
-            </li>
         </ul>
     </div>
     <div class="product-filter padding-small">
@@ -72,7 +66,7 @@
                 <div id="collapse-three" class="accordion-collapse collapse show" aria-labelledby="heading-three">
                     <div class="accordion-body">
                         @for (price of priceRanges; track price.id) {
-                            <span class="accordion-content cursor-pointer text-dark" [class.active]="price.checked" 
+                        <span class="accordion-content cursor-pointer text-dark" [class.active]="price.checked"
                             (click)="togglePriceSelection(price)">{{price.text}}</span>
                         }
                     </div>
@@ -94,7 +88,8 @@
                     </div>
                 </div>
             </div>
-            <a href="#" class="btn-link text-uppercase item-anchor">{{"SHOP.RESET_FILTER" | translate}}</a>
+            <button class="btn btn-link text-uppercase item-anchor" (click)="resetFilter()">{{"SHOP.RESET_FILTER" |
+                translate}}</button>
         </div>
     </div>
 </div>
