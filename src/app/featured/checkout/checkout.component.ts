@@ -1,30 +1,29 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { BaseComponent } from '../../base/base.component';
-import { CartItem } from '../../models/cart.interface';
-import { District, Province, Ward } from '../../models/location.interface';
-import { CheckoutService } from '../../services/checkout.service';
-import { LocationService } from '../../services/location.service';
-import { ToastService } from '../../services/toast.service';
 import { CurrencyPipe } from '@angular/common';
-import { finalize, firstValueFrom, forkJoin, of, takeUntil } from 'rxjs';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
     FormsModule,
-    NgForm,
     ReactiveFormsModule,
-    Validators,
+    Validators
 } from '@angular/forms';
-import { DialogService } from '../../services/dialog.service';
-import { MapService } from '../../services/map.service';
-import { MapComponent } from '../../shared/components/map/map.component';
-import { AddressService } from '../../services/address.service';
-import { Address } from '../../models/address.interface';
+import { Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { finalize, forkJoin, of, takeUntil } from 'rxjs';
 import { getChangedFields } from '../../../utils/object.util';
+import { BaseComponent } from '../../base/base.component';
+import { Address } from '../../models/address.interface';
+import { CartItem } from '../../models/cart.interface';
+import { District, Province, Ward } from '../../models/location.interface';
 import { Order } from '../../models/order.interface';
-import { ApiResponse } from '../../models/api-response.interface';
+import { AddressService } from '../../services/address.service';
+import { CheckoutService } from '../../services/checkout.service';
+import { DialogService } from '../../services/dialog.service';
+import { LocationService } from '../../services/location.service';
+import { MapService } from '../../services/map.service';
+import { ToastService } from '../../services/toast.service';
+import { MapComponent } from '../../shared/components/map/map.component';
+import { FormControlErrorDirective } from '../../shared/directives/form-control-error.directive';
 
 @Component({
     selector: 'app-checkout',
@@ -35,6 +34,7 @@ import { ApiResponse } from '../../models/api-response.interface';
         ReactiveFormsModule,
         FormsModule,
         MapComponent,
+        FormControlErrorDirective
     ],
     templateUrl: './checkout.component.html',
     styleUrl: './checkout.component.scss',
@@ -153,7 +153,6 @@ export class CheckoutComponent extends BaseComponent {
 
     onProvinceChange(event: Event) {
         const selectElement = event.target as HTMLSelectElement;
-        console.log(selectElement.value);
         if (!selectElement.value) {
             this.districts = [];
             this.wards = [];
@@ -180,8 +179,6 @@ export class CheckoutComponent extends BaseComponent {
 
     onDisTrictChange(event: Event) {
         const selectElement = event.target as HTMLSelectElement;
-        console.log(selectElement.value);
-        console.log(selectElement.value);
         if (!selectElement.value) {
             this.wards = []; // Clear wards if no district is selected
             this.districtName = '';
@@ -205,7 +202,6 @@ export class CheckoutComponent extends BaseComponent {
 
     onWardChange(event: Event) {
         const selectElement = event.target as HTMLSelectElement;
-        console.log(selectElement.value);
         if (!selectElement.value) {
             this.wardName = '';
             return;
@@ -216,12 +212,11 @@ export class CheckoutComponent extends BaseComponent {
     onOrderSubmit() {
         this.order.addressId = this.selectedAddresId!;
         this.order.orderItems = this.orderItems;
-        console.log(this.order);
         this.checkoutService
             .saveOrder(this.order)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe({
-                next: (res: ApiResponse) => {
+                next: (res) => {
                     this.toast.success(res.message);
                 },
                 error: (err) => {
@@ -235,12 +230,12 @@ export class CheckoutComponent extends BaseComponent {
             title: 'Địa chỉ của tôi',
             body: this.addressList,
             onConfirm: () => {
-                if (this.selectedAddresId !== this.selectedAddress?.addressId) {
+                if (this.selectedAddresId !== this.selectedAddress?.id) {
                     this.updateAddress();
                 }
             },
             onCancel: () => {
-                this.selectedAddresId = this.selectedAddress?.addressId
+                this.selectedAddresId = this.selectedAddress?.id
             }
         });
     }
@@ -367,7 +362,7 @@ export class CheckoutComponent extends BaseComponent {
                 isDefault: newAddressData.isDefault,
             };
 
-            addressId = oldAddressData.addressId;
+            addressId = oldAddressData.id;
         } else {
             updatedAddressData = { isDefault: true };
         }
@@ -389,7 +384,7 @@ export class CheckoutComponent extends BaseComponent {
             .subscribe({
                 next: (addr) => {
                     const indexToUpdate = this.addresses.findIndex(
-                        (a) => a.addressId === addr.addressId
+                        (a) => a.id === addr.id
                     );
 
                     if (addr.isDefault) {
@@ -415,13 +410,11 @@ export class CheckoutComponent extends BaseComponent {
     geocodeAddress(): void {
         const address = `${this.wardName}, ${this.districtName}, ${this.provinceName}, Việt Nam`;
         if (address) {
-            console.log('Geocoding address:', address);
             this.map.getCoordinates(address).subscribe({
                 next: (data) => {
                     if (data && data.length > 0) {
                         const lat = parseFloat(data[0].lat);
                         const lon = parseFloat(data[0].lon);
-                        console.log('Found coordinates:', lat, lon);
                         // Gửi tọa độ đến MapComponent để thêm marker
                         this.mapComponent.addOrUpdateMarker(lat, lon, address);
                         this.mapComponent.setCenter(lat, lon); // Di chuyển bản đồ đến vị trí mới
@@ -446,7 +439,7 @@ export class CheckoutComponent extends BaseComponent {
 
     setSelectedAddress(addr: Address | undefined) {
         this.selectedAddress = addr;
-        this.selectedAddresId = addr?.addressId;
+        this.selectedAddresId = addr?.id;
     }
 
     getFullAddress(): string {

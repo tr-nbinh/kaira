@@ -2,7 +2,8 @@ export interface Banner {
     id: number;
     headline: string;
     subHeadline: string;
-    imageUrl: string;
-    altText: string;
-    displayOrder: number;
+    altText: string,
+    imageUrl: string,
+    mobileImageUrl: string,
+    videoUrl: string,
 }

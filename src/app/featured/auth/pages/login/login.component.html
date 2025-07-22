@@ -1,31 +1,37 @@
 <section id="login-form" class="py-5">
     <div class="container-sm">
         <div class="row justify-content-center">
-            <div class="col-4">
-                <h2 class="section-title text-uppercase">Login</h2>
+            <div class="col-6">
+                <h2 class="section-title text-uppercase">{{'COMMON.SIGN_IN' | translate}}</h2>
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-group flex-wrap">
                     <div class="col-12 pb-3">
-                        <label for="username">Username *</label>
-                        <input type="text" formControlName="username" id="username"
-                            placeholder="Write your username here" class="form-control" autocomplete="username">
+                        <label for="email">{{'COMMON.EMAIL_ADDRESS' | translate}} *</label>
+                        <input type="text" formControlName="email" id="email"
+                            [placeholder]="'COMMON.EMAIL_PLACEHOLDER' | translate" class="form-control" autocomplete="email">
                     </div>
                     <div class="col-12 pb-3">
-                        <label>Password *</label>
-                        <input type="password" formControlName="password" placeholder="Enter your password"
+                        <label>{{'AUTH.PASSWORD' | translate}} *</label>
+                        <input type="password" formControlName="password" [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate"
                             class="form-control" autocomplete="current-password">
                     </div>
                     <div class="col-12 pb-3">
                         <label>
-                            <input type="checkbox" required="">
-                            <span class="label-body">Remember me</span>
+                            <input type="checkbox" formControlName="rememberMe">
+                            <span class="label-body ms-2">{{'AUTH.REMEMBER_ME' | translate}}</span>
                         </label>
                     </div>
                     <div class="col-12">
-                        <button type="submit" name="submit" class="btn btn-dark btn-large text-uppercase"
-                            [disabled]="loginForm.invalid">Login</button>
-                        <p><a href="#">Lost your password?</a></p>
+                        <ng-container *appLoadingToggle="'submitBtn'">
+                            <button type="submit" name="submit" class="btn btn-dark btn-large text-uppercase mb-3"
+                                [disabled]="loginForm.invalid">{{'COMMON.SIGN_IN' | translate}}
+                            </button>
+                        </ng-container>
                     </div>
-                </form>
+                    <div class="d-flex flex-wrap gy-2 justify-content-between gap-2">
+                        <a [routerLink]="['/auth/register']" class="btn-link d-inline-block">{{'AUTH.CREATE_ACCOUNT' | translate}}</a>
+                        <a [routerLink]="['/auth/forgot-password']" class="btn-link d-inline-block">{{'AUTH.FORGOT_PASSWORD' | translate}}?</a>
+                    </div>
+                    </form>
             </div>
         </div>
     </div>

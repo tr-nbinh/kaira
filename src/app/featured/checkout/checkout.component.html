@@ -1,16 +1,3 @@
-<section class="py-5" style="margin-top: 62px">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1 class="page-title pb-2">{{"CHECKOUT.TITLE" | translate}}</h1>
-            <nav class="breadcrumb fs-6">
-                <a class="breadcrumb-item nav-link" href="#">Home</a>
-                <a class="breadcrumb-item nav-link" href="#">Pages</a>
-                <span class="breadcrumb-item active" aria-current="page">Checkout</span>
-            </nav>
-        </div>
-    </div>
-</section>
-
 <section class="checkout-wrap pb-5">
     <div class="container">
         <div class="address-border"></div>
@@ -20,16 +7,16 @@
                     <svg width="24" height="24" viewBox="0 0 24 24">
                         <use xlink:href="#location-marker"></use>
                     </svg>
-                    Địa chỉ nhận hàng
+                    {{'CHECKOUT.DELIVERY_ADDRESS' | translate}}
                 </p>
                 @if (!selectedAddress) {
                 @if (addresses.length) {
                 <button type="button" class="btn btn-outline-dark " (click)="openAddressListDialog()">
-                    Chọn địa chỉ
+                    {{'CHECKOUT.SELECT_ADDRESS' | translate}}
                 </button>
                 } @else {
                 <button type="button" class="btn btn-outline-dark " (click)="openAddEditLocationDialog()">
-                    Thêm địa chỉ
+                    {{'CHECKOUT.ADD_ADDRESS' | translate}}
                 </button>
                 }
                 }
@@ -38,9 +25,10 @@
             <div class="d-flex align-item-center gap-5">
                 <b>{{selectedAddress.receiverName}} (+84) {{selectedAddress.phone}}</b>
                 <p class="m-0">{{selectedAddress.street}}, {{selectedAddress.address}}
-                    <span class="badge badge-danger bg-danger">Mặc định</span>
+                    <span class="badge badge-danger bg-danger">{{'CHECKOUT.DEFAULT' | translate}}</span>
                 </p>
-                <button type="button" class="btn btn-link " (click)="openAddressListDialog()">Thay đổi</button>
+                <button type="button" class="btn btn-link " (click)="openAddressListDialog()">{{'CHECKOUT.CHANGE' |
+                    translate}}</button>
             </div>
             }
         </div>
@@ -76,7 +64,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <h4 class="text-dark pb-4">Cart Summary</h4>
+                <h4 class="text-dark pb-4">{{"CHECKOUT.CART_SUMMARY" | translate}}</h4>
                 <div class="cart-item">
                     @for (item of orderItems; track item.id) {
                     <div class="row align-items-center">
@@ -145,17 +133,18 @@
 
 <ng-template #addressList>
     <div class="locations mb-2">
-        @for (addr of addresses; track addr.addressId) {
+        @for (addr of addresses; track addr.id) {
         <div class="location-item py-2 d-flex gap-2 border-bottom border-gray-200">
             <div class="location-radio">
-                <input type="radio" class="form-check-input" name="defaultAddress" [value]="addr.addressId"
+                <input type="radio" class="form-check-input" name="defaultAddress" [value]="addr.id"
                     [(ngModel)]="selectedAddresId">
             </div>
             <div class="location-info flex-fill">
                 <div class="d-flex justify-content-between align-item-center mb-2">
                     <span class="fs-6"><b>{{addr.receiverName}}</b> | (+84) {{addr.phone}}</span>
-                    <button class="btn btn-link fs-7 text-capitalize" (click)="openAddEditLocationDialog(addr)">Cập
-                        nhật</button>
+                    <button class="btn btn-link fs-7 text-capitalize" (click)="openAddEditLocationDialog(addr)">
+                        {{"CHECKOUT.UPDATE" | translate}}
+                    </button>
                 </div>
                 <p class="address">{{addr.street}}</p>
                 <p class="address">{{addr.address}}</p>
@@ -167,7 +156,7 @@
         <svg viewBox="0 0 10 10" width="16" height="16" class="me-2">
             <path stroke="none" d="m10 4.5h-4.5v-4.5h-1v4.5h-4.5v1h4.5v4.5h1v-4.5h4.5z"></path>
         </svg>
-        Thêm địa chỉ mới
+        {{"CHECKOUT.ADD_NEW_ADDRESS" | translate}}
     </button>
 </ng-template>
 
@@ -176,114 +165,72 @@
         <div class="mb-4">
             <label for="fname">{{"CHECKOUT.FULL_NAME" | translate}}</label>
             <input type="text" formControlName="receiverName" id="fname" name="fullName" class="form-control mt-2 ps-3"
-                [class.is-invalid]="addressForm.controls['receiverName'].invalid && addressForm.controls['receiverName'].touched">
-            <div class="invalid-feedback">
-                @if (addressForm.controls['receiverName'].errors?.['required']) {
-                {{"VALIDATION.REQUIRED" | translate}}
-                }
-            </div>
+                [formControlError]>
         </div>
 
 
         <div class="mb-4">
             <label for="cname">{{"CHECKOUT.COUNTRY_REGION" | translate}}</label>
             <select formControlName="provinceCode" class="form-select form-control mt-2" aria-label="Select country"
-                (change)="onProvinceChange($event)"
-                [class.is-invalid]="addressForm.controls['provinceCode'].invalid && addressForm.controls['provinceCode'].touched">
+                (change)="onProvinceChange($event)" [formControlError]>
                 <option value="" selected>-- {{"CHECKOUT.COUNTRY_REGION" | translate}} --</option>
 
                 @for (item of provinces; track item.code) {
                 <option [value]="item.code">{{item.name}}</option>
                 }
             </select>
-            <div class="invalid-feedback">
-                @if (addressForm.controls['provinceCode'].errors?.['required']) {
-                {{"VALIDATION.REQUIRED" | translate}}
-                }
-            </div>
         </div>
 
         <div class="mb-4">
             <label for="cname">{{"CHECKOUT.DISTRICT" | translate}}</label>
             <select formControlName="districtCode" class="form-select form-control mt-2" aria-label="Select district"
-                (change)="onDisTrictChange($event)"
-                [class.is-invalid]="addressForm.controls['districtCode'].invalid && addressForm.controls['districtCode'].touched">
+                (change)="onDisTrictChange($event)" [formControlError]>
                 <option value="" selected>-- {{"CHECKOUT.DISTRICT" | translate}} --</option>
 
                 @for (item of districts; track item.code) {
                 <option [value]="item.code">{{item.name}}</option>
                 }
             </select>
-            <div class="invalid-feedback">
-                @if (addressForm.controls['districtCode'].errors?.['required']) {
-                {{"VALIDATION.REQUIRED" | translate}}
-                }
-            </div>
         </div>
 
         <div class="mb-4">
             <label for="cname">{{"CHECKOUT.WARD" | translate}}</label>
             <select formControlName="wardCode" class="form-select form-control mt-2" aria-label="Select district"
-                [class.is-invalid]="addressForm.controls['wardCode'].invalid && addressForm.controls['wardCode'].touched"
-                (change)="onWardChange($event)">
+                [formControlError] (change)="onWardChange($event)">
                 <option value="" selected>-- {{"CHECKOUT.WARD" | translate}} --</option>
 
                 @for (item of wards; track item.code) {
                 <option [value]="item.code">{{item.name}}</option>
                 }
             </select>
-            <div class="invalid-feedback">
-                @if (addressForm.controls['wardCode'].errors?.['required']) {
-                {{"VALIDATION.REQUIRED" | translate}}
-                }
-            </div>
         </div>
 
-        <label for="street">{{"CHECKOUT.STREET_ADDRESS" |
-            translate}}</label>
-        <input type="text" formControlName="street" id="street" name="street"
-            [placeholder]="'CHECKOUT.ADDR_PLACEHOLDER' | translate" class="form-control mt-3 ps-3 mb-2"
-            [class.is-invalid]="addressForm.controls['street'].invalid && addressForm.controls['street'].touched">
-        <div class="invalid-feedback mb-3">
-            @if (addressForm.controls['street'].errors?.['required']) {
-            {{"VALIDATION.REQUIRED" | translate}}
-            }
-        </div>
+        <div class="mb-4">
+            <label for="street">{{"CHECKOUT.STREET_ADDRESS" | translate}}</label>
+            <input type="text" formControlName="street" id="street" name="street"
+                [placeholder]="'CHECKOUT.ADDR_PLACEHOLDER' | translate" class="form-control mt-3 ps-3 mb-2"
+                [formControlError]>
 
-        <input type="text" formControlName="addressExtra" id="adr" name="address"
-            [placeholder]="'CHECKOUT.ADDR_PLACEHOLDER_2' | translate" class="form-control ps-3 mb-4">
+            <input type="text" formControlName="addressExtra" id="adr" name="address"
+                [placeholder]="'CHECKOUT.ADDR_PLACEHOLDER_2' | translate" class="form-control ps-3">
+        </div>
 
         <div class="mb-4">
             <label for="phone">{{"COMMON.PHONE" | translate}}</label>
             <input type="text" formControlName="phone" id="phone" name="phone" class="form-control mt-2 ps-3"
-                [class.is-invalid]="addressForm.controls['phone'].invalid && addressForm.controls['phone'].touched">
-            <div class="invalid-feedback">
-                @if (addressForm.controls['phone'].errors?.['required']) {
-                {{"VALIDATION.REQUIRED" | translate}}
-                } @else if (addressForm.controls['phone'].errors?.['pattern']) {
-                {{"VALIDATION.PHONE" | translate}}
-                }
-            </div>
+                [formControlError]>
         </div>
 
         <div class="mb-4">
             <label for="email">{{"COMMON.EMAIL_ADDRESS" | translate}}</label>
             <input type="text" formControlName="email" id="email" name="email" class="form-control mt-2 ps-3"
-                [class.is-invalid]="addressForm.controls['email'].invalid && addressForm.controls['email'].touched">
-            <div class="invalid-feedback">
-                @if (addressForm.controls['email'].errors?.['required']) {
-                {{"VALIDATION.REQUIRED" | translate}}
-                } @else if (addressForm.controls['email'].errors?.['pattern']) {
-                {{"VALIDATION.EMAIL" | translate}}
-                }
-            </div>
+                [formControlError]>
         </div>
         <div class="d-flex gap-2">
             <input class="form-check-input" type="checkbox" formControlName="isDefault" id="defaultAddress">
             <label class="" for="defaultAddress">
-                Đặt làm địa chỉ mặc định
+                {{"CHECKOUT.DEFAULT_ADDRESS" | translate}}
             </label>
         </div>
     </form>
 </ng-template>
-<!-- <app-map></app-map> -->

@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+    HttpClient,
+    HttpErrorResponse,
+    HttpHeaders,
+    HttpParams,
+} from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { createHttpParamsFromObject } from '../../utils/http-params.helper';
-import { ApiResponse } from '../models/api-response.interface';
-
+import { ApiError, ApiResponse } from '../models/api-response.interface';
 export interface HttpOptions {
     headers?: HttpHeaders | { [header: string]: string | string[] };
     params?: HttpParams | { [param: string]: string | number | string[] };
     responseType?: 'json';
     observe?: 'body';
     repostProgress?: boolean;
+    withCredentials?: boolean;
 }
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class BaseService {
     protected readonly apiUrl: string = environment.apiUrl;
 
@@ -72,17 +75,41 @@ export class BaseService {
 
     private handleError(error: any): Observable<never> {
         let message = 'Đã có lỗi xảy ra.';
-        if (error.error instanceof ErrorEvent) {
-            // Lỗi phía client (rất hiếm)
-            message = error.error.message;
-        } else if (error.error && typeof error.error === 'object') {
-            const apiRes: ApiResponse = error.error;
-            message = apiRes.message || `Lỗi hệ thống: ${JSON.stringify(error.error)} (status ${error.status})`;
-        } else {
-            message =
-                error.message || `Lỗi không xác định (status ${error.status})`;
-        }
+        let data: any = null;
+        let status: number | undefined = undefined;
 
-        return throwError(() => new Error(message));
+        if (error instanceof HttpErrorResponse) {
+            status = error.status;
+            // Lỗi mạng (không kết nối được server)
+            if (error.status === 0) {
+                message = 'Không thể kết nối đến máy chủ.';
+            }
+            // Lỗi chuẩn từ API (có success: false, message, data)
+            else if (error.error && typeof error.error === 'object') {
+                const errRes = error.error;
+                message = errRes.message || message;
+                data = errRes.data ?? null;
+            }
+            // Lỗi trả về string
+            else if (typeof error.error === 'string') {
+                message = error.error;
+            }
+        }
+        // Lỗi phía client (lập trình, JS, lỗi local)
+        else if (error.error instanceof ErrorEvent) {
+            message = error.error.message;
+        }
+        // Các lỗi không xác định
+        else {
+            message = error?.message || message;
+        }
+        const apiError: ApiError<any> = {
+            message,
+            status,
+            data,
+            raw: error,
+        };
+
+        return throwError(() => apiError);
     }
 }

@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../models/product.interface';
-import { ProductItemComponent } from './product-item/product-item.component';
+import { ProductItemComponent } from '../product-item/product-item.component';
 
 
 @Component({

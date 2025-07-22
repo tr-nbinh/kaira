@@ -1,29 +1,26 @@
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
+import { Category } from '../../../models/category.interface';
 import { CategoryService } from '../../../services/category.service';
-import { takeUntil } from 'rxjs';
-import { Category } from '../../../models/product-filter.interface';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-category',
-    imports: [TranslateModule],
+    imports: [TranslateModule, AsyncPipe, RouterLink],
     templateUrl: './category.component.html',
     styleUrl: './category.component.scss',
 })
 export class CategoryComponent extends BaseComponent {
-    categories: Category[] = [];
+    categories$: Observable<Category[]> = of([]);
 
     constructor(private categoryService: CategoryService) {
         super();
     }
 
     ngOnInit() {
-        this.categoryService
-            .getCategories()
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((res) => {
-                this.categories = res;
-            });
+        this.categories$ = this.categoryService.getCategories();
     }
 }

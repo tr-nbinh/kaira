@@ -1,0 +1,38 @@
+<div class="product-item">
+    <div class="image-holder position-relative">
+        <a [routerLink]="['/product', product.id, currentVariant.id, product.slug]">
+            <img [src]="currentVariant.images[0]" alt="categories" class="product-image img-fluid">
+        </a>
+        <button type="button" class="btn btn-icon btn-wishlist" (click)="addToWishlist(currentVariant.id)">
+            <ng-container *appLoadingToggle="'wishlist-' + currentVariant.id">
+                @if (currentVariant.isFavorite) {
+                <svg width="24" height="24" viewBox="0 0 24 24" class="is-wishlisted">
+                    <use xlink:href="#heart-filled"></use>
+                </svg>
+                } @else {
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                    <use xlink:href="#heart"></use>
+                </svg>
+                }
+            </ng-container>
+        </button>
+        <div class="product-content link-effect">
+            <div class="color-swatches d-flex gap-1 my-2">
+                @for (color of colors; track $index) {
+                <button class="swatch-button" (click)="changeColor(color)">
+                    <span class="swatch-circle" [class.active]="color.checked"
+                        [style.background-color]="color.hexCode"></span>
+                </button>
+                }
+            </div>
+            <h5 class="element-title text-uppercase fs-5">
+                <a [routerLink]="['/product', product.id, product.slug]">{{product.name}}</a>
+            </h5>
+            <ng-container *appLoadingToggle="'cart-' + currentVariant.id">
+                <a href="javascript:void(0)" class="text-decoration-none" data-after="Add to cart"
+                    (click)="addToCart(currentVariant.id)"><span>${{currentVariant.price}}</span>
+                </a>
+            </ng-container>
+        </div>
+    </div>
+</div>
