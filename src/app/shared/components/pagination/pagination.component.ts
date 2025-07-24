@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
     Component,
     EventEmitter,
@@ -10,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-pagination',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './pagination.component.html',
     styleUrl: './pagination.component.scss',
 })

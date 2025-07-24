@@ -5,21 +5,18 @@ import {
     ViewChild,
     ViewContainerRef,
 } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { HeaderComponent } from './layout/header/header.component';
-import { SvgIconService } from './services/svg-icon.service';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import AOS from 'aos';
-import { FooterComponent } from './layout/footer/footer.component';
-import { NewsletterComponent } from './layout/newsletter/newsletter.component';
-import { FollowUsComponent } from './layout/follow-us/follow-us.component';
+import { TranslateService } from '@ngx-translate/core';
 import { filter, takeUntil } from 'rxjs';
 import { BaseComponent } from './base/base.component';
-import { ToastComponent } from './shared/components/toast/toast.component';
-import { ToastService } from './services/toast.service';
+import { FollowUsComponent } from './layout/follow-us/follow-us.component';
+import { FooterComponent } from './layout/footer/footer.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { NewsletterComponent } from './layout/newsletter/newsletter.component';
 import { DialogService } from './services/dialog.service';
-import { MapComponent } from './shared/components/map/map.component';
-import { UserService } from './services/user.service';
+import { SvgIconService } from './services/svg-icon.service';
+import { ToastService } from './services/toast.service';
+import { ToastComponent } from './shared/components/toast/toast.component';
 
 @Component({
     selector: 'app-root',
@@ -29,7 +26,6 @@ import { UserService } from './services/user.service';
         FollowUsComponent,
         FooterComponent,
         RouterOutlet,
-        TranslateModule,
         ToastComponent,
     ],
     templateUrl: './app.component.html',

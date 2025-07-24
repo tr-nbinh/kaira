@@ -21,11 +21,14 @@
     <hr>
 
     <h2>Ảnh của biến thể {{ currentVariantId }}</h2>
-    <div *ngIf="variantImages.length === 0" class="no-images-text">
+    @if (!variantImages.length) {
+    <div class="no-images-text">
         <p>Chưa có ảnh nào cho biến thể này.</p>
     </div>
+    } @else {
     <div class="image-grid">
-        <div *ngFor="let image of variantImages" class="image-item">
+        @for (image of variantImages; track $index) {
+        <div class="image-item">
             <img [src]="image.imageUrl" alt="Ảnh sản phẩm'" class="product-image">
             <p class="image-description">Không có mô tả</p>
             <p class="image-public-id">ID Cloudinary: {{ image.publicId }}</p>
@@ -33,5 +36,7 @@
                 Xóa ảnh
             </button>
         </div>
+        }
     </div>
+    }
 </div>

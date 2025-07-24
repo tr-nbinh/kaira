@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
-import { FormControl, FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { VariantImage } from '../../../models/product.interface';
 import { VarianImagesService } from '../../../services/variant-images.service';
 
 @Component({
     selector: 'app-image-uploader',
-    imports: [CommonModule, FormsModule],
+    imports: [FormsModule],
     templateUrl: './image-uploader.component.html',
     styleUrl: './image-uploader.component.scss',
 })
@@ -74,9 +73,11 @@ export class ImageUploaderComponent {
     }
 
     fetchImagesForVariant(variantId: number) {
-        this.imageUploaderService.getImagesForVariant(variantId).subscribe((res) => {
-            this.variantImages = res;
-        });
+        this.imageUploaderService
+            .getImagesForVariant(variantId)
+            .subscribe((res) => {
+                this.variantImages = res;
+            });
     }
 
     deleteImage(imageId: number) {

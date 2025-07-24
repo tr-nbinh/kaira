@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { Router, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import {
     debounceTime,
     distinctUntilChanged,
@@ -22,11 +22,11 @@ import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.d
 @Component({
     selector: 'app-cart',
     imports: [
-        TranslateModule,
-        RouterModule,
-        CommonModule,
+        TranslatePipe,
+        CurrencyPipe,
         LoadingToggleDirective,
         FormsModule,
+        RouterLink
     ],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss',

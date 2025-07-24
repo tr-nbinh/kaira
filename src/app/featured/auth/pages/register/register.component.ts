@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
     FormBuilder,
@@ -19,7 +18,6 @@ import { passwordMatchValidator } from '../../validators/password-match.validato
 @Component({
     selector: 'app-register',
     imports: [
-        CommonModule,
         ReactiveFormsModule,
         RouterLink,
         FormControlErrorDirective,

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-nolayout',
-    imports: [TranslateModule, RouterModule],
+    imports: [TranslatePipe, RouterModule],
     templateUrl: './nolayout.component.html',
     styleUrl: './nolayout.component.scss',
 })

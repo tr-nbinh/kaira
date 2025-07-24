@@ -1,25 +1,17 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import {
-    BehaviorSubject,
-    map,
-    Observable,
-    of,
-    switchMap,
-    takeUntil,
-} from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
+import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
 import { Product, ProductRequest } from '../../../models/product.interface';
 import { ProductService } from '../../../services/product.service';
-import { ProductListComponent } from '../../../shared/components/product-list/product-list.component';
+import { ProductItemComponent } from '../../../shared/components/product-item/product-item.component';
 import { PRODUCT_HIGHLIGHT_FILTERS } from '../../../shared/constants/product-hightlight-filters.constant';
 import { ProductHighlightFilterValue } from '../../../shared/enums/product-highlight-filter-value.enum';
-import { ProductItemComponent } from '../../../shared/components/product-item/product-item.component';
 
 @Component({
     selector: 'app-product',
-    imports: [TranslateModule, ProductItemComponent, AsyncPipe],
+    imports: [TranslatePipe, ProductItemComponent, AsyncPipe],
     templateUrl: './product.component.html',
     styleUrl: './product.component.scss',
 })

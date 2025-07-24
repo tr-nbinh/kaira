@@ -1,14 +1,14 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
-import { TestimonialService } from '../../../services/testimonial.service';
 import { Testimonial } from '../../../models/testimonial';
+import { TestimonialService } from '../../../services/testimonial.service';
 
 @Component({
     selector: 'app-testimonial',
-    imports: [TranslateModule, AsyncPipe],
+    imports: [TranslatePipe, AsyncPipe],
     templateUrl: './testimonial.component.html',
     styleUrl: './testimonial.component.scss',
 })

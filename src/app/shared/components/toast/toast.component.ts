@@ -1,11 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, HostBinding, inject } from '@angular/core';
 import { ToastPosition } from '../../../models/toast.interface';
 import { ToastService } from '../../../services/toast.service';
 
 @Component({
     selector: 'app-toast',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './toast.component.html',
     styleUrl: './toast.component.scss',
 })

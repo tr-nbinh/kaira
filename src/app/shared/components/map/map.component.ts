@@ -72,7 +72,6 @@ export class MapComponent {
         // Xử lý sự kiện click trên bản đồ
         this.map.on('click', (e: L.LeafletMouseEvent) => {
             // Bạn có thể thêm marker mới tại vị trí click ở đây
-            console.log(e);
             this.clearMarkers();
             this.currentMarker = L.marker(e.latlng)
                 .addTo(this.map)

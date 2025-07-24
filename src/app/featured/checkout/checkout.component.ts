@@ -5,10 +5,10 @@ import {
     FormGroup,
     FormsModule,
     ReactiveFormsModule,
-    Validators
+    Validators,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, forkJoin, of, takeUntil } from 'rxjs';
 import { getChangedFields } from '../../../utils/object.util';
 import { BaseComponent } from '../../base/base.component';
@@ -28,13 +28,11 @@ import { FormControlErrorDirective } from '../../shared/directives/form-control-
 @Component({
     selector: 'app-checkout',
     imports: [
-        TranslateModule,
-        RouterModule,
         CurrencyPipe,
         ReactiveFormsModule,
         FormsModule,
-        MapComponent,
-        FormControlErrorDirective
+        FormControlErrorDirective,
+        TranslatePipe,
     ],
     templateUrl: './checkout.component.html',
     styleUrl: './checkout.component.scss',
@@ -235,8 +233,8 @@ export class CheckoutComponent extends BaseComponent {
                 }
             },
             onCancel: () => {
-                this.selectedAddresId = this.selectedAddress?.id
-            }
+                this.selectedAddresId = this.selectedAddress?.id;
+            },
         });
     }
 

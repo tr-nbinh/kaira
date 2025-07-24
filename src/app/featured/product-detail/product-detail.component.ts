@@ -1,11 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, map, takeUntil } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
-// import { Thumbs, Pagination, EffectFade } from 'swiper/modules';
-// Swiper.use([Thumbs, Pagination, EffectFade]);
-import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { ColorSelectItem } from '../../models/product-filter.interface';
 import { ProductDetail, ProductVariant } from '../../models/product.interface';
 import { CartService } from '../../services/cart.service';
 import { LoadingService } from '../../services/loading.service';
@@ -13,11 +12,10 @@ import { ProductService } from '../../services/product.service';
 import { ToastService } from '../../services/toast.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
-import { ColorSelectItem } from '../../models/product-filter.interface';
 
 @Component({
     selector: 'app-product-detail',
-    imports: [TranslateModule, FormsModule, LoadingToggleDirective],
+    imports: [TranslatePipe, FormsModule, LoadingToggleDirective],
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.scss',
 })

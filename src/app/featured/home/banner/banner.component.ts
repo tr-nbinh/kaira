@@ -1,15 +1,15 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { Observable, of, takeUntil } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
 import { Banner } from '../../../models/banner.interface';
 import { BannerService } from '../../../services/banner.service';
-import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-banner',
-    imports: [TranslateModule, AsyncPipe, RouterLink],
+    imports: [TranslatePipe, AsyncPipe, RouterLink],
     templateUrl: './banner.component.html',
     styleUrl: './banner.component.scss',
 })

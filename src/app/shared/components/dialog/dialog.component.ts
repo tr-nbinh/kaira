@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
     Component,
     ContentChild,
@@ -10,7 +10,7 @@ import {
 
 @Component({
     selector: 'app-dialog',
-    imports: [CommonModule],
+    imports: [NgTemplateOutlet],
     templateUrl: './dialog.component.html',
     styleUrl: './dialog.component.scss',
 })
