@@ -1,10 +1,9 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { jarallax } from 'jarallax';
 
 @Component({
     selector: 'app-footer',
-    imports: [TranslateModule],
+    imports: [],
     templateUrl: './footer.component.html',
     styleUrl: './footer.component.scss',
 })

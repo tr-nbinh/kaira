@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://api.prod.com/api',
+    apiUrl: 'https://kaira-be.vercel.app/api',
     debugMode: true,
     defaultLanguage: 'en',
     supportedLanguages: ['en', 'vn'],

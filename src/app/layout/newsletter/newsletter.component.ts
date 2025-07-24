@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-newsletter',
-  imports: [TranslateModule],
+  imports: [TranslatePipe],
   templateUrl: './newsletter.component.html',
   styleUrl: './newsletter.component.scss'
 })

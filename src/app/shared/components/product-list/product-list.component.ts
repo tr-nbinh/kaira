@@ -1,12 +1,11 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../models/product.interface';
 import { ProductItemComponent } from '../product-item/product-item.component';
 
 
 @Component({
     selector: 'app-product-list',
-    imports: [TranslateModule, ProductItemComponent],
+    imports: [ProductItemComponent],
     templateUrl: './product-list.component.html',
     styleUrl: './product-list.component.scss',
 })

@@ -44,6 +44,9 @@
                             "node_modules/aos/dist/aos.js",
                             "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
                             "node_modules/swiper/swiper-bundle.min.js"
+                        ],
+                        "allowedCommonJsDependencies": [
+                            "leaflet"
                         ]
                     },
                     "configurations": {
@@ -52,7 +55,7 @@
                                 {
                                     "type": "initial",
                                     "maximumWarning": "500kB",
-                                    "maximumError": "1MB"
+                                    "maximumError": "1.2MB"
                                 },
                                 {
                                     "type": "anyComponentStyle",

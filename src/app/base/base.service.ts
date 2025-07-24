@@ -22,7 +22,7 @@ export interface HttpOptions {
 export class BaseService {
     protected readonly apiUrl: string = environment.apiUrl;
 
-    constructor(private http: HttpClient) {}
+    constructor(protected http: HttpClient) {}
 
     protected get<T>(
         path: string,

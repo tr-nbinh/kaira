@@ -1,8 +1,12 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterModule } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+    Router,
+    RouterLink,
+    RouterLinkActive
+} from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
 import { Language } from '../../models/language.interface';
@@ -15,7 +19,13 @@ import { LANGUAGES } from '../../shared/constants/languages.constant';
 
 @Component({
     selector: 'app-header',
-    imports: [CommonModule, TranslateModule, MatIconModule, RouterModule],
+    imports: [
+        TranslatePipe,
+        MatIconModule,
+        RouterLink,
+        RouterLinkActive,
+        AsyncPipe,
+    ],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss',
 })

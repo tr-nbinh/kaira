@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import {
     BehaviorSubject,
     map,
@@ -29,7 +29,7 @@ import { SideBarComponent } from './side-bar/side-bar.component';
     imports: [
         ProductListComponent,
         PaginationComponent,
-        TranslateModule,
+        TranslatePipe,
         SideBarComponent,
     ],
     templateUrl: './shop.component.html',

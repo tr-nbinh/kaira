@@ -1,21 +1,23 @@
-<ng-container *ngFor="let position of toastService.getAllPositions()">
-    <div class="toast-container position-fixed p-3" [class]="getPositionClass(position)" style="z-index: 1200;"
-        *ngIf="toastService.getToastsByPosition(position).length">
-        <div *ngFor="let toast of toastService.getToastsByPosition(position)"
-            class="toast show align-items-center text-white border-0 mb-2 shadow" [class]="{
-        'bg-success': toast.type === 'success',
-        'bg-danger': toast.type === 'error',
-        'bg-info': toast.type === 'info',
-        'bg-warning': toast.type === 'warning'
-      }" role="alert">
-            <div class="d-flex">
-                <div class="toast-body">
-                    <div *ngIf="toast.title"><strong>{{ toast.title }}</strong></div>
-                    <div>{{ toast.message }}</div>
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close"
-                    (click)="toastService.remove(toast.id)"></button>
+@for (position of toastService.getAllPositions(); track $index) {
+@if (toastService.getToastsByPosition(position).length) {
+<div class="toast-container position-fixed p-3" [class]="getPositionClass(position)" style="z-index: 1200;">
+    @for (toast of toastService.getToastsByPosition(position); track $index) {
+    <div class="toast show align-items-center text-white border-0 mb-2 shadow" [class]="{
+                'bg-success': toast.type === 'success',
+                'bg-danger': toast.type === 'error',
+                'bg-info': toast.type === 'info',
+                'bg-warning': toast.type === 'warning'
+              }" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                <div><strong>{{ toast.title || '' }}</strong></div>
+                <div>{{ toast.message || '' }}</div>
             </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close"
+                (click)="toastService.remove(toast.id)"></button>
         </div>
     </div>
-</ng-container>
+    }
+</div>
+}
+}

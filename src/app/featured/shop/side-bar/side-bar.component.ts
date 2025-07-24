@@ -1,9 +1,12 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { catchError, forkJoin, Observable, of, takeUntil } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
+import { BaseSelectableItem } from '../../../models/baseSelectableItem.interface';
+import { Color } from '../../../models/color.interface';
+import { PriceFilterParam } from '../../../models/price-param.interface';
 import {
     Brand,
     CategorySelectItem,
@@ -12,15 +15,12 @@ import {
 } from '../../../models/product-filter.interface';
 import { ProductRequest } from '../../../models/product.interface';
 import { CategoryService } from '../../../services/category.service';
-import { ProductFilterService } from '../../../services/product-filter.service';
-import { BaseSelectableItem } from '../../../models/baseSelectableItem.interface';
-import { PriceFilterParam } from '../../../models/price-param.interface';
 import { ColorService } from '../../../services/color.service';
-import { Color } from '../../../models/color.interface';
+import { ProductFilterService } from '../../../services/product-filter.service';
 
 @Component({
     selector: 'app-side-bar',
-    imports: [TranslateModule, FormsModule],
+    imports: [TranslatePipe, FormsModule],
     templateUrl: './side-bar.component.html',
     styleUrl: './side-bar.component.scss',
 })

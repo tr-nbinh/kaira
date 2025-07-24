@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, takeUntil } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
 import { CartItem } from '../../models/cart.interface';
@@ -12,7 +12,7 @@ import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.d
 
 @Component({
     selector: 'app-wishlist',
-    imports: [TranslateModule, RouterModule, LoadingToggleDirective],
+    imports: [TranslatePipe, RouterModule, LoadingToggleDirective],
     templateUrl: './wishlist.component.html',
     styleUrl: './wishlist.component.scss',
 })
