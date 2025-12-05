@@ -1,18 +1,58 @@
-button {
-    padding: 0;
-    margin: 0;
-    border: inherit;
-    background-color: unset;
+.product-item {
+    .btn-wishlist {
+        width: 44px;
+        height: 44px;
+        display: block;
+        z-index: 111;
+        position: absolute;
+        top: 5px;
+        padding: 10px;
+        color: var(--bs-black);
+        background: var(--bs-white);
+        right: 5px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in;
+    }
+
+    &:hover {
+        .btn-wishlist {
+            opacity: 1;
+        }
+    }
 }
 
 .swatch-circle {
-    display: block;
     height: 16px;
     width: 16px;
-    border-radius: 50%;
 }
 
 .swatch-circle:hover,
 .swatch-circle.active {
     border: 2px solid black;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1);
+    width: 1rem;
+    height: 1rem;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.carousel:hover .carousel-control-prev,
+.carousel:hover .carousel-control-next {
+    opacity: 1;
+}
+
+.carousel-indicators [data-bs-target] {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.carousel-indicators .active {
+    background-color: rgba(0, 0, 0, 0.9);
 }

@@ -6,7 +6,7 @@ import {
     HttpHeaders,
     HttpParams,
 } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { createHttpParamsFromObject } from '../../utils/http-params.helper';
 import { ApiError, ApiResponse } from '../models/api-response.interface';
 export interface HttpOptions {
@@ -34,7 +34,9 @@ export class BaseService {
                 ...options,
                 params: createHttpParamsFromObject(param),
             })
-            .pipe(catchError(this.handleError));
+            .pipe(
+                catchError(this.handleError)
+            );
     }
 
     protected post<T>(

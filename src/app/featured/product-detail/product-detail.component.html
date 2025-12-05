@@ -1,17 +1,19 @@
-@if (product) {
+@if (isLoading()) {
+<app-product-detail-skeleton></app-product-detail-skeleton>
+} @else {
 <div class="mt-5">
-    <div class="container">
+    <!-- <div class="container">
         <nav class="breadcrumb">
             <a class="breadcrumb-item" href="#">Home</a>
             <a class="breadcrumb-item" href="#">Pages</a>
             <span class="breadcrumb-item active" aria-current="page">Shop</span>
         </nav>
-    </div>
+    </div> -->
 
     <section id="product-detail" class="single-product py-5 no-padding-top">
         <div class="container">
             <div class="row g-5">
-                <div class="col-md-7">
+                <div class="col-12 col-lg-7">
                     <div class="row flex-column-reverse flex-lg-row">
                         <div class="col-md-12 col-lg-3">
                             <!-- product-thumbnail-slider -->
@@ -19,7 +21,7 @@
                                 <div class="swiper-wrapper">
                                     @for (img of currentVariant.images; track $index) {
                                     <div class="swiper-slide">
-                                        <img [src]="img" alt="" class="thumb-image img-fluid">
+                                        <img [src]="img" alt="thumb image" class="img-fluid">
                                     </div>
                                     }
                                 </div>
@@ -32,9 +34,7 @@
                                 <div class="swiper-wrapper">
                                     @for (image of currentVariant.images; track $index) {
                                     <div class="swiper-slide">
-                                        <div class="image-zoom" data-scale="2.5"><img [src]="image" alt="product-large"
-                                                class="img-fluid">
-                                        </div>
+                                        <img [src]="image" alt="product large" class="img-fluid">
                                     </div>
                                     }
                                 </div>
@@ -44,38 +44,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5">
-                    <div class="product-info">
-                        <div class="element-header">
-                            <h2 itemprop="name" class="product-title text-uppercase">{{product.name}}</h2>
-                            <div class="rating-container d-flex align-items-center">
-                                <div class="rating">
-                                    <svg width="32" height="32">
-                                        <use xlink:href="#star-solid"></use>
-                                    </svg>
-                                </div>
-                                <div class="rating">
-                                    <svg width="32" height="32">
-                                        <use xlink:href="#star-solid"></use>
-                                    </svg>
-                                </div>
-                                <div class="rating">
-                                    <svg width="32" height="32">
-                                        <use xlink:href="#star-solid"></use>
-                                    </svg>
-                                </div>
-                                <div class="rating">
-                                    <svg width="32" height="32">
-                                        <use xlink:href="#star-outline"></use>
-                                    </svg>
-                                </div>
-                                <div class="rating">
-                                    <svg width="32" height="32">
-                                        <use xlink:href="#star-outline"></use>
-                                    </svg>
-                                </div>
-                                <span class="rating-count">(3.5)</span>
+                <div class="col-12 col-lg-5">
+                    <section class="product-info pt-3">
+                        <h1 class="product-name text-uppercase">{{product.name}}</h1>
+                        <div class="rating-container d-flex align-items-center">
+                            <div class="rating">
+                                <svg width="32" height="32">
+                                    <use xlink:href="#star-solid"></use>
+                                </svg>
                             </div>
+                            <div class="rating">
+                                <svg width="32" height="32">
+                                    <use xlink:href="#star-solid"></use>
+                                </svg>
+                            </div>
+                            <div class="rating">
+                                <svg width="32" height="32">
+                                    <use xlink:href="#star-solid"></use>
+                                </svg>
+                            </div>
+                            <div class="rating">
+                                <svg width="32" height="32">
+                                    <use xlink:href="#star-outline"></use>
+                                </svg>
+                            </div>
+                            <div class="rating">
+                                <svg width="32" height="32">
+                                    <use xlink:href="#star-outline"></use>
+                                </svg>
+                            </div>
+                            <span class="rating-count">(3.5)</span>
                         </div>
                         <div class="product-price">
                             <span class="fs-2">${{currentVariant.price}}</span>
@@ -103,7 +101,6 @@
                         </div>
                         @if (product.sizes && product.sizes.length) {
                         <div class="swatch d-flex flex-wrap option-1 mt-4">
-
                             <div class="item-title">{{"COMMON.SIZE" | translate}}:</div>
                             @for (size of product.sizes; track size.id) {
                             <div class="swatch-element">
@@ -114,13 +111,11 @@
                         </div>
                         }
                         <div class="product-action mt-4">
-                            <div class="item-title">{{"SHOP.IN_STOCK" |
-                                translate:{quantity:currentVariant.quantity} }}</div>
-                            <div class="product-quantity d-flex flex-wrap">
+                            <div class="product-quantity d-flex align-items-center mb-3">
                                 <div class="input-group product-qty me-3" style="max-width: 150px;">
                                     <span class="input-group-btn">
-                                        <button type="button" class="quantity-left-minus btn btn-light btn-number"
-                                            (click)="decreaseQuantity()">
+                                        <button type="button" class="btn btn-light" (click)="decreaseQuantity()"
+                                            [disabled]="currentVariant.quantity == 0">
                                             <svg width="16" height="16">
                                                 <use xlink:href="#minus"></use>
                                             </svg>
@@ -128,90 +123,40 @@
                                     </span>
                                     <input type="text" id="quantity" name="quantity"
                                         class="form-control input-number text-center" min="1"
-                                        [(ngModel)]="selectedQuantity">
+                                        [(ngModel)]="selectedQuantity" [disabled]="currentVariant.quantity == 0">
                                     <span class="input-group-btn">
-                                        <button type="button" class="quantity-right-plus btn btn-light btn-number"
-                                            (click)="increaseQuantity()">
+                                        <button type="button" class="btn btn-light" (click)="increaseQuantity()"
+                                            [disabled]="currentVariant.quantity == 0">
                                             <svg width="16" height="16">
                                                 <use xlink:href="#plus"></use>
                                             </svg>
                                         </button>
                                     </span>
                                 </div>
-                                <ng-container *appLoadingToggle="'cart-' + currentVariant.id">
-                                    <button class="btn btn-dark btn-lg text-uppercase me-3" (click)="addToCart()">
-                                        <span id="add-to-cart">{{"COMMON.ADD_TO_CART" | translate}}</span>
-                                    </button>
-                                </ng-container>
-                                <ng-container *appLoadingToggle="'wishlist-' + currentVariant.id">
-                                    <button class="btn btn-dark bg-dark" (click)="addToWishlist()">
-                                        @if (product.isFavorite) {
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="is-wishlisted">
-                                            <use xlink:href="#heart-filled"></use>
-                                        </svg>
-
-                                        } @else {
-                                        <svg width="24" height="24" viewBox="0 0 24 24">
-                                            <use xlink:href="#heart"></use>
-                                        </svg>
-                                        }
-                                    </button>
-                                </ng-container>
-                                <div class="cate-links d-flex flex-column mt-4">
-                                    <div class="cate-tag d-flex mb-3">
-                                        <div>{{"COMMON.CATEGORY" | translate}}:</div>
-                                        <div class="tag-item d-flex">
-                                            @for (category of product.categories; track $index) {
-                                            <a href="#"> {{category}}</a>,
-                                            }
-                                            <!-- <a href="#"> Women</a>, <a href="#"> Dresses</a>, <a href="#">
-                                                {{product.category}}</a> -->
-                                        </div>
-                                    </div>
-                                    <div class="social-links d-flex align-items-center gap-2 mb-3">
-                                        <div> {{"COMMON.SHARE" | translate}}:</div>
-                                        <ul class="list-unstyled d-flex gap-2 m-0 lh-1">
-                                            <li>
-                                                <a href="#" class="text-secondary p-0">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#facebook"></use>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="text-secondary p-0">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#twitter"></use>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="text-secondary p-0">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#youtube"></use>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="text-secondary p-0">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#pinterest"></use>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="text-secondary p-0">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#instagram"></use>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <p class="m-0">{{"SHOP.IN_STOCK" | translate:{quantity:currentVariant.quantity} }}</p>
                             </div>
+                            <ng-container *appLoadingToggle="'cart-' + currentVariant.id">
+                                <button class="btn btn-dark btn-lg text-uppercase me-3" (click)="addToCart()"
+                                    [disabled]="currentVariant.quantity == 0">
+                                    <span id="add-to-cart">{{"COMMON.ADD_TO_CART" | translate}}</span>
+                                </button>
+                            </ng-container>
+                            <ng-container *appLoadingToggle="'wishlist-' + currentVariant.id">
+                                <button class="btn btn-dark bg-dark" (click)="addToWishlist()">
+                                    @if (currentVariant.isFavorite) {
+                                    <svg width="24" height="24" viewBox="0 0 24 24" class="is-wishlisted">
+                                        <use xlink:href="#heart-filled"></use>
+                                    </svg>
+
+                                    } @else {
+                                    <svg width="24" height="24" viewBox="0 0 24 24">
+                                        <use xlink:href="#heart"></use>
+                                    </svg>
+                                    }
+                                </button>
+                            </ng-container>
                         </div>
-                    </div>
+                    </section>
                 </div>
             </div>
         </div>

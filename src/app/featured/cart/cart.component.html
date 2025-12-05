@@ -1,83 +1,54 @@
 <section class="py-5">
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <div class="cart-table">
-                    <div class="cart-header">
-                        <div class="row d-flex">
-                            <h6 class="cart-title text-uppercase text-muted col-lg-4 pb-3">{{"COMMON.PRODUCT" |
-                                translate}}</h6>
-                            <h6 class="cart-title text-uppercase text-muted col-lg-3 pb-3">{{"COMMON.QUANTITY" |
-                                translate}}</h6>
-                            <h6 class="cart-title text-uppercase text-muted col-lg-4 pb-3">{{"COMMON.SUBTOTAL" |
-                                translate}}</h6>
-                            <h6 class="col-1">
-                                <input type="checkbox" class="form-check-input" [indeterminate]="isIndeterminate"
-                                    (change)="
-                                    toggleSelectAllCartItems($any($event.target).checked)" [checked]="selectAllItems">
-                            </h6>
-                        </div>
-                    </div>
+            @if(cartItems.length) {
+
+            <div class="col-12 col-lg-9">
+                <div class="cart-list">
                     @for (item of cartItems; track $index) {
-                    <div class="cart-item border-top border-bottom">
+                    <div class="cart-item border-bottom">
                         <div class="row align-items-center">
-                            <div class="col-lg-4 col-md-3">
-                                <div class="cart-info d-flex flex-wrap align-items-center mb-4">
-                                    <div class="col-lg-5">
-                                        <div class="card-image">
-                                            <a [routerLink]="['/product', item.productId, item.slug]">
-                                                <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
-                                            </a>
-                                        </div>
+                            <div class="col-9 col-md-5">
+                                <div class="cart-info d-flex align-items-center gap-3">
+                                    <div class="col-4">
+                                        <a [routerLink]="['/product', item.productId, item.variantId, item.slug]">
+                                            <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
+                                        </a>
                                     </div>
-                                    <div class="col-lg-7">
-                                        <div class="card-detail ps-3">
-                                            <h5 class="card-title">
-                                                <a [routerLink]="['/product', item.productId, item.slug]"
-                                                    class="text-decoration-none">{{item.name}}</a>
-                                            </h5>
-                                            <div class="card-price">
-                                                <span class="money text-dark">{{item.price | currency}}</span>
-                                            </div>
-                                        </div>
+                                    <div class="col-8">
+                                        <h3 class="card-title">
+                                            <a [routerLink]="['/product', item.productId, item.variantId, item.slug]"
+                                                class="text-decoration-none">{{item.name}}</a>
+                                        </h3>
+                                        <p class="card-color">{{item.color}}</p>
+                                        <p class="card-price">{{item.price | currency}} </p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-7">
-                                <div class="row d-flex">
-                                    <div class="col-md-4">
-                                        <div class="input-group product-qty">
-                                            <span class="input-group-btn">
-                                                <button type="button" (click)="decreaseQuantity(item)"
-                                                    class="quantity-left-minus btn btn-light btn-number">
-                                                    <svg width="16" height="16">
-                                                        <use xlink:href="#minus"></use>
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                            <input type="text" id="quantity" name="quantity"
-                                                class="form-control input-number text-center" readonly
-                                                [value]="item.quantity" min="1">
-                                            <span class="input-group-btn">
-                                                <button type="button"
-                                                    class="quantity-right-plus btn btn-light btn-number"
-                                                    (click)="increaseQuantity(item)">
-                                                    <svg width="16" height="16">
-                                                        <use xlink:href="#plus"></use>
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8 text-center">
-                                        <div class="total-price">
-                                            <span class="money text-dark">{{item.finalPrice * item.quantity|
-                                                currency}}</span>
-                                        </div>
-                                    </div>
+                            <div class="col-2 d-none d-md-block">
+                                <p>{{item.price | currency}} </p>
+                            </div>
+                            <div class="col-3 col-md-2">
+                                <div class="quantity-group">
+                                    <button type="button" (click)="decreaseQuantity(item)">
+                                        <svg width="16" height="16">
+                                            <use xlink:href="#minus"></use>
+                                        </svg>
+                                    </button>
+                                    <input type="number" id="quantity" name="quantity" readonly [value]="item.quantity"
+                                        min="1">
+                                    <button type="button" (click)="increaseQuantity(item)">
+                                        <svg width="16" height="16">
+                                            <use xlink:href="#plus"></use>
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-lg-1 col-md-2">
+                            <div class="col-2 d-none d-md-block">
+                                <p class="money text-dark text-center">{{item.finalPrice * item.quantity|
+                                    currency}}</p>
+                            </div>
+                            <div class="col-1 d-none d-md-block">
                                 <ng-container *appLoadingToggle="'cart-remove-' + item.variantId">
                                     <button class="btn text-dark" (click)="removeFromCart(item.variantId)">
                                         <svg width="32px">
@@ -86,40 +57,21 @@
                                     </button>
                                 </ng-container>
                             </div>
-                            <div class="col-1">
-                                <input type="checkbox" class="form-check-input" [(ngModel)]="item.selected" (change)="
-                                    updateSelectAllStatus()">
-                            </div>
                         </div>
                     </div>
                     }
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 offset-0 col-md-6 offset-md-6 col-lg-3 offset-lg-0">
                 <div class="cart-totals bg-grey py-5">
                     <h4 class="text-dark pb-4">{{"COMMON.CART_TOTAL" | translate}}</h4>
-                    <div class="total-price pb-5">
-                        <table cellspacing="0" class="table text-uppercase">
-                            <tbody>
-                                <tr class="subtotal pt-2 pb-2 border-top border-bottom">
-                                    <th>{{"COMMON.SUBTOTAL" | translate}}</th>
-                                    <td data-title="Subtotal">
-                                        <span class="price-amount amount text-dark ps-5">
-                                            <bdi>
-                                                {{subTotal | currency}}
-                                            </bdi>
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="d-flex align-items-center justify-content-between mb-2 py-2 border-bottom border-top">
+                        <b class="text-dark text-uppercase ">{{"COMMON.SUBTOTAL" |
+                            translate}}</b>
+                        <p class="text-dark mb-0">{{subTotal | currency}}</p>
                     </div>
-                    <div class="button-wrap row g-2">
-                        <div class="col-md-6"><a [routerLink]="['/shop']"
-                                class="btn btn-dark text-uppercase btn-rounded-none w-100">{{"CART.UPDATE_CART" |
-                                translate}}
-                            </a></div>
-                        <div class="col-md-6"><a [routerLink]="['/shop']"
+                    <div>
+                        <div class="mb-2"><a [routerLink]="['/shop']"
                                 class="btn btn-dark text-uppercase btn-rounded-none w-100">{{"CART.CONTINUE_SHOPPING" |
                                 translate}}</a>
                         </div>
@@ -129,7 +81,11 @@
                     </div>
                 </div>
             </div>
+            } @else {
+            <app-cart-empty></app-cart-empty>
+            }
 
         </div>
     </div>
 </section>
+<app-full-page-loading [visible]="isLoading"></app-full-page-loading>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -14,6 +14,9 @@ import { ToastService } from '../../../../services/toast.service';
 import { finalize } from 'rxjs';
 import { ApiError } from '../../../../models/api-response.interface';
 import { User } from '../../models/user.interface';
+import { DialogService } from '../../../../services/dialog.service';
+
+type pwInputType = 'text' | 'password';
 
 @Component({
     selector: 'app-login',
@@ -28,6 +31,8 @@ import { User } from '../../models/user.interface';
 })
 export class LoginComponent {
     loginForm!: FormGroup;
+    inputType: pwInputType = 'password';
+    @ViewChild('verificationNoti') noti!: TemplateRef<any>;
 
     constructor(
         private fb: FormBuilder,
@@ -35,7 +40,8 @@ export class LoginComponent {
         private router: Router,
         private route: ActivatedRoute,
         private loading: LoadingService,
-        private toast: ToastService
+        private toast: ToastService,
+        private dialog: DialogService
     ) {}
 
     ngOnInit() {
@@ -44,6 +50,10 @@ export class LoginComponent {
             password: ['', [Validators.required]],
             rememberMe: [false],
         });
+    }
+
+    togglePassword() {
+        this.inputType = this.inputType === 'password' ? 'text' : 'password';
     }
 
     onSubmit() {
@@ -67,12 +77,24 @@ export class LoginComponent {
                     }
                 },
                 error: (error: ApiError<User>) => {
-                    this.toast.warning(error.message);
                     const user = error.data;
                     if (user && !user.isVerified) {
-                        this.userService.setPendingVerifyEmail(user.email);
-                        this.router.navigateByUrl('/auth/pending-verify');
+                        this.dialog.open({
+                            title: 'Thông báo',
+                            confirmText: 'Xác thực',
+                            body: this.noti,
+                            onConfirm: () => {
+                                this.userService.setPendingVerifyEmail(
+                                    user.email
+                                );
+                                this.router.navigateByUrl(
+                                    '/auth/pending-verify'
+                                );
+                            },
+                        });
+                        return;
                     }
+                    this.toast.warning(error.message);
                 },
             });
     }

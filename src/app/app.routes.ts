@@ -120,6 +120,15 @@ export const routes: Routes = [
         ],
     },
     {
+        path: 'order-success',
+        async loadComponent() {
+            const m = await import(
+                './featured/checkout/order-success/order-success.component'
+            );
+            return m.OrderSuccessComponent;
+        },
+    },
+    {
         path: 'not-found',
         loadComponent: () =>
             import('./nolayout/nolayout.component').then(

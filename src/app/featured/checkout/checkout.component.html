@@ -1,4 +1,4 @@
-<section class="checkout-wrap pb-5">
+<section class="checkout-wrap py-5">
     <div class="container">
         <div class="address-border"></div>
         <div class="my-4 px-4">
@@ -11,11 +11,11 @@
                 </p>
                 @if (!selectedAddress) {
                 @if (addresses.length) {
-                <button type="button" class="btn btn-outline-dark " (click)="openAddressListDialog()">
+                <button type="button" class="btn btn-outline-dark" (click)="openAddressListDialog()">
                     {{'CHECKOUT.SELECT_ADDRESS' | translate}}
                 </button>
                 } @else {
-                <button type="button" class="btn btn-outline-dark " (click)="openAddEditLocationDialog()">
+                <button type="button" class="btn btn-outline-dark" (click)="openAddEditLocationDialog()">
                     {{'CHECKOUT.ADD_ADDRESS' | translate}}
                 </button>
                 }
@@ -33,7 +33,7 @@
             }
         </div>
         <div class="row g-5">
-            <div class="col-lg-6">
+            <div class="col-12 col-lg-6">
                 <h4 class="text-dark pb-4">{{"CHECKOUT.ADDITIONAL_INFO" | translate}}</h4>
                 <div class="form-group">
                     <div class="billing-details">
@@ -63,26 +63,25 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-12 col-lg-6">
                 <h4 class="text-dark pb-4">{{"CHECKOUT.CART_SUMMARY" | translate}}</h4>
                 <div class="cart-item">
                     @for (item of orderItems; track item.id) {
                     <div class="row align-items-center">
-                        <div class="col-lg-8">
+                        <div class="col-8">
                             <div class="cart-info d-flex flex-wrap align-items-center mb-4">
-                                <div class="col-lg-5">
+                                <div class="col-5">
                                     <div class="card-image">
                                         <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
                                     </div>
                                 </div>
-                                <div class="col-lg-7">
+                                <div class="col-7">
                                     <div class="card-detail ps-3">
                                         <h5 class="card-title">
                                             {{item.name}}
                                         </h5>
-                                        <div class="card-price">
-                                            <span class="money text-dark">{{item.price | currency}}</span>
-                                        </div>
+                                        <span class="text-dark d-block">{{item.color}}</span>
+                                        <span class="text-dark">{{item.price | currency}}</span>
                                     </div>
                                 </div>
                             </div>

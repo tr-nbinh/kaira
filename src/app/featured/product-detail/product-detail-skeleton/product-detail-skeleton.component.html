@@ -1,0 +1,56 @@
+<div class="product-detail-skeleton mt-5">
+    <section class="single-product py-5">
+        <div class="container">
+            <div class="row g-5">
+                <!-- LEFT SECTION -->
+                <div class="col-12 col-lg-7">
+                    <div class="row flex-column-reverse flex-lg-row">
+                        <!-- Thumbnails -->
+                        <div class="col-md-12 col-lg-3">
+                            <div class="d-flex flex-lg-column gap-3 thumb-skeleton-list">
+                                @for (item of [1,2,3]; track $index) {
+                                <div class="skeleton thumb-skeleton"></div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Large image slider -->
+                        <div class="col-md-12 col-lg-9">
+                            <div class="skeleton large-img-skeleton"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT SECTION -->
+                <div class="col-12 col-lg-5">
+                    <section class="product-info pt-3">
+                        <div class="skeleton title"></div>
+
+                        <!-- Price -->
+                        <div class="price-skeleton">
+                            <div class="skeleton price-main"></div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="skeleton desc-line"></div>
+                        <div class="skeleton desc-line short"></div>
+
+                        <!-- Quantity -->
+                        <div class="qty-skeleton mt-4">
+                            <div class="skeleton qty-box"></div>
+                            <div class="skeleton stock"></div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="btn-skeleton mt-4 d-flex gap-3">
+                            <div class="skeleton btn-lg"></div>
+                            <div class="skeleton btn-icon"></div>
+                        </div>
+
+                    </section>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>

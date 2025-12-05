@@ -7,12 +7,27 @@
                     <div class="col-12 pb-3">
                         <label for="email">{{'COMMON.EMAIL_ADDRESS' | translate}} *</label>
                         <input type="text" formControlName="email" id="email"
-                            [placeholder]="'COMMON.EMAIL_PLACEHOLDER' | translate" class="form-control" autocomplete="email">
+                            [placeholder]="'COMMON.EMAIL_PLACEHOLDER' | translate" class="form-control"
+                            autocomplete="email">
                     </div>
                     <div class="col-12 pb-3">
                         <label>{{'AUTH.PASSWORD' | translate}} *</label>
-                        <input type="password" formControlName="password" [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate"
-                            class="form-control" autocomplete="current-password">
+                        <div class="position-relative">
+                            <input [type]="inputType" formControlName="password"
+                                [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate" class="form-control"
+                                autocomplete="current-password" #pwInput>
+                            <button type="button"
+                                class="password-toggle btn btn-outline position-absolute h-100 top-0 end-0"
+                                [disabled]="!pwInput.value" (click)="togglePassword()">
+                                <svg width="18" height="18" viewBox="0 0 18 18">
+                                    @if (inputType === 'password') {
+                                    <use xlink:href="#eye"></use>
+                                    } @else {
+                                    <use xlink:href="#eye-slash"></use>
+                                    }
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                     <div class="col-12 pb-3">
                         <label>
@@ -28,11 +43,17 @@
                         </ng-container>
                     </div>
                     <div class="d-flex flex-wrap gy-2 justify-content-between gap-2">
-                        <a [routerLink]="['/auth/register']" class="btn-link d-inline-block">{{'AUTH.CREATE_ACCOUNT' | translate}}</a>
-                        <a [routerLink]="['/auth/forgot-password']" class="btn-link d-inline-block">{{'AUTH.FORGOT_PASSWORD' | translate}}?</a>
+                        <a [routerLink]="['/auth/register']" class="btn-link d-inline-block">{{'AUTH.CREATE_ACCOUNT' |
+                            translate}}</a>
+                        <a [routerLink]="['/auth/forgot-password']"
+                            class="btn-link d-inline-block">{{'AUTH.FORGOT_PASSWORD' | translate}}?</a>
                     </div>
-                    </form>
+                </form>
             </div>
         </div>
     </div>
 </section>
+
+<ng-template #verificationNoti>
+    <p>Tài khoản của bạn chưa xác thực. Nhấn vào nút xác thực để xác thực tài khoản</p>
+</ng-template>

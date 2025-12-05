@@ -55,6 +55,7 @@ export class PendingVerifyComponent extends BaseComponent {
                 this.verificationStatus = 'error';
             } else {
                 this.verificationStatus = 'pending';
+                this.requestNewVerificationEmail();
             }
         });
         const waitUntil = Number(localStorage.getItem('resend_wait_until'));

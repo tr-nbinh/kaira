@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { BaseService } from '../base/base.service';
-import { catchError, Observable } from 'rxjs';
 import { VariantImage } from '../models/product.interface';
 
 @Injectable({

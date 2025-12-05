@@ -66,6 +66,7 @@ export class ProductItemComponent extends BaseComponent {
                     this.toast.success(res.message);
                 },
                 error: (err) => {
+                    console.log(err);
                     this.toast.info(err.message);
                 },
             });

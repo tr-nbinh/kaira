@@ -20,6 +20,8 @@ export class DialogService {
     open(options: {
         title: string;
         body: TemplateRef<any>;
+        confirmText?: string;
+        cancelText?: string;
         onConfirm?: () => boolean | void;
         onCancel?: () => void;
     }) {
@@ -27,6 +29,7 @@ export class DialogService {
             this.viewContainerRef.createComponent(DialogComponent);
 
         ref.instance.title = options.title;
+        ref.instance.confirmText = options.confirmText || '';
         ref.instance.body = options.body;
 
         ref.instance.confirm.subscribe(() => {

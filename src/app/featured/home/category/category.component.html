@@ -3,7 +3,7 @@
     <div class="row d-flex flex-wrap">
         @for (category of categories$ | async; track category.id) {
         <div class="col-md-4 col-6">
-            <div class="cat-item image-zoom-effect position-relative">
+            <div class="image-zoom-effect position-relative">
                 <div class="image-holder">
                     <a [routerLink]="['/shop']"><img [src]="category.imageUrl" alt="categories"
                             class="product-image img-fluid"></a>

@@ -215,7 +215,9 @@ export class CheckoutComponent extends BaseComponent {
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe({
                 next: (res) => {
-                    this.toast.success(res.message);
+                    this.router.navigate(['/order-success'], {
+                        queryParams: { orderId: res.data.id },
+                    });
                 },
                 error: (err) => {
                     this.toast.error(err.message);
@@ -240,6 +242,7 @@ export class CheckoutComponent extends BaseComponent {
 
     openAddEditLocationDialog(addr?: Address) {
         if (addr) {
+            console.log(addr);
             const currentProvinceCode = addr.provinceCode;
             const currentDistrictCode = addr.districtCode;
             const getDistricts$ =
