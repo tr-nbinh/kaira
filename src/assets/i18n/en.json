@@ -4,7 +4,8 @@
         "SHOP": "Shop",
         "BLOG": "Blog",
         "PAGE": "Page",
-        "CONTACT": "Contact"
+        "CONTACT": "Contact",
+        "ABOUT": "About"
     },
     "LANGUAGE": {
         "ENGLISH": "English (EN)",
@@ -69,12 +70,27 @@
         "TITLE": "Cart",
         "UPDATE_CART": "Update cart",
         "CONTINUE_SHOPPING": "Continue shopping",
-        "PROCEED_CHECKOUT": "Proceed to checkout"
+        "PROCEED_CHECKOUT": "Checkout",
+        "EMPTY_TITLE": "Your cart is empty",
+        "EMPTY_DESC": "No any products in your shopping cart."
     },
     "WISHLIST": {
         "UNIT_PRICE": "Unit price",
         "STOCK_STATUS": "Stock status",
-        "ADD_TO_CART": "Add to cart"
+        "ADD_TO_CART": "Add to cart",
+        "EMPTY_TITLE": "Your wishlist is empty",
+        "EMPTY_DESC": "No any products in your wishlist.",
+        "BUTTON": "Continue shopping"
+    },
+    "FOOTER": {
+        "QUICK_LINK": "Quick links",
+        "HELP_INFO": "Help & Info",
+        "ORDER_TRACKING": "Track your order",
+        "RETURN_EXCHANGE": "Return + exchanges",
+        "SHIPPING_DELIVERY": "Shipping + delivery",
+        "FAQ": "Faqs",
+        "QUESTION_TEXT": "Do you have any questions or suggestions?",
+        "SUPPORT_TEXT": "Do you need support? Give us a call."
     },
     "CHECKOUT": {
         "TITLE": "Checkout",
@@ -148,7 +164,20 @@
         "FORGOT_PASSWORD": "Forgot password",
         "CREATE_ACCOUNT": "Create an account",
         "EMAIL_NOTI": "Please enter your email",
-        "RESET_PASSWORD": "Reset password"
+        "RESET_PASSWORD": "Reset password",
+        "VERIFICATION": {
+            "PENDING": {
+                "TITLE": "Please check your inbox for our confirmation email.",
+                "TEXT": "A verification email has been sent to your email address.",
+                "TEXT_MUTED": "Please open the email and click the verification link to activate your account. If the email is not there, make sure to check your Spam/Junk folder!",
+                "NEED_HELP": "Need more help?"
+            },
+            "SUCCESS": "Your account has been successfully verified.",
+            "FAILED": "Account verification failed",
+            "BUTTON": "Resend verification",
+            "RESEND_AFTER": "Resend after"
+
+        }
     },
     "COMMON": {
         "WISHLIST": "Wishlist",
@@ -180,6 +209,8 @@
         "SIGN_UP": "Sign up",
         "SIGN_OUT": "Sign out",
         "EMAIL_PLACEHOLDER": "Write your email here",
-        "CONFIRM": "CONFIRM"
+        "CONFIRM": "CONFIRM",
+        "REMOVE": "Remove",
+        "CONTACT_US": "Contact us"
     }
 }

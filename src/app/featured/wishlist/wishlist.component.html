@@ -1,45 +1,47 @@
-<section id="Wishlist" class="py-5 my-5">
-    <div class="container">
-        <div class="row text-dark my-3">
-            <div class="col-6 text-uppercase">{{"COMMON.PRODUCT" | translate}}</div>
-            <div class="col-2 text-uppercase">{{"WISHLIST.STOCK_STATUS" | translate}}</div>
-        </div>
-        <div class="product-wrapper">
-            @for (item of wishlistItems; track item.id) {
-            <div class="product-item row align-items-center mb-4">
-                <div class="col-4 col-md-1 d-flex align-items-center text-left">
-                    <a [routerLink]="['/product',item.productId, item.slug]">
-                        <img [src]="item.imageUrl" alt="wishlist" class="img-fluid">
-                    </a>
+<section id="wishlist" class="py-5 my-5">
+    <div class="wishlist-container">
+        @if(!wishlistItems.length) {
+        <app-wishlist-empty></app-wishlist-empty>
+        } @else {
+        @for (item of wishlistItems; track item.id; let isLast = $last) {
+        <div class="pb-5 mt-5" [class.border-bottom]="!isLast">
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="wishlist-product-image-container">
+                        <div class="wishlist-product-image-render">
+                            <a [routerLink]="['/product',item.productId, item.variantId, item.slug]" href=""
+                                title="Baguette®">
+                                <img class="w-100" alt="Baguette®" title="Baguette®" [src]="item.imageUrl">
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-10 col-md-5">
-                    <h3 class="item-title text-uppercase fs-5">
-                        <a [routerLink]="['/product',item.productId, item.slug]">{{item.name}}</a>
-                    </h3>
-                </div>
-                <div class="col-3 col-md-2 product-price text-left">
-                    <span class="item-price">In Stock</span>
-                </div>
-                <div class="col-3 col-md-2 wishlist-add text-left">
-                    <ng-container *appLoadingToggle="'cart-add-' + item.variantId">
-                        <button class="btn btn-outline-dark text-uppercase" title="Add to Cart"
-                            (click)="addToCart(item.variantId)">{{"WISHLIST.ADD_TO_CART"
-                            | translate}}</button>
-                    </ng-container>
-                </div>
-                <div class="col-3 col-md-1 text-left">
-                    <div class="cart-remove">
-                        <ng-container *appLoadingToggle="'wishlist-remove-' + item.variantId">
-                            <button class="btn text-dark" (click)="removeFromWishlist(item.variantId)">
-                                <svg width="32px">
-                                    <use xlink:href="#trash"></use>
-                                </svg>
-                            </button>
-                        </ng-container>
+                <div class="col-12 col-sm-6">
+                    <div class="ps-3 pt-3">
+                        <h4 class="mb-3"> <a
+                                [routerLink]="['/product',item.productId, item.variantId, item.slug]">{{item.name}}</a>
+                        </h4>
+                        <p>{{'COMMON.COLOR' | translate}}: {{item.color}}</p>
+                        <div class="row">
+                            <div class="col-6">
+                                <button *appLoadingToggle="'wishlist-remove-' + item.variantId" type="button"
+                                    class="btn btn-outline-dark w-100 h-100"
+                                    (click)="removeFromWishlist(item.variantId)">{{'COMMON.REMOVE' |
+                                    translate}}</button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-secondary w-100 h-100" disabled>{{'COMMON.ADD_TO_CART' |
+                                    translate}}</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            }
         </div>
+        }
+        }
+
     </div>
 </section>
+
+<app-full-page-loading [visible]="isLoading"></app-full-page-loading>

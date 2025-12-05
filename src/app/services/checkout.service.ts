@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CartItem } from '../models/cart.interface';
 import { BaseService } from '../base/base.service';
 import { Order } from '../models/order.interface';
+import { ApiResponse } from '../models/api-response.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -26,7 +27,7 @@ export class CheckoutService extends BaseService {
         this.selectedCartItemsSubject.next([]);
     }
 
-    saveOrder(data: Order): Observable<any> {
+    saveOrder(data: Order): Observable<ApiResponse<Order>> {
         return this.post(this._endpoint, data);
     }
 

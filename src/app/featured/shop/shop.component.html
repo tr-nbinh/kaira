@@ -1,36 +1,54 @@
 <!-- Product -->
 <div style="margin-top: 120px">
     <div class="container">
-        <div class="row g-5">
-            <div class="col-md-9">
-                @if (products.length) {
-                <div class="row py-2">
-                    <div class="col-md-9">
-                        <span>{{ "SHOP.RESULTS_SUMMARY" | translate:{start: listDisplayState.startIndex, end:
-                            listDisplayState.endIndex, total:
-                            listDisplayState.totalItems} }}</span>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select border-0" aria-label="Default select example">
-                            <option selected="">{{"SHOP.DEFAULT_SORT" | translate}}</option>
-                            <option value="1">{{"COMMON.COLOR" | translate}}</option>
-                            <option value="2">{{"COMMON.SIZE" | translate}}</option>
-                            <option value="3">{{"COMMON.PRICE" | translate}}</option>
-                        </select>
-                    </div>
+        <div class="product-filter-bar">
+            <button class="filter-toggler" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilterBar"
+                aria-controls="offcanvasFilterBar" class="btn btn-outline-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+                </svg>
+                Filter
+            </button>
+
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilterBar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filter</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
                 </div>
-                <app-product-list [products]="products"></app-product-list>
-                <app-pagination [totalItems]="listDisplayState.totalItems" [currentPage]="params.page" [limit]="params.limit"
-                    [maxPagesToShow]="5" (pageChange)="onPageChange($event)"></app-pagination>
-                } @else {
-                <div class="text-center">
-                    <span>{{"SHOP.NO_PRODUCT" | translate}}</span>
+
+                <div class="offcanvas-body">
+                    <app-side-bar [params]="params" (onFilterChange)="filterProduct($event)"
+                        (onResetFilter)="resetFilter()"></app-side-bar>
                 </div>
-                }
             </div>
-            <aside class="col-md-3">
-                <app-side-bar [params]="params" (onFilterChange)="filterProduct($event)" (onResetFilter)="resetFilter()"></app-side-bar>
-            </aside>
         </div>
+        @if (products.length) {
+        <div class="row py-2">
+            <div class="col-md-9">
+                <span>{{ "SHOP.RESULTS_SUMMARY" | translate:{start: listDisplayState.startIndex, end:
+                    listDisplayState.endIndex, total:
+                    listDisplayState.totalItems} }}</span>
+            </div>
+            <!-- <div class="col-md-3">
+                <select class="form-select border-0" aria-label="Default select example">
+                    <option selected="">{{"SHOP.DEFAULT_SORT" | translate}}</option>
+                    <option value="1">{{"COMMON.COLOR" | translate}}</option>
+                    <option value="2">{{"COMMON.SIZE" | translate}}</option>
+                    <option value="3">{{"COMMON.PRICE" | translate}}</option>
+                </select>
+            </div> -->
+        </div>
+        <app-product-list [products]="products"></app-product-list>
+        <app-pagination [totalItems]="listDisplayState.totalItems" [currentPage]="params.page" [limit]="params.limit"
+            [maxPagesToShow]="5" (pageChange)="onPageChange($event)"></app-pagination>
+        } @else {
+        <div class="text-center">
+            <span>{{"SHOP.NO_PRODUCT" | translate}}</span>
+        </div>
+        }
     </div>
 </div>

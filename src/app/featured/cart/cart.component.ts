@@ -10,6 +10,7 @@ import {
     Subject,
     switchMap,
     takeUntil,
+    tap,
 } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
 import { CartItem } from '../../models/cart.interface';
@@ -18,6 +19,8 @@ import { CheckoutService } from '../../services/checkout.service';
 import { LoadingService } from '../../services/loading.service';
 import { ToastService } from '../../services/toast.service';
 import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
+import { FullPageLoadingComponent } from '../../shared/components/full-page-loading/full-page-loading.component';
+import { CartEmptyComponent } from './cart-empty/cart-empty.component';
 
 @Component({
     selector: 'app-cart',
@@ -26,7 +29,9 @@ import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.d
         CurrencyPipe,
         LoadingToggleDirective,
         FormsModule,
-        RouterLink
+        RouterLink,
+        FullPageLoadingComponent,
+        CartEmptyComponent
     ],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss',
@@ -36,8 +41,7 @@ export class CartComponent extends BaseComponent {
     subTotal: number = 0;
     private _quantityMap = new Map<number, Subject<number>>();
 
-    selectAllItems: boolean = false;
-    isIndeterminate: boolean = false;
+    isLoading = false;
 
     constructor(
         private cartService: CartService,
@@ -56,7 +60,11 @@ export class CartComponent extends BaseComponent {
     getCartItems() {
         this.cartService
             .getCartItems()
-            .pipe(takeUntil(this.ngUnsubscribe))
+            .pipe(
+                tap(() => (this.isLoading = true)),
+                finalize(() => (this.isLoading = false)),
+                takeUntil(this.ngUnsubscribe)
+            )
             .subscribe((cartItems) => {
                 this.cartItems = cartItems;
                 this.subTotal = this.calculateTotalAmount();
@@ -92,7 +100,7 @@ export class CartComponent extends BaseComponent {
     }
 
     increaseQuantity(cartItem: CartItem) {
-        if (cartItem.quantity > cartItem.quantityInStock) {
+        if (cartItem.quantity >= cartItem.quantityInStock) {
             this.toast.warning('không thể vượt quá số lượng trong kho');
             return;
         }
@@ -140,29 +148,7 @@ export class CartComponent extends BaseComponent {
     }
 
     goToCheckout() {
-        const selectedCartItems = this.cartItems.filter(
-            (item) => item.selected
-        );
-        if (!selectedCartItems.length) {
-            this.toast.warning('Please select at least one item to checkout.');
-            return;
-        }
-        this.checkoutService.setSelectedCartItems(selectedCartItems);
+        this.checkoutService.setSelectedCartItems(this.cartItems);
         this.router.navigate(['/checkout']);
-    }
-
-    toggleSelectAllCartItems(checked: boolean) {
-        this.isIndeterminate = false;
-        this.cartItems.forEach((item) => {
-            item.selected = checked;
-        });
-    }
-
-    updateSelectAllStatus() {
-        const allSelected = this.cartItems.every((item) => item.selected);
-        const anySelected = this.cartItems.some((item) => item.selected);
-        
-        this.selectAllItems = allSelected;
-        this.isIndeterminate = !allSelected && anySelected;
     }
 }

@@ -1,0 +1,9 @@
+<div class="cart-empty d-flex flex-column justify-content-center align-items-center text-center py-5">
+    <img src="/assets/images/cart/abandoned-cart.png" alt="">
+
+    <h3 class="mb-2">{{'CART.EMPTY_TITLE' | translate }}</h3>
+    <p class="mb-4 text-muted">{{'CART.EMPTY_DESC' | translate }}</p>
+    <a [routerLink]="'/shop'" class="btn btn-primary btn-lg text-uppercase">
+        {{'CART.CONTINUE_SHOPPING' | translate}}
+    </a>
+</div>

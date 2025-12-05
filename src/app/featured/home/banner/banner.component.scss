@@ -1,0 +1,38 @@
+.slideshow.fade-in .swiper-slide .banner-content {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    transition-delay: 600ms;
+}
+
+.slideshow.fade-in .swiper-slide.swiper-slide-active .banner-content {
+    opacity: 1;
+}
+
+/* slide in */
+.slide-in .swiper-slide .banner-content h2,
+.slide-in .swiper-slide .banner-content p,
+.slide-in .swiper-slide .banner-content .btn {
+    display: inline-block;
+    opacity: 0;
+    transform: translate3d(0, 50px, 0);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.slide-in .swiper-slide .banner-content h2 {
+    transition-delay: 600ms;
+}
+
+.slide-in .swiper-slide .banner-content p {
+    transition-delay: 800ms;
+}
+
+.slide-in .swiper-slide .banner-content .btn {
+    transition-delay: 1000ms;
+}
+
+.slide-in .swiper-slide.swiper-slide-active .banner-content h2,
+.slide-in .swiper-slide.swiper-slide-active .banner-content p,
+.slide-in .swiper-slide.swiper-slide-active .banner-content .btn {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}

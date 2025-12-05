@@ -94,8 +94,8 @@
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li class="dropdown-item">
-                                        <a routerLink="/auth/register">
+                                    <li>
+                                        <a class="dropdown-item" routerLink="/auth/register">
                                             {{'COMMON.SIGN_UP' | translate}}</a>
                                     </li>
                                     @if (isAuthenticated$ | async) {
@@ -103,8 +103,8 @@
                                         {{'COMMON.SIGN_OUT' | translate}}
                                     </li>
                                     } @else {
-                                    <li class="dropdown-item" routerLink="/auth/login">
-                                        <a routerLink="/auth/register">
+                                    <li>
+                                        <a class="dropdown-item" routerLink="/auth/login">
                                             {{'COMMON.SIGN_IN' | translate}}</a>
                                     </li>
                                     }

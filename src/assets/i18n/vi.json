@@ -4,7 +4,8 @@
         "SHOP": "Sản phẩm",
         "BLOG": "Bài viết",
         "PAGE": "Trang",
-        "CONTACT": "Liên Hệ"
+        "CONTACT": "Liên Hệ",
+        "ABOUT": "Về chúng tôi"
     },
     "LANGUAGE": {
         "ENGLISH": "Tiếng Anh (EN)",
@@ -69,12 +70,27 @@
         "TITLE": "Giỏ hàng",
         "UPDATE_CART": "Cập nhật giỏ hàng",
         "CONTINUE_SHOPPING": "Tiếp tục mua sắm",
-        "PROCEED_CHECKOUT": "Thanh toán"
+        "PROCEED_CHECKOUT": "Thanh toán",
+        "EMPTY_TITLE": "Giỏ hàng của bạn trống",
+        "EMPTY_DESC": "Hiện tại bạn chưa có sản phẩm nào trong giỏ hàng."
     },
     "WISHLIST": {
         "UNIT_PRICE": "Đơn giá",
         "STOCK_STATUS": "Tình trạng",
-        "ADD_TO_CART": "Thêm giỏ hàng"
+        "ADD_TO_CART": "Thêm giỏ hàng",
+        "EMPTY_TITLE": "Danh sách yêu thích của bạn trống",
+        "EMPTY_DESC": "Hiện tại bạn chưa yêu thích sản phẩm nào.",
+        "BUTTON": "Tiếp tục mua sắm"
+    },
+    "FOOTER": {
+        "QUICK_LINK": "Truy cập nhanh",
+        "HELP_INFO": "Trợ giúp & Thông tin",
+        "ORDER_TRACKING": "Kiểm tra đơn hàng",
+        "RETURN_EXCHANGE": "Đổi - trả hàng",
+        "SHIPPING_DELIVERY": "Giao hàng - Vận chuyển",
+        "FAQ": "Câu hỏi thường gặp",
+        "QUESTION_TEXT": "Bạn có bất kỳ câu hỏi nào?",
+        "SUPPORT_TEXT": "Bạn cần giúp đỡ? Liên hệ chúng tôi."
     },
     "CHECKOUT": {
         "TITLE": "Thanh toán",
@@ -114,7 +130,6 @@
         "UPDATE": "Cập nhật",
         "ADD_NEW_ADDRESS": "Thêm địa chỉ mới",
         "DEFAULT_ADDRESS": "Đặt làm địa chỉ mặc định"
-
     },
     "PRICE": {
         "LESS_THAN": "Dưới {{price}}",
@@ -149,7 +164,19 @@
         "FORGOT_PASSWORD": "Quên mật khẩu",
         "CREATE_ACCOUNT": "Tạo tài khoản",
         "EMAIL_NOTI": "Vui lòng điền email",
-        "RESET_PASSWORD": "Đặt lại mật khẩu"
+        "RESET_PASSWORD": "Đặt lại mật khẩu",
+        "VERIFICATION": {
+            "PENDING": {
+                "TITLE": "Kiểm tra hộp thứ đến của bạn!",
+                "TEXT": "Email xác thực đã được gửi đến.",
+                "TEXT_MUTED": "Vui lòng mở email đó và nhấp vào liên kết để kích hoạt tài khoản của bạn. Nếu bạn không thấy email, hãy kiểm tra thư mục **Spam/Thư rác** nhé!",
+                "NEED_HELP": "Cần hỗ trợ thêm?"
+            },
+            "SUCCESS": "Tài khoản của bạn đã được xác thực",
+            "FAILED": "Xác thực tài khoản thất bại",
+            "BUTTON": "Gửi lại email xác thực",
+            "RESEND_AFTER": "Gửi lại sau"
+        }
     },
     "COMMON": {
         "WISHLIST": "Yêu thích",
@@ -181,6 +208,8 @@
         "SIGN_UP": "Đăng ký",
         "SIGN_OUT": "Đăng xuất",
         "EMAIL_PLACEHOLDER": "Email",
-        "CONFIRM": "Xác nhận"
+        "CONFIRM": "Xác nhận",
+        "REMOVE": "Xóa",
+        "CONTACT_US": "Liên hệ chúng tôi"
     }
 }

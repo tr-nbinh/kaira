@@ -1,8 +1,33 @@
 <div class="product-item">
-    <div class="image-holder position-relative">
-        <a [routerLink]="['/product', product.id, currentVariant.id, product.slug]">
-            <img [src]="currentVariant.images[0]" alt="categories" class="product-image img-fluid">
-        </a>
+    <div class="position-relative">
+        <div [id]="'carousel-' + currentVariant.id" class="carousel slide">
+            <div class="carousel-indicators">
+                @for (item of currentVariant.images; track $index; let isFirst = $first) {
+                <button type="button" [attr.data-bs-target]="'#carousel-' + currentVariant.id"
+                    [attr.data-bs-slide-to]="$index" [class.active]="isFirst"></button>
+                }
+            </div>
+            <div class="carousel-inner">
+                @for (img of currentVariant.images; track $index; let isFirst = $first) {
+                <div class="carousel-item" [class.active]="isFirst">
+                    <a [routerLink]="['/product', product.id, currentVariant.id, product.slug]">
+                        <img [src]="img" alt="Product images" class="product-image img-fluid">
+                    </a>
+                </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel-' + currentVariant.id"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel-' + currentVariant.id"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
         <button type="button" class="btn btn-icon btn-wishlist" (click)="addToWishlist(currentVariant.id)">
             <ng-container *appLoadingToggle="'wishlist-' + currentVariant.id">
                 @if (currentVariant.isFavorite) {
@@ -16,16 +41,16 @@
                 }
             </ng-container>
         </button>
-        <div class="product-content link-effect">
-            <div class="color-swatches d-flex gap-1 my-2">
+        <div class="link-effect">
+            <div class="d-flex gap-1 my-2">
                 @for (color of colors; track $index) {
-                <button class="swatch-button" (click)="changeColor(color)">
-                    <span class="swatch-circle" [class.active]="color.checked"
+                <button class="btn btn-outline-light p-0" (click)="changeColor(color)">
+                    <span class="swatch-circle d-block rounded-pill" [class.active]="color.checked"
                         [style.background-color]="color.hexCode"></span>
                 </button>
                 }
             </div>
-            <h5 class="element-title text-uppercase fs-5">
+            <h5 class="text-uppercase fs-5">
                 <a [routerLink]="['/product', product.id, product.slug]">{{product.name}}</a>
             </h5>
             <ng-container *appLoadingToggle="'cart-' + currentVariant.id">

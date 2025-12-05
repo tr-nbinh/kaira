@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -15,6 +15,8 @@ import { FormControlErrorDirective } from '../../../../shared/directives/form-co
 import { LoadingToggleDirective } from '../../../../shared/directives/loading-toggle.directive';
 import { passwordMatchValidator } from '../../validators/password-match.validator';
 
+type InputType = 'text' | 'password';
+
 @Component({
     selector: 'app-register',
     imports: [
@@ -29,6 +31,8 @@ import { passwordMatchValidator } from '../../validators/password-match.validato
 })
 export class RegisterComponent {
     registrationForm!: FormGroup;
+    pwInputType: InputType = 'password';
+    confirmInputType: InputType = 'password';
 
     constructor(
         private fb: FormBuilder,
@@ -101,5 +105,13 @@ export class RegisterComponent {
         } else {
             this.registrationForm.markAllAsTouched();
         }
+    }
+
+    togglePassword() {
+        this.pwInputType = this.pwInputType === 'password' ? 'text' : 'password';
+    }
+
+    toggleConfirmPassword() {
+        this.confirmInputType = this.confirmInputType === 'password' ? 'text' : 'password';
     }
 }

@@ -25,6 +25,7 @@ export class JwtInterceptor implements HttpInterceptor {
         new BehaviorSubject<any>(null);
     private readonly AUTH_URLS_TO_LOGOUT_ON_401 = ['/api/auth/refresh-token'];
     private readonly LOGIN_ENDPOINT = '/api/auth/login';
+    private readonly NO_REFRESH_URLS = ['/api/wishlist'];
 
     constructor(private userService: UserService) {}
 
@@ -40,6 +41,7 @@ export class JwtInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 401) {
+                    console.log(req.url);
                     if (req.url.includes(this.LOGIN_ENDPOINT)) {
                         return throwError(() => error);
                     }
@@ -49,9 +51,7 @@ export class JwtInterceptor implements HttpInterceptor {
                         return throwError(() => error);
                     }
 
-                    if (!this.shouldLogoutOn401(req.url)) {
-                        return this.handle401Error(req, next);
-                    }
+                    return this.handle401Error(req, next);
                 }
                 return throwError(() => error);
             })
@@ -120,5 +120,9 @@ export class JwtInterceptor implements HttpInterceptor {
 
     private shouldLogoutOn401(url: string): boolean {
         return this.AUTH_URLS_TO_LOGOUT_ON_401.some((u) => url.includes(u));
+    }
+
+    private shouldSkipRefresh(url: string): boolean {
+        return this.NO_REFRESH_URLS.some((u) => url.includes(u));
     }
 }

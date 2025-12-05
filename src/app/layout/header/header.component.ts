@@ -1,11 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import {
-    Router,
-    RouterLink,
-    RouterLinkActive
-} from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';

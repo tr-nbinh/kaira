@@ -6,9 +6,9 @@
         <div class="swiper-wrapper d-flex">
             @for (quote of testimonials | async; track quote.id) {
             <div class="swiper-slide">
-                <div class="testimonial-item text-center">
+                <div class="testimonial-item text-center mt-3">
                     <blockquote>
-                        <p>“{{quote.content}}”</p>
+                        <p class="mb-3">“{{quote.content}}”</p>
                         <div class="review-title text-uppercase">{{quote.authorName}}</div>
                     </blockquote>
                 </div>

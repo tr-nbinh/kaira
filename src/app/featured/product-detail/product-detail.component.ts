@@ -1,8 +1,17 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    OnInit,
+    Resource,
+    resource,
+    ResourceStatus,
+    signal,
+    ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { finalize, map, takeUntil } from 'rxjs';
+import { finalize, firstValueFrom, map, takeUntil, tap } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
 import { ColorSelectItem } from '../../models/product-filter.interface';
 import { ProductDetail, ProductVariant } from '../../models/product.interface';
@@ -12,10 +21,16 @@ import { ProductService } from '../../services/product.service';
 import { ToastService } from '../../services/toast.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
+import { ProductDetailSkeletonComponent } from './product-detail-skeleton/product-detail-skeleton.component';
 
 @Component({
     selector: 'app-product-detail',
-    imports: [TranslatePipe, FormsModule, LoadingToggleDirective],
+    imports: [
+        TranslatePipe,
+        FormsModule,
+        LoadingToggleDirective,
+        ProductDetailSkeletonComponent,
+    ],
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.scss',
 })
@@ -29,6 +44,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     selectedColor: ColorSelectItem | undefined;
     selectedQuantity: number = 1;
     variantId!: number;
+    isLoading = signal(true);
 
     constructor(
         private route: ActivatedRoute,
@@ -66,7 +82,11 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     getProductById(productId: number) {
         this.productService
             .getProductById(productId)
-            .pipe(takeUntil(this.ngUnsubscribe))
+            .pipe(
+                tap(() => this.isLoading.set(true)),
+                finalize(() => this.isLoading.set(false)),
+                takeUntil(this.ngUnsubscribe)
+            )
             .subscribe((res) => {
                 this.product = res;
                 this.setCurrentVariant();
@@ -128,7 +148,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                     this.toast.success(res.message);
                 },
                 error: (err) => {
-                    this.toast.error(err.message);
+                    this.toast.warning(err.message);
                 },
             });
     }
