@@ -145,6 +145,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
             )
             .subscribe({
                 next: (res) => {
+                    this.currentVariant.isFavorite = true;
                     this.toast.success(res.message);
                 },
                 error: (err) => {

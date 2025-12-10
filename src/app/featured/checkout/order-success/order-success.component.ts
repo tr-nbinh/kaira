@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { OrderService } from '../../../services/order.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-order-success',
-    imports: [RouterLink],
+    imports: [RouterLink, TranslatePipe],
     templateUrl: './order-success.component.html',
     styleUrl: './order-success.component.scss',
 })

@@ -129,7 +129,14 @@
         "CART_SUMMARY": "Tóm tắt giỏ hàng",
         "UPDATE": "Cập nhật",
         "ADD_NEW_ADDRESS": "Thêm địa chỉ mới",
-        "DEFAULT_ADDRESS": "Đặt làm địa chỉ mặc định"
+        "DEFAULT_ADDRESS": "Đặt làm địa chỉ mặc định",
+        "ADD_YOUR_ADDRESS": "Thêm địa chỉ giao hàng của bạn để tiếp tục"
+    },
+    "ORDER": {
+        "TITLE": "Cảm ơn bạn đã mua hàng",
+        "NOTIFY": "Chúng tôi đã nhận được đơn hàng của bạn và sẽ giao hàng trong vòng 5-7 ngày làm việc.",
+        "ORDER_NUMBER": "Mã đơn hàng của bạn là",
+        "BUTTON": "Tiếp tục"
     },
     "PRICE": {
         "LESS_THAN": "Dưới {{price}}",
@@ -141,8 +148,8 @@
         "EMAIL": "Vui lòng nhập địa chỉ email hợp lệ",
         "PHONE": "Vui lòng nhập số điện thoại hợp lệ",
         "PATTERN": "Sai định dạng",
-        "PASSWORD_PATTERN": "At least one number, one uppercase letter and one special character",
-        "EMAIL_PARTTERN": "Email is invalid format",
+        "PASSWORD_PATTERN": "Tối thiểu 1 số, 1 chữ hoa và 1 ký tự đặc biệt",
+        "EMAIL_PATTERN": "Email không đúng định dạng",
         "MIN_LENGTH": "Vui lòng nhập ít nhất {{requiredLength}} ký tự",
         "MAX_LENGTH": "Vui lòng nhập tối đa {{requiredLength}} ký tự",
         "PASSWORD_MIS_MATCH": "Mật khẩu không trùng khớp",

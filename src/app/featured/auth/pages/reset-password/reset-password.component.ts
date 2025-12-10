@@ -15,8 +15,9 @@ import { ToastService } from '../../../../services/toast.service';
 import { UserService } from '../../../../services/user.service';
 import { passwordMatchValidator } from '../../validators/password-match.validator';
 import { FormControlErrorDirective } from '../../../../shared/directives/form-control-error.directive';
-import { takeUntil } from 'rxjs';
+import { finalize, takeUntil, tap } from 'rxjs';
 
+type PassWordType = 'text' | 'password';
 @Component({
     selector: 'app-reset-password',
     imports: [
@@ -31,12 +32,15 @@ import { takeUntil } from 'rxjs';
 export class ResetPasswordComponent extends BaseComponent {
     resetPasswordForm!: FormGroup;
     token: string | null = '';
+    pwInputType: PassWordType = 'password';
+    confirmInputType: PassWordType = 'password';
 
     constructor(
         private fb: FormBuilder,
         private userService: UserService,
         private toast: ToastService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private loading: LoadingService
     ) {
         super();
     }
@@ -74,7 +78,11 @@ export class ResetPasswordComponent extends BaseComponent {
                 this.token,
                 this.resetPasswordForm.get('password')?.value
             )
-            .pipe(takeUntil(this.ngUnsubscribe))
+            .pipe(
+                tap(() => this.loading.show('reset-password-btn')),
+                finalize(() => this.loading.hide('reset-password-btn')),
+                takeUntil(this.ngUnsubscribe)
+            )
             .subscribe({
                 next: (res) => {
                     this.toast.success(res.message);
@@ -83,5 +91,15 @@ export class ResetPasswordComponent extends BaseComponent {
                     this.toast.error(err.message);
                 },
             });
+    }
+
+    togglePassword() {
+        this.pwInputType =
+            this.pwInputType === 'password' ? 'text' : 'password';
+    }
+
+    toggleConfirmPassword() {
+        this.confirmInputType =
+            this.confirmInputType === 'password' ? 'text' : 'password';
     }
 }

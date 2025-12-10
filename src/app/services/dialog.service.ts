@@ -29,7 +29,13 @@ export class DialogService {
             this.viewContainerRef.createComponent(DialogComponent);
 
         ref.instance.title = options.title;
-        ref.instance.confirmText = options.confirmText || '';
+        if (options.confirmText) {
+            ref.instance.confirmText = options.confirmText;
+        }
+
+        if (options.cancelText) {
+            ref.instance.cancelText = options.cancelText;
+        }
         ref.instance.body = options.body;
 
         ref.instance.confirm.subscribe(() => {

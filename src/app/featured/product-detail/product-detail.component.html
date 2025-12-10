@@ -76,8 +76,11 @@
                             <span class="rating-count">(3.5)</span>
                         </div>
                         <div class="product-price">
-                            <span class="fs-2">${{currentVariant.price}}</span>
+                            <span class="fs-3 me-1">${{currentVariant.price - currentVariant.price *
+                                ((currentVariant.discount ?? 0) / 100)}}</span>
+                            @if (currentVariant.discount) {
                             <del>${{currentVariant.price}}</del>
+                            }
                         </div>
                         <p>{{product.description}}.</p>
                         <div class="color-product-options mt-4">

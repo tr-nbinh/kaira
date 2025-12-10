@@ -22,7 +22,6 @@ export class ProductComponent extends BaseComponent implements OnInit {
         page: 1,
         limit: 8,
         bestSeller: true,
-        lang: 'en',
     };
     private paramsSubject = new BehaviorSubject<ProductRequest>(this.params);
     @ViewChild('swiper') swiper!: ElementRef<HTMLElement>;

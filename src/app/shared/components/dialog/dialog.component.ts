@@ -16,8 +16,8 @@ import {
 })
 export class DialogComponent {
     @Input() title: string = '';
-    @Input() confirmText: string = 'Confirm';
-    @Input() cancelText: string = 'Cancel';
+    @Input() confirmText?: string = 'Confirm';
+    @Input() cancelText?: string = 'Cancel';
     @Output() cancel = new EventEmitter<void>();
     @Output() confirm = new EventEmitter<void>();
     @ContentChild('body', { static: true }) body!: TemplateRef<any>;

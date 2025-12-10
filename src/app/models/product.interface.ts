@@ -29,7 +29,6 @@ export interface ProductDetail extends Product {
 }
 
 export interface ProductRequest extends PaginatedRequest {
-    lang: string;
     bestSeller?: boolean;
     isNewArrival?: boolean;
     bestReviewed?: boolean;
@@ -54,6 +53,7 @@ export interface ProductVariant {
     colorId: number;
     quantity: number;
     price: number;
+    discount: number | null;
     order: number;
     images: string[];
     isFavorite: boolean;

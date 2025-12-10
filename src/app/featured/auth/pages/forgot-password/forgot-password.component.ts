@@ -5,9 +5,10 @@ import { BaseComponent } from '../../../../base/base.component';
 import { LoadingToggleDirective } from '../../../../shared/directives/loading-toggle.directive';
 import { DialogService } from '../../../../services/dialog.service';
 import { UserService } from '../../../../services/user.service';
-import { takeUntil } from 'rxjs';
+import { finalize, takeUntil, takeWhile, tap } from 'rxjs';
 import { ApiError } from '../../../../models/api-response.interface';
 import { ToastService } from '../../../../services/toast.service';
+import { LoadingService } from '../../../../services/loading.service';
 
 @Component({
     selector: 'app-forgot-password',
@@ -23,7 +24,8 @@ export class ForgotPasswordComponent extends BaseComponent {
     constructor(
         private dialog: DialogService,
         private userService: UserService,
-        private toast: ToastService
+        private toast: ToastService,
+        private loading: LoadingService
     ) {
         super();
     }
@@ -31,7 +33,11 @@ export class ForgotPasswordComponent extends BaseComponent {
     requestNewResetEmail() {
         this.userService
             .requestNewResetEmail(this.email)
-            .pipe(takeUntil(this.ngUnsubscribe))
+            .pipe(
+                tap(() => this.loading.show('forgot-password-btn')),
+                finalize(() => this.loading.hide('forgot-password-btn')),
+                takeUntil(this.ngUnsubscribe)
+            )
             .subscribe({
                 next: (res) => {
                     this.message = res.message;

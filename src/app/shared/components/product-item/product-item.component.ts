@@ -9,10 +9,11 @@ import { ToastService } from '../../../services/toast.service';
 import { WishlistService } from '../../../services/wishlist.service';
 import { LoadingToggleDirective } from '../../directives/loading-toggle.directive';
 import { ColorSelectItem } from '../../../models/product-filter.interface';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-product-item',
-    imports: [RouterModule, LoadingToggleDirective],
+    imports: [RouterModule, LoadingToggleDirective, TranslatePipe],
     templateUrl: './product-item.component.html',
     styleUrl: './product-item.component.scss',
 })
@@ -63,6 +64,7 @@ export class ProductItemComponent extends BaseComponent {
             )
             .subscribe({
                 next: (res) => {
+                    this.currentVariant.isFavorite = true;
                     this.toast.success(res.message);
                 },
                 error: (err) => {

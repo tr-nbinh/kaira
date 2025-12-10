@@ -8,7 +8,7 @@ import {
     switchMap,
     take,
     takeUntil,
-    tap
+    tap,
 } from 'rxjs';
 import {
     parseNumberArray,
@@ -87,7 +87,6 @@ export class ShopComponent extends BaseComponent implements OnInit {
 
     private _parseParams(paramMap: ParamMap): ProductRequest {
         return {
-            lang: parseStringOrDefault(paramMap.get('lang'), 'en'),
             limit: parseNumberOrDefault(paramMap.get('limit'), 10),
             page: parseNumberOrDefault(paramMap.get('page'), 1),
             categoryIds: parseNumberArray(paramMap.get('categoryIds')),
@@ -107,7 +106,8 @@ export class ShopComponent extends BaseComponent implements OnInit {
             if (
                 value === null ||
                 value === undefined ||
-                (typeof value === 'string' && value.trim() === '') ||
+                (typeof value === 'string' &&
+                    (value as string).trim() === '') ||
                 (Array.isArray(value) && value.length === 0)
             ) {
                 continue; // ❌ Không thêm vào queryParams nếu không có giá trị
@@ -141,6 +141,6 @@ export class ShopComponent extends BaseComponent implements OnInit {
     }
 
     resetFilter() {
-        this.paramsSubject.next({ lang: 'en', page: 1, limit: 10 });
+        this.paramsSubject.next({ page: 1, limit: 10 });
     }
 }
