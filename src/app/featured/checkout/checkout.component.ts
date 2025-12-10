@@ -8,7 +8,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { finalize, forkJoin, of, takeUntil } from 'rxjs';
 import { getChangedFields } from '../../../utils/object.util';
 import { BaseComponent } from '../../base/base.component';
@@ -74,7 +74,8 @@ export class CheckoutComponent extends BaseComponent {
         private fb: FormBuilder,
         private dialog: DialogService,
         private map: MapService,
-        private addressService: AddressService
+        private addressService: AddressService,
+        private translate: TranslateService
     ) {
         super();
     }
@@ -208,6 +209,12 @@ export class CheckoutComponent extends BaseComponent {
     }
 
     onOrderSubmit() {
+        if (!this.selectedAddresId) {
+            this.toast.warning(
+                this.translate.instant('CHECKOUT.ADD_YOUR_ADDRESS')
+            );
+            return;
+        }
         this.order.addressId = this.selectedAddresId!;
         this.order.orderItems = this.orderItems;
         this.checkoutService

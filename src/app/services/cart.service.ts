@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, take, tap } from 'rxjs';
+import {
+    BehaviorSubject,
+    catchError,
+    Observable,
+    take,
+    tap,
+    throwError,
+} from 'rxjs';
 import { BaseService } from '../base/base.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
@@ -13,10 +20,12 @@ export class CartService extends BaseService {
     private readonly _endpoint = 'cart';
     private cartItemCountSubject = new BehaviorSubject<number>(0);
     readonly cartItemCount$ = this.cartItemCountSubject.asObservable();
+    private _isLoggedIn = false;
 
     constructor(http: HttpClient, private userService: UserService) {
         super(http);
         this.userService.isAuthenticated$.subscribe((isAuth) => {
+            this._isLoggedIn = isAuth;
             if (isAuth) {
                 this.getCartCounts();
             } else {
@@ -33,6 +42,12 @@ export class CartService extends BaseService {
         variantId: number,
         quantity: number = 1
     ): Observable<ApiResponse<number>> {
+        if (!this._isLoggedIn) {
+            console.log(this._isLoggedIn);
+            return throwError(
+                () => new Error('Đăng nhập để sử dụng tính năng này')
+            );
+        }
         return this.post<ApiResponse<number>>(this._endpoint, {
             variantId,
             quantity,

@@ -1752,8 +1752,8 @@ a {
 
 .pagination {
     --bs-pagination-active-bg: var(--bs-black);
-    --bs-pagination-border-width: 0;
-    --bs-pagination-border-radius: 0;
+    --bs-pagination-border-width: 1px;
+    --bs-pagination-border-radius: 4px;
 }
 
 /* breadcrumb */
@@ -1873,7 +1873,7 @@ a {
 /* .slideshow .swiper-slide.swiper-slide-active {
   background-size: 120%;
 } */
- 
+
 /* swiper slide-clip */
 .slide-clip .swiper-slide .image-holder img {
     transform: scale(1.2);
@@ -2632,7 +2632,7 @@ a {
     position: relative;
     padding: 0;
     overflow: hidden;
-    transition: transform 0.5s;
+    transition: opacity 0.5s, transform 0.5s;
     display: block;
 }
 
@@ -2640,6 +2640,7 @@ a {
     content: attr(data-after);
     display: inline-block;
     transform: translateY(100%);
+    opacity: 0;
     position: absolute;
     left: 0;
     font-size: 1rem;
@@ -2660,6 +2661,7 @@ a {
 
 .link-effect:hover a::after {
     transform: translateY(0%);
+    opacity: 1;
 }
 
 .is-wishlisted {
@@ -3105,4 +3107,11 @@ Splash Container / Wrapper
 .nav-pills .show>.nav-link {
     color: #5969ff;
     background-color: transparent;
+}
+
+
+
+// General
+.auth .section-title {
+    font-size: clamp(28px, 4vw, 40px);
 }

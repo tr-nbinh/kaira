@@ -25,7 +25,7 @@
 }
 
 .dialog-body {
-    height: 400px;
+    max-height: 400px;
     overflow: auto;
     overscroll-behavior: contain;
      scrollbar-width: none;      /* Firefox */

@@ -51,10 +51,10 @@
                 }
             </div>
             <h5 class="text-uppercase fs-5">
-                <a [routerLink]="['/product', product.id, product.slug]">{{product.name}}</a>
+                <a [routerLink]="['/product', product.id, currentVariant.id, product.slug]">{{product.name}}</a>
             </h5>
             <ng-container *appLoadingToggle="'cart-' + currentVariant.id">
-                <a href="javascript:void(0)" class="text-decoration-none" data-after="Add to cart"
+                <a href="javascript:void(0)" class="text-decoration-none" [attr.data-after]="'COMMON.ADD_TO_CART' | translate"
                     (click)="addToCart(currentVariant.id)"><span>${{currentVariant.price}}</span>
                 </a>
             </ng-container>

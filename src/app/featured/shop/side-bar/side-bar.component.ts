@@ -25,7 +25,7 @@ import { ProductFilterService } from '../../../services/product-filter.service';
     styleUrl: './side-bar.component.scss',
 })
 export class SideBarComponent extends BaseComponent implements OnInit {
-    @Input() params: ProductRequest = { lang: 'en', limit: 10, page: 1 };
+    @Input() params: ProductRequest = { limit: 10, page: 1 };
     categories: CategorySelectItem[] = [];
     colors: (Color & BaseSelectableItem)[] = [];
     sizes: Size[] = [];
@@ -272,7 +272,7 @@ export class SideBarComponent extends BaseComponent implements OnInit {
     }
 
     resetFilter(): void {
-        this.params = { lang: 'en', limit: 10, page: 1 };
+        this.params = { limit: 10, page: 1 };
 
         this.selectedCategoryIds = [];
         this.selectedColorIds = [];

@@ -1,4 +1,4 @@
-@if (totalPages > 0) {
+<!-- @if (totalPages > 0) {
 <nav aria-label="Page navigation" class="d-flex justify-content-center mt-5">
     <ul class="pagination">
         <li class="page-item" [class.disabled]="currentPage === 1">
@@ -24,6 +24,31 @@
                 <button class="page-link" aria-label="Next" (click)="goToPage(currentPage + 1)">
                     <span aria-hidden="true">&raquo;</span>
                 </button>
+            </li>
+    </ul>
+</nav>
+} -->
+
+@if (totalPages > 0) {
+<nav>
+    <ul class="pagination justify-content-center my-5">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="goToPage(currentPage - 1)">Previous</button>
+        </li>
+        @if (pages[0] > 1) {
+        <li class="page-item disabled">
+            <span class="page-link">...</span>
+        </li>
+        }
+        @for (page of pages; track $index) {
+        <li class="page-item" [class.active]="currentPage === page"><button class="page-link"
+                (click)="goToPage(page)">{{page}}</button></li>
+        }
+        @if (pages[pages.length - 1] < totalPages) { <li class="page-item disabled"> <span class="page-link">...</span>
+            </li>
+            }
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <button class="page-link" (click)="goToPage(currentPage + 1)">Next</button>
             </li>
     </ul>
 </nav>

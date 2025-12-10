@@ -129,7 +129,14 @@
         "CART_SUMMARY": "Cart summary",
         "UPDATE": "Update",
         "ADD_NEW_ADDRESS": "Add new address",
-        "DEFAULT_ADDRESS": "Set as default address"
+        "DEFAULT_ADDRESS": "Set as default address",
+        "ADD_YOUR_ADDRESS": "Add your delivery address to continue"
+    },
+    "ORDER": {
+        "TITLE": "Thank you for your purchase",
+        "NOTIFY": "We've received your order will ship 5-7 business days.",
+        "ORDER_NUMBER": "Your order number is",
+        "BUTTON": "Back to shop"
     },
     "PRICE": {
         "LESS_THAN": "Less than {{price}}",
