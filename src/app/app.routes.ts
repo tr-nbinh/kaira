@@ -58,13 +58,13 @@ export const routes: Routes = [
                 (m) => m.CheckoutComponent
             ),
     },
-    {
-        path: 'purchase',
-        loadComponent: () =>
-            import('./featured/purchase/purchase.component').then(
-                (m) => m.PurchaseComponent
-            ),
-    },
+    // {
+    //     path: 'purchase',
+    //     loadComponent: () =>
+    //         import('./featured/purchase/purchase.component').then(
+    //             (m) => m.PurchaseComponent
+    //         ),
+    // },
     {
         path: 'image-uploader',
         loadComponent: () =>

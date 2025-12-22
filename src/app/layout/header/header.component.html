@@ -26,7 +26,7 @@
                             <ul class="navbar-nav justify-content-end flex-grow-1 gap-1 gap-md-5 pe-3">
                                 @for (item of menu$ | async; track item.id) {
                                 <li class="nav-item">
-                                    <a class="nav-link" [routerLink]="[item.path]" routerLinkActive="active">
+                                    <a class="nav-link" [routerLink]="[item.path]" routerLinkActive="active" data-bs-dismiss="offcanvas">
                                         {{item.name}}
                                     </a>
                                 </li>
@@ -76,7 +76,7 @@
                                 </svg>
                             </a>
                         </li>
-                        <li class="dropdown d-none d-md-block">
+                        <li class="dropdown">
                             <div class="btn-group">
                                 <button type="button" class="btn text-dark auth-btn" data-bs-toggle="dropdown"
                                     aria-expanded="false">
