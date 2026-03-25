@@ -1,0 +1,9 @@
+.parallax {
+    height: 400px;
+    background-image: url('/assets/images/newsletter/bg-newsletter.jpg');
+    background-attachment: fixed;
+    /* 🔥 cốt lõi */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

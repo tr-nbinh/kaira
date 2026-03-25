@@ -1,0 +1,28 @@
+@use 'styles/mixin' as *;
+
+.blog-content {
+    ::ng-deep {
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100% !important;
+            border-collapse: collapse;
+            overflow-x: auto;
+            display: block;
+        }
+
+        p,
+        span,
+        h1,
+        h2,
+        h3 {
+            line-height: 1.6;
+        }
+    }
+}

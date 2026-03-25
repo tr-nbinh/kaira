@@ -1,0 +1,25 @@
+<div class="post-list post-card-small">
+    @if (blogs.length) {
+    <div class="row">
+        @for (item of blogs; track $index) {
+        <div [class]="colClass">
+            <app-blog-card [blog]="item || null"></app-blog-card>
+        </div>
+        }
+    </div>
+    } @else {
+    <div class="empty-state-container text-center py-5">
+        <h3 class="empty-title text-uppercase">Chưa có bài viết nào</h3>
+        <p class="empty-description text-muted mb-4">
+            Rất tiếc, hiện tại chúng tôi chưa có bài viết nào trong chuyên mục này. <br>
+            Vui lòng quay lại sau hoặc khám phá các danh mục khác.
+        </p>
+
+        <div class="empty-actions">
+            <a routerLink="/" class="btn btn-outline-dark btn-sm text-uppercase">
+                Quay về trang chủ
+            </a>
+        </div>
+    </div>
+    }
+</div>

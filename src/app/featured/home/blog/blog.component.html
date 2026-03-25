@@ -1,67 +1,11 @@
+@if (blogs.length) {
 <section class="blog py-5">
     <div class="container">
         <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
-            <h4 class="text-uppercase">Read Blog Posts</h4>
-            <a routerLink="/blog" class="btn-link">View All</a>
+            <h4 class="text-uppercase">{{'BLOG.TITLE' | translate }}</h4>
+            <a routerLink="/blog" class="fancy-link text-uppercase">{{'BLOG.LINK' | translate }}</a>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <article class="post-item">
-                    <div class="post-image">
-                        <a href="single-post.html">
-                            <img src="assets/images/blog/post-image1.jpg" alt="image" class="post-grid-image img-fluid">
-                        </a>
-                    </div>
-                    <div class="post-content d-flex flex-wrap gap-2 my-3">
-                        <div class="post-meta text-uppercase fs-6 text-secondary">
-                            <span class="post-category">Fashion /</span>
-                            <span class="meta-day"> sep 11, 2025</span>
-                        </div>
-                        <h5 class="post-title text-uppercase">
-                            <a href="single-post.html">How to look outstanding in pastel</a>
-                        </h5>
-                        <p>Beyond Basic Pastel: Your Guide to Looking Truly Unique...</p>
-                    </div>
-                </article>
-            </div>
-            <div class="col-md-4">
-                <article class="post-item">
-                    <div class="post-image">
-                        <a href="single-post.html">
-                            <img src="assets/images/blog/post-image2.jpg" alt="image" class="post-grid-image img-fluid">
-                        </a>
-                    </div>
-                    <div class="post-content d-flex flex-wrap gap-2 my-3">
-                        <div class="post-meta text-uppercase fs-6 text-secondary">
-                            <span class="post-category">Fashion /</span>
-                            <span class="meta-day"> nov 11, 2025</span>
-                        </div>
-                        <h5 class="post-title text-uppercase">
-                            <a href="single-post.html">Top 10 fashion trend for summer</a>
-                        </h5>
-                        <p>Must-know Summer Trends! Update your closet with the 10 biggest looks...</p>
-                    </div>
-                </article>
-            </div>
-            <div class="col-md-4">
-                <article class="post-item">
-                    <div class="post-image">
-                        <a href="single-post.html">
-                            <img src="assets/images/blog/post-image3.jpg" alt="image" class="post-grid-image img-fluid">
-                        </a>
-                    </div>
-                    <div class="post-content d-flex flex-wrap gap-2 my-3">
-                        <div class="post-meta text-uppercase fs-6 text-secondary">
-                            <span class="post-category">Fashion /</span>
-                            <span class="meta-day"> oct 11, 2025</span>
-                        </div>
-                        <h5 class="post-title text-uppercase">
-                            <a href="single-post.html">Crazy fashion with unique moment</a>
-                        </h5>
-                        <p>The legendary, unique moments and craziest designs that broke all the rules...</p>
-                    </div>
-                </article>
-            </div>
-        </div>
+        <app-blog-list [blogs]="blogs" [colClass]="'col-md-4'"></app-blog-list>
     </div>
 </section>
+}

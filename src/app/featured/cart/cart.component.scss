@@ -2,16 +2,15 @@
     font-size: 18px;
 }
 
-.card-color
-.card-price {
+.card-color .card-price {
     font-size: 16px;
 }
 
 .quantity-group {
+    width: 30%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
     border-radius: 12px;
     background-color: white;
     box-shadow: 1px 0px 5px rgba($color: #000000, $alpha: 0.3);
@@ -33,6 +32,30 @@
     }
 }
 
-p {
-    margin: 0;
+.product-infor {
+    font-size: clamp(16px, 2.5rem - 2vw, 18px);
+}
+
+@media (max-width: 768px) {
+    .quantity-group {
+        width: 70%;
+    }
+}
+
+@media (max-width: 576px) {
+    .quantity-group {
+        width: 40%;
+    }
+}
+
+
+.btn-primary {
+    --bs-btn-bg: #8C907E;
+    --bs-btn-border-color: #8C907E;
+    --bs-btn-hover-bg: #9da18d;
+    --bs-btn-hover-border-color: #8C907E;
+    --bs-btn-disabled-bg: #8C907E;
+    --bs-btn-active-bg: #8C907E;
+    --bs-btn-active-border-color: #8C907E;
+    --bs-btn-disabled-border-color: #8C907E;
 }

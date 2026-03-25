@@ -31,7 +31,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
     intercept(
         req: HttpRequest<any>,
-        next: HttpHandler
+        next: HttpHandler,
     ): Observable<HttpEvent<any>> {
         const accessToken = this.userService.getAccessToken();
         if (accessToken) {
@@ -41,8 +41,12 @@ export class JwtInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 401) {
-                    console.log(req.url);
+                    const errorCode = error.error?.code;
                     if (req.url.includes(this.LOGIN_ENDPOINT)) {
+                        return throwError(() => error);
+                    }
+
+                    if (!accessToken) {
                         return throwError(() => error);
                     }
 
@@ -54,13 +58,13 @@ export class JwtInterceptor implements HttpInterceptor {
                     return this.handle401Error(req, next);
                 }
                 return throwError(() => error);
-            })
+            }),
         );
     }
 
     private addToken(
         request: HttpRequest<unknown>,
-        token: string
+        token: string,
     ): HttpRequest<unknown> {
         return request.clone({
             setHeaders: {
@@ -71,7 +75,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
     private handle401Error(
         request: HttpRequest<unknown>,
-        next: HttpHandler
+        next: HttpHandler,
     ): Observable<HttpEvent<unknown>> {
         if (!this.isRefreshingToken) {
             this.isRefreshingToken = true;
@@ -83,7 +87,7 @@ export class JwtInterceptor implements HttpInterceptor {
                     if (response && response.data) {
                         this.refreshTokenSubject.next(response.data);
                         return next.handle(
-                            this.addToken(request, response.data)
+                            this.addToken(request, response.data),
                         ); // Retry the original request with new token
                     } else {
                         // If refresh successful but no new access token returned (shouldn't happen with current backend)
@@ -91,8 +95,8 @@ export class JwtInterceptor implements HttpInterceptor {
                         return throwError(
                             () =>
                                 new Error(
-                                    'refresh successful but no new access token returned'
-                                )
+                                    'refresh successful but no new access token returned',
+                                ),
                         );
                     }
                 }),
@@ -102,7 +106,7 @@ export class JwtInterceptor implements HttpInterceptor {
                 }),
                 finalize(() => {
                     this.isRefreshingToken = false;
-                })
+                }),
             );
         } else {
             // If a refresh token request is already in progress,
@@ -112,8 +116,8 @@ export class JwtInterceptor implements HttpInterceptor {
                 take(1), // Take only the first emitted token
                 switchMap((accessToken: string) =>
                     // retry original request when new token is returned
-                    next.handle(this.addToken(request, accessToken))
-                )
+                    next.handle(this.addToken(request, accessToken)),
+                ),
             );
         }
     }

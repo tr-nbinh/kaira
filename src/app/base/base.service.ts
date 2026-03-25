@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 import {
     HttpClient,
+    HttpContext,
     HttpErrorResponse,
     HttpHeaders,
     HttpParams,
 } from '@angular/common/http';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { createHttpParamsFromObject } from '../../utils/http-params.helper';
-import { ApiError, ApiResponse } from '../models/api-response.interface';
+import { ApiError } from '../models/api-response.interface';
 export interface HttpOptions {
     headers?: HttpHeaders | { [header: string]: string | string[] };
     params?: HttpParams | { [param: string]: string | number | string[] };
@@ -16,33 +17,32 @@ export interface HttpOptions {
     observe?: 'body';
     repostProgress?: boolean;
     withCredentials?: boolean;
+    context?: HttpContext;
 }
 
 @Injectable()
 export class BaseService {
     protected readonly apiUrl: string = environment.apiUrl;
 
-    constructor(protected http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
     protected get<T>(
         path: string,
         param: any = {},
-        options?: HttpOptions
+        options?: HttpOptions,
     ): Observable<T> {
         return this.http
             .get<T>(`${this.apiUrl}/${path}`, {
                 ...options,
                 params: createHttpParamsFromObject(param),
             })
-            .pipe(
-                catchError(this.handleError)
-            );
+            .pipe(catchError(this.handleError));
     }
 
     protected post<T>(
         path: string,
         body: any | null,
-        options?: HttpOptions
+        options?: HttpOptions,
     ): Observable<T> {
         return this.http
             .post<T>(`${this.apiUrl}/${path}`, body, options)
@@ -52,7 +52,7 @@ export class BaseService {
     protected put<T>(
         path: string,
         body: any | null,
-        options?: HttpOptions
+        options?: HttpOptions,
     ): Observable<T> {
         return this.http
             .put<T>(`${this.apiUrl}/${path}`, body, options)
@@ -62,7 +62,7 @@ export class BaseService {
     protected patch<T>(
         path: string,
         body?: any,
-        options?: HttpOptions
+        options?: HttpOptions,
     ): Observable<T> {
         return this.http
             .patch<T>(`${this.apiUrl}/${path}`, body, options)

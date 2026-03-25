@@ -1,0 +1,9 @@
+<div class="post-wrap py-5">
+    <div class="container">
+        <app-blog-list [blogs]="blogs"></app-blog-list>
+        @if (pagination.totalPages > 1) {
+        <app-pagination [totalItems]="pagination.totalCount" [currentPage]="pagination.page" [limit]="pagination.limit"
+            (pageChange)="onPageChange($event)"></app-pagination>
+        }
+    </div>
+</div>

@@ -2,7 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
     debounceTime,
     distinctUntilChanged,
@@ -13,14 +13,15 @@ import {
     tap,
 } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
-import { CartItem } from '../../models/cart.interface';
-import { CartService } from '../../services/cart.service';
 import { CheckoutService } from '../../services/checkout.service';
 import { LoadingService } from '../../services/loading.service';
 import { ToastService } from '../../services/toast.service';
 import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
-import { FullPageLoadingComponent } from '../../shared/components/full-page-loading/full-page-loading.component';
-import { CartEmptyComponent } from './cart-empty/cart-empty.component';
+import { ProductUrlPipe } from '../../shared/pipes/product-url.pipe';
+import { CartEmptyComponent } from './components/cart-empty/cart-empty.component';
+import { CartSkeletonComponent } from './components/cart-skeleton/cart-skeleton.component';
+import { CartItem } from './models/cart.model';
+import { CartService } from './services/cart.service';
 
 @Component({
     selector: 'app-cart',
@@ -30,8 +31,9 @@ import { CartEmptyComponent } from './cart-empty/cart-empty.component';
         LoadingToggleDirective,
         FormsModule,
         RouterLink,
-        FullPageLoadingComponent,
-        CartEmptyComponent
+        CartEmptyComponent,
+        CartSkeletonComponent,
+        ProductUrlPipe,
     ],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss',
@@ -39,21 +41,24 @@ import { CartEmptyComponent } from './cart-empty/cart-empty.component';
 export class CartComponent extends BaseComponent {
     cartItems: CartItem[] = [];
     subTotal: number = 0;
-    private _quantityMap = new Map<number, Subject<number>>();
+    private _quantityMap = new Map<string, Subject<number>>();
 
-    isLoading = false;
+    isLoading = true;
+    currency: string = 'VND';
 
     constructor(
         private cartService: CartService,
         private toast: ToastService,
         private loading: LoadingService,
         private router: Router,
-        private checkoutService: CheckoutService
+        private checkoutService: CheckoutService,
+        private translate: TranslateService,
     ) {
         super();
     }
 
     ngOnInit() {
+        this.currency = this.translate.currentLang == 'en' ? 'USD' : 'VND';
         this.getCartItems();
     }
 
@@ -63,92 +68,83 @@ export class CartComponent extends BaseComponent {
             .pipe(
                 tap(() => (this.isLoading = true)),
                 finalize(() => (this.isLoading = false)),
-                takeUntil(this.ngUnsubscribe)
+                takeUntil(this.ngUnsubscribe),
             )
-            .subscribe((cartItems) => {
-                this.cartItems = cartItems;
-                this.subTotal = this.calculateTotalAmount();
+            .subscribe((res) => {
+                this.cartItems = res.cartItems;
+                this.subTotal = res.subTotal;
             });
     }
 
-    removeFromCart(variantId: number) {
+    removeFromCart(variantId: string) {
         const key = `cart-remove-${variantId}`;
         this.loading.show(key);
         this.cartService
             .removeFromCart(variantId)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key))
+                finalize(() => this.loading.hide(key)),
             )
             .subscribe({
                 next: (res) => {
+                    this.subTotal = res.subTotal;
+                    this.cartItems = this.cartItems.filter(
+                        (item) => item.variantId !== variantId,
+                    );
+
                     const subject = this._quantityMap.get(variantId);
                     if (subject) {
                         subject.complete();
                         this._quantityMap.delete(variantId);
                     }
-                    this.cartItems = this.cartItems.filter(
-                        (item) => item.variantId !== variantId
-                    );
-                    this.subTotal = this.calculateTotalAmount();
-                    this.toast.success(res.message);
-                },
-                error: (err) => {
-                    this.toast.error(err.message);
                 },
             });
     }
 
     increaseQuantity(cartItem: CartItem) {
-        if (cartItem.quantity >= cartItem.quantityInStock) {
-            this.toast.warning('không thể vượt quá số lượng trong kho');
-            return;
+        if (cartItem.quantity >= cartItem.stock) {
+            return this.toast.warning(
+                this.translate.instant('CART.MAX_QUATITY', {
+                    stock: cartItem.stock,
+                }),
+            );
         }
 
         cartItem.quantity++;
-        this.updateVariantQuantity(cartItem.variantId, cartItem.quantity);
+        this.updateVariantQuantity(cartItem, cartItem.quantity);
     }
 
     decreaseQuantity(cartItem: CartItem) {
         if (cartItem.quantity <= 1) return;
         cartItem.quantity--;
-        this.updateVariantQuantity(cartItem.variantId, cartItem.quantity);
+        this.updateVariantQuantity(cartItem, cartItem.quantity);
     }
 
-    updateVariantQuantity(variantId: number, quantity: number) {
-        if (!this._quantityMap.has(variantId)) {
+    updateVariantQuantity(cartItem: CartItem, quantity: number) {
+        if (!this._quantityMap.has(cartItem.variantId)) {
             const subject = new Subject<number>();
             subject
                 .pipe(
                     debounceTime(500),
                     distinctUntilChanged(),
                     switchMap((qty) =>
-                        this.cartService.updateQuantityInCart(variantId, qty)
-                    )
+                        this.cartService.updateQuantityInCart(
+                            cartItem.variantId,
+                            qty,
+                        ),
+                    ),
                 )
-                .subscribe({
-                    next: (res) => {
-                        this.subTotal = this.calculateTotalAmount();
-                        this.toast.success(res.message);
-                    },
-                    error: (err) => {
-                        this.toast.error(err.message);
-                    },
+                .subscribe((res) => {
+                    cartItem.displayFinalPrice = res.cartItemFinalPrice;
+                    this.subTotal = res.subTotal;
                 });
-            this._quantityMap.set(variantId, subject);
+            this._quantityMap.set(cartItem.variantId, subject);
         }
-        this._quantityMap.get(variantId)?.next(quantity);
-    }
-
-    calculateTotalAmount(): number {
-        return this.cartItems.reduce(
-            (acc, curr) => acc + curr.finalPrice * curr.quantity,
-            0
-        );
+        this._quantityMap.get(cartItem.variantId)?.next(quantity);
     }
 
     goToCheckout() {
-        this.checkoutService.setSelectedCartItems(this.cartItems);
-        this.router.navigate(['/checkout']);
+        // this.checkoutService.setSelectedCartItems(this.cartItems);
+        // this.router.navigate(['/checkout']);
     }
 }

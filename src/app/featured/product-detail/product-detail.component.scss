@@ -1,3 +1,7 @@
+:host ::ng-deep .content {
+  color: inherit; /* Hoặc màu bạn muốn */
+}
+
 .swatch-element .swatch-label {
     font-weight: 400;
     line-height: 32px;

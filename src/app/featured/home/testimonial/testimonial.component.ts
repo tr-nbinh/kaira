@@ -13,7 +13,7 @@ import { TestimonialService } from '../../../services/testimonial.service';
     styleUrl: './testimonial.component.scss',
 })
 export class TestimonialComponent extends BaseComponent {
-    testimonials: Observable<Testimonial[]> = of([]);
+    testimonials$: Observable<Testimonial[]> = of([]);
     @ViewChild('swiperEle') swiperEle!: ElementRef<any>;
 
     constructor(private testimonialService: TestimonialService) {
@@ -21,15 +21,17 @@ export class TestimonialComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.testimonials = this.testimonialService.getTestimonials();
+        this.testimonials$ = this.testimonialService.getTestimonials();
     }
 
     ngAfterViewInit() {
         this.initializeSwiper(this.swiperEle.nativeElement, {
+            observer: true,
+            observeParents: true,
+            observeSlideChildren: true,
             effect: 'coverflow',
             grabCursor: true,
             centeredSlides: true,
-            // loop: true, //error: not enough slide to loop
             slidesPerView: 'auto',
         });
     }

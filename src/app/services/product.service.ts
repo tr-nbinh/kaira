@@ -1,13 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BaseService } from '../base/base.service';
 import { PaginatedResponse } from '../models/paginatedResponse.interface';
-import {
-    Product,
-    ProductDetail,
-    ProductRequest,
-} from '../models/product.interface';
+import { ProductRequest } from '../models/product.interface';
+import { Product } from '../featured/shop/models/product.model';
 
 @Injectable({
     providedIn: 'root',
@@ -20,12 +17,12 @@ export class ProductService extends BaseService {
     }
 
     getProducts(
-        params: ProductRequest
+        params: ProductRequest,
     ): Observable<PaginatedResponse<Product>> {
         return this.get(this._endpoint, params);
     }
 
-    getProductById(id: number): Observable<ProductDetail> {
+    getProductById(id: string): Observable<Product> {
         return this.get(`${this._endpoint}/${id}`);
     }
 

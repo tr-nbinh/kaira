@@ -3,14 +3,14 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { delay, finalize, first, Observable, of, tap } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
+import { CartService } from '../../featured/cart/services/cart.service';
+import { WishlistService } from '../../featured/wishlist/services/wishlist.service';
 import { Language } from '../../models/language.interface';
 import { MenuItem } from '../../models/menu.interface';
-import { CartService } from '../../services/cart.service';
 import { MenuService } from '../../services/menu.service';
 import { UserService } from '../../services/user.service';
-import { WishlistService } from '../../services/wishlist.service';
 import { LANGUAGES } from '../../shared/constants/languages.constant';
 
 @Component({
@@ -34,7 +34,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
     activeCurrentLanguage!: Language;
     isAuthenticated$: Observable<boolean> = of(false);
     cartItemCount$: Observable<number> = of(0);
-    wishlistItemCount$: Observable<number> = of(0);
+    wishlistCount$: Observable<number> = of(0);
     isScrolled: boolean = false;
 
     constructor(
@@ -43,18 +43,18 @@ export class HeaderComponent extends BaseComponent implements OnInit {
         private userService: UserService,
         private cartService: CartService,
         private wishlishService: WishlistService,
-        private router: Router
+        private router: Router,
     ) {
         super();
     }
 
     ngOnInit() {
         this.activeCurrentLanguage = this.languages.find(
-            (item) => item.code === this.translate.currentLang
+            (item) => item.code === this.translate.currentLang,
         )!;
         this.menu$ = this.menuService.getMenu();
         this.cartItemCount$ = this.cartService.cartItemCount$;
-        this.wishlistItemCount$ = this.wishlishService.wishlistItemCount$;
+        this.wishlistCount$ = this.wishlishService.wishlistItemCount$;
         this.isAuthenticated$ = this.userService.isAuthenticated$;
     }
 
@@ -79,7 +79,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
         localStorage.setItem('userLanguage', code);
         window.location.reload();
         this.activeCurrentLanguage = this.languages.find(
-            (item) => item.code === code
+            (item) => item.code === code,
         )!;
     }
 
@@ -93,17 +93,6 @@ export class HeaderComponent extends BaseComponent implements OnInit {
 
     logout() {
         this.userService.logout();
-    }
-
-    checkScroll() {
-        // fromEvent(window, 'scroll')
-        //     .pipe(
-        //         map(() => window.scrollY > 0),
-        //         takeUntil(this.ngUnsubscribe)
-        //     )
-        //     .subscribe((isScrolled) => {
-        //         this.isScrolled = isScrolled;
-        //     });
     }
 
     override ngOnDestroy(): void {

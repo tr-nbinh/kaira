@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Product } from '../../../models/product.interface';
+import { Product } from '../../../featured/shop/models/product.model';
 import { ProductItemComponent } from '../product-item/product-item.component';
 
 @Component({
@@ -10,4 +10,9 @@ import { ProductItemComponent } from '../product-item/product-item.component';
 })
 export class ProductListComponent {
     @Input() products: Product[] = [];
+    fakeProducts = new Array(6).fill(undefined);
+
+    ngOnInit() {
+        console.log(this.products);
+    }
 }

@@ -1,71 +1,92 @@
-import { Component, Input } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, takeUntil } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
-import { Product, ProductVariant } from '../../../models/product.interface';
-import { CartService } from '../../../services/cart.service';
+import { Product, Variant } from '../../../featured/shop/models/product.model';
+import { ColorSelectItem } from '../../../models/product-filter.interface';
+import { ProductVariant } from '../../../models/product.interface';
+import { CartService } from '../../../featured/cart/services/cart.service';
 import { LoadingService } from '../../../services/loading.service';
 import { ToastService } from '../../../services/toast.service';
-import { WishlistService } from '../../../services/wishlist.service';
+import { WishlistService } from '../../../featured/wishlist/services/wishlist.service';
 import { LoadingToggleDirective } from '../../directives/loading-toggle.directive';
-import { ColorSelectItem } from '../../../models/product-filter.interface';
-import { TranslatePipe } from '@ngx-translate/core';
+import { ProductUrlPipe } from '../../pipes/product-url.pipe';
+
+declare var bootstrap: any;
 
 @Component({
     selector: 'app-product-item',
-    imports: [RouterModule, LoadingToggleDirective, TranslatePipe],
+    imports: [
+        RouterModule,
+        LoadingToggleDirective,
+        TranslatePipe,
+        CurrencyPipe,
+        ProductUrlPipe,
+    ],
     templateUrl: './product-item.component.html',
     styleUrl: './product-item.component.scss',
 })
 export class ProductItemComponent extends BaseComponent {
-    @Input() product!: Product;
-    currentVariant!: ProductVariant;
+    @Input() product: Product | undefined = undefined;
+    @ViewChild('productCarousel') carouselRef!: ElementRef;
+
     colors: ColorSelectItem[] = [];
     colorChecked: ColorSelectItem | undefined;
+
+    selectedColor: string | null = null;
+    selectedVariant: Variant | undefined = undefined;
 
     constructor(
         private wishlistService: WishlistService,
         private cartService: CartService,
         private toast: ToastService,
-        protected loading: LoadingService
+        protected loading: LoadingService,
     ) {
         super();
     }
 
     ngOnInit() {
-        this.colors = this.product.colors;
-        this.changeColor(this.colors[0]);
-        this.setCurrentVariant();
+        if (this.product) {
+            this.selectColor(this.product.availableColors[0].id);
+        }
     }
 
-    changeColor(color: ColorSelectItem) {
-        if (color.id === this.colorChecked?.id) return;
-        if (this.colorChecked) this.colorChecked.checked = false;
-        color.checked = true;
-        this.colorChecked = color;
-        this.setCurrentVariant();
+    selectColor(colorId: string) {
+        this.selectedColor = colorId;
+        this.selectedVariant = this.product?.variants.find(
+            (v) => colorId == v.colorId,
+        );
+        if (this.carouselRef) {
+            const element = this.carouselRef.nativeElement;
+
+            // Lấy instance hiện tại của Carousel từ DOM
+            const carouselInstance =
+                bootstrap.Carousel.getInstance(element) ||
+                new bootstrap.Carousel(element);
+
+            if (carouselInstance) {
+                // Ép nhảy về slide đầu tiên (index 0)
+                carouselInstance.to(0);
+            }
+        }
     }
 
-    setCurrentVariant() {
-        this.currentVariant =
-            this.product.variants.find(
-                (v) => v.colorId === this.colorChecked?.id
-            ) || this.product.variants[0];
-    }
-
-    addToWishlist(variantId: number) {
+    toggleWishlist(variantId: string) {
         const key = `wishlist-${variantId}`;
         this.loading.show(key);
         this.wishlistService
             .addToWishlist(variantId)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key))
+                finalize(() => this.loading.hide(key)),
             )
             .subscribe({
                 next: (res) => {
-                    this.currentVariant.isFavorite = true;
-                    this.toast.success(res.message);
+                    if (this.selectedVariant) {
+                        this.selectedVariant.isFavorite = res.isWishlisted;
+                    }
                 },
                 error: (err) => {
                     console.log(err);
@@ -74,19 +95,17 @@ export class ProductItemComponent extends BaseComponent {
             });
     }
 
-    addToCart(variantId: number) {
+    addToCart(variantId: string) {
+        const quantity = 1;
         const key = `cart-${variantId}`;
         this.loading.show(key);
         this.cartService
-            .addToCart(variantId, 1)
+            .addToCart(variantId, quantity)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key))
+                finalize(() => this.loading.hide(key)),
             )
             .subscribe({
-                next: (res) => {
-                    this.toast.success(res.message);
-                },
                 error: (err) => {
                     this.toast.info(err.message);
                 },

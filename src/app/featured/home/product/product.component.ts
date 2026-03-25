@@ -1,13 +1,14 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, delay, map, Observable, of, switchMap } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
-import { Product, ProductRequest } from '../../../models/product.interface';
-import { ProductService } from '../../../services/product.service';
+import { ProductRequest } from '../../../models/product.interface';
 import { ProductItemComponent } from '../../../shared/components/product-item/product-item.component';
 import { PRODUCT_HIGHLIGHT_FILTERS } from '../../../shared/constants/product-hightlight-filters.constant';
 import { ProductHighlightFilterValue } from '../../../shared/enums/product-highlight-filter-value.enum';
+import { Product } from '../../shop/models/product.model';
+import { ProductService } from '../../shop/services/product.service';
 
 @Component({
     selector: 'app-product',
@@ -37,13 +38,14 @@ export class ProductComponent extends BaseComponent implements OnInit {
     }
 
     getProducts() {
-        this.products$ = this.paramsSubject.pipe(
-            switchMap((params) =>
-                this.productService
-                    .getProducts(params)
-                    .pipe(map((res) => res.data))
-            )
-        );
+        // this.products$ = this.paramsSubject.pipe(
+        //     switchMap((params) =>
+        //         this.productService
+        //             .getProducts(params)
+        //             .pipe(map((res) => res.data))
+        //     )
+        // );
+        this.products$ = this.productService.getProducts();
     }
 
     onFilterChange(filter: ProductHighlightFilterValue) {
@@ -71,6 +73,9 @@ export class ProductComponent extends BaseComponent implements OnInit {
 
     ngAfterViewInit() {
         this.initializeSwiper(this.swiper.nativeElement, {
+            observer: true,
+            observeParents: true,
+            observeSlideChildren: true,
             slidesPerView: 4,
             spaceBetween: 20,
             navigation: {
