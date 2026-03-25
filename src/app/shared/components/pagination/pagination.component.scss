@@ -1,0 +1,17 @@
+.page-link {
+    color: var(--bs-dark);
+}
+
+.page-link:focus,
+.page-link:active {
+    box-shadow: none;
+    outline: none;
+}
+
+
+.active>.page-link,
+.page-link.active {
+    color: white;
+    background-color: var(--bs-dark);
+    border-color: var(--bs-dark);
+}

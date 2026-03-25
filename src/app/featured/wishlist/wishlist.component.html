@@ -1,5 +1,9 @@
 <section id="wishlist" class="py-5 my-5">
     <div class="wishlist-container">
+        @if (isLoading) {
+        <app-wishlist-skeleton></app-wishlist-skeleton>
+        } @else {
+
         @if(!wishlistItems.length) {
         <app-wishlist-empty></app-wishlist-empty>
         } @else {
@@ -9,8 +13,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="wishlist-product-image-container">
                         <div class="wishlist-product-image-render">
-                            <a [routerLink]="['/product',item.productId, item.variantId, item.slug]" href=""
-                                title="Baguette®">
+                            <a [routerLink]="item.productId | productUrl:item.slug" [queryParams]="{ variant: item.variantId}">
                                 <img class="w-100" alt="Baguette®" title="Baguette®" [src]="item.imageUrl">
                             </a>
                         </div>
@@ -19,7 +22,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="ps-3 pt-3">
                         <h4 class="mb-3"> <a
-                                [routerLink]="['/product',item.productId, item.variantId, item.slug]">{{item.name}}</a>
+                                [routerLink]="item.productId | productUrl:item.slug" [queryParams]="{ variant: item.variantId}">{{item.name}}</a>
                         </h4>
                         <p>{{'COMMON.COLOR' | translate}}: {{item.color}}</p>
                         <div class="row">
@@ -40,8 +43,7 @@
         </div>
         }
         }
+        }
 
     </div>
 </section>
-
-<app-full-page-loading [visible]="isLoading"></app-full-page-loading>

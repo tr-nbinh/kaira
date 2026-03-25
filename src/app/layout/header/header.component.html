@@ -24,12 +24,23 @@
 
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1 gap-1 gap-md-5 pe-3">
-                                @for (item of menu$ | async; track item.id) {
+                                @if (menu$ | async; as menuItems) {
+                                @for (item of menuItems; track item.id) {
                                 <li class="nav-item">
-                                    <a class="nav-link" [routerLink]="[item.path]" routerLinkActive="active" data-bs-dismiss="offcanvas">
+                                    <a class="nav-link" [routerLink]="[item.path]" routerLinkActive="active"
+                                        data-bs-dismiss="offcanvas">
                                         {{item.name}}
                                     </a>
                                 </li>
+                                }
+                                } @else {
+                                @for(i of [1,2,3,4]; track i){
+                                <li class="nav-item">
+                                    <div class="nav-link placeholder-glow">
+                                        <span class="placeholder col-6 py-2 px-5"></span>
+                                    </div>
+                                </li>
+                                }
                                 }
                                 <li class="dropdown d-md-none">
                                     <div class="btn-group">
@@ -55,9 +66,13 @@
                 <div class="col-auto">
                     <ul class="list-unstyled d-flex align-items-center m-0">
                         <li>
-                            <a routerLink="/wishlist" class="d-none d-lg-block text-uppercase mx-3">
+                            <a routerLink="/wishlist" class="d-none d-lg-block text-uppercase mx-3 fancy-link">
                                 {{"COMMON.WISHLIST" | translate}}
-                                <span class="wishlist-count">({{wishlistItemCount$ | async}})</span>
+                                @if (wishlistCount$ | async; as count) {
+                                @if (count > 0) {
+                                <span class="wishlist-count">({{count}})</span>
+                                }
+                                }
                             </a>
                             <a routerLink="/wishlist" class="d-lg-none mx-2">
                                 <svg width="24" height="24" viewBox="0 0 24 24">
@@ -66,9 +81,14 @@
                             </a>
                         </li>
                         <li>
-                            <a routerLink="/cart" class="d-none d-lg-block text-uppercase mx-3">
+                            <a routerLink="/cart" class="fancy-link d-none d-lg-block text-uppercase mx-3">
                                 {{"COMMON.CART" | translate}}
-                                <span class="cart-count">({{cartItemCount$ | async}})</span>
+                                @if (wishlistCount$ | async; as count) {
+                                @if (count > 0) {
+
+                                <span class="cart-count">({{count}})</span>
+                                }
+                                }
                             </a>
                             <a routerLink="/cart" class="d-lg-none mx-2">
                                 <svg width="24" height="24" viewBox="0 0 24 24">
@@ -78,7 +98,7 @@
                         </li>
                         <li class="dropdown">
                             <div class="btn-group">
-                                <button type="button" class="btn text-dark auth-btn" data-bs-toggle="dropdown"
+                                <button type="button" class="btn text-dark" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     <svg width="24" height="24" viewBox="0 0 24 24">
                                         <use xlink:href="#user"></use>

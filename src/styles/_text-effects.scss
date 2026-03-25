@@ -1,0 +1,97 @@
+/* Text Effects */
+.txt-fx {
+    overflow: hidden;
+    line-height: 1;
+}
+
+.txt-fx.zoom {
+    overflow: visible;
+}
+
+.txt-fx .word {
+    overflow: hidden;
+    transform-origin: 0 100%;
+    display: inline-block;
+    line-height: 1em;
+}
+
+.txt-fx .letter {
+    transform-origin: 0 100%;
+    display: inline-block;
+    line-height: 1em;
+}
+
+.txt-fx {
+    --delay: 50ms;
+    --easing: cubic-bezier(.5, 0, .53, 1);
+}
+
+/* fade right */
+.txt-fx.fade-right .letter {
+    transform: translate3d(-50px, 0, 0);
+    opacity: 0;
+    transition: transform 0.6s var(--easing), opacity 0.6s var(--easing);
+}
+
+.aos-animate .txt-fx.fade-right .letter {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+/* slide up */
+.txt-fx.slide-up .letter {
+    transform: translate3d(0, 1.2em, 0);
+    transition: transform 0.9s var(--easing);
+}
+
+.swiper-slide-active .txt-fx.slide-up .letter,
+.aos-animate .txt-fx.slide-up .letter {
+    transform: translate3d(0, 0, 0);
+}
+
+/* domino */
+.txt-fx.domino .letter {
+    transform-origin: 50% 0;
+    transform: rotateY(90deg);
+    transition: transform 0.9s var(--easing);
+}
+
+.swiper-slide-active .txt-fx.domino .letter,
+.aos-animate .txt-fx.domino .letter {
+    transform: rotateY(0);
+}
+
+/* zoom */
+.txt-fx.zoom .letter {
+    transform-origin: 50% 0;
+    transform: scale(3);
+    transition: transform 0.9s var(--easing);
+}
+
+.swiper-slide-active .txt-fx.zoom .letter,
+.aos-animate .txt-fx.zoom .letter {
+    transform: scale(1);
+}
+
+/* fancy-link */
+.fancy-link {
+    position: relative;
+    text-decoration: none;
+}
+
+.fancy-link::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 1px;
+    left: 0;
+    bottom: -2px;
+    background-color: var(--bs-dark);
+    transition: 0.3s;
+}
+
+.fancy-link.active::after,
+.fancy-link:hover::after {
+    width: 100%;
+}
+

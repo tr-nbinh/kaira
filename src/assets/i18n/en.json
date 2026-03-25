@@ -39,6 +39,10 @@
     "TESTIMONIAL": {
         "TITLE": "We love good compliments"
     },
+    "BLOG": {
+        "TITLE": "Read Blog Posts",
+        "LINK": "View all"
+    },
     "NEWSLETTER": {
         "TITLE": "Sign up for our newsletter",
         "BUTTON": "Sign up"
@@ -72,7 +76,8 @@
         "CONTINUE_SHOPPING": "Continue shopping",
         "PROCEED_CHECKOUT": "Checkout",
         "EMPTY_TITLE": "Your cart is empty",
-        "EMPTY_DESC": "No any products in your shopping cart."
+        "EMPTY_DESC": "No any products in your shopping cart.",
+        "MAX_QUATITY": "Only {{stock}} items left in stock."
     },
     "WISHLIST": {
         "UNIT_PRICE": "Unit price",
@@ -183,7 +188,6 @@
             "FAILED": "Account verification failed",
             "BUTTON": "Resend verification",
             "RESEND_AFTER": "Resend after"
-
         }
     },
     "COMMON": {
@@ -218,6 +222,8 @@
         "EMAIL_PLACEHOLDER": "Write your email here",
         "CONFIRM": "CONFIRM",
         "REMOVE": "Remove",
-        "CONTACT_US": "Contact us"
+        "CONTACT_US": "Contact us",
+        "UNAUTHORIZED": "Please log in to use this feature",
+        "BLACK_COLOR": "Black"
     }
 }

@@ -21,11 +21,15 @@
                 </div>
 
                 <div class="offcanvas-body">
-                    <app-side-bar [params]="params" (onFilterChange)="filterProduct($event)"
-                        (onResetFilter)="resetFilter()"></app-side-bar>
+                <app-side-bar [params]="params" (onFilterChange)="filterProduct($event)"
+                    (onResetFilter)="resetFilter()"></app-side-bar>
                 </div>
             </div>
         </div>
+        @if (isLoading) {
+        <app-product-list [products]="[]"></app-product-list>
+
+        } @else {
         @if (products.length) {
         <div class="row py-2">
             <div class="col-md-9">
@@ -34,21 +38,22 @@
                     listDisplayState.totalItems} }}</span>
             </div>
             <!-- <div class="col-md-3">
-                <select class="form-select border-0" aria-label="Default select example">
-                    <option selected="">{{"SHOP.DEFAULT_SORT" | translate}}</option>
-                    <option value="1">{{"COMMON.COLOR" | translate}}</option>
-                    <option value="2">{{"COMMON.SIZE" | translate}}</option>
-                    <option value="3">{{"COMMON.PRICE" | translate}}</option>
-                </select>
-            </div> -->
+                    <select class="form-select border-0" aria-label="Default select example">
+                        <option selected="">{{"SHOP.DEFAULT_SORT" | translate}}</option>
+                        <option value="1">{{"COMMON.COLOR" | translate}}</option>
+                        <option value="2">{{"COMMON.SIZE" | translate}}</option>
+                        <option value="3">{{"COMMON.PRICE" | translate}}</option>
+                    </select>
+                </div> -->
         </div>
         <app-product-list [products]="products"></app-product-list>
-        <app-pagination [totalItems]="listDisplayState.totalItems" [currentPage]="params.page" [limit]="params.limit"
-            [maxPagesToShow]="5" (pageChange)="onPageChange($event)"></app-pagination>
+        <!-- <app-pagination [totalItems]="listDisplayState.totalItems" [currentPage]="params.page" [limit]="params.limit"
+                [maxPagesToShow]="5" (pageChange)="onPageChange($event)"></app-pagination> -->
         } @else {
         <div class="text-center">
             <span>{{"SHOP.NO_PRODUCT" | translate}}</span>
         </div>
+        }
         }
     </div>
 </div>

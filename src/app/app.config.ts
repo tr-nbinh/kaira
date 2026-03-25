@@ -12,6 +12,7 @@ import { HttpLoaderFactory } from './translate-loader';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { LanguageInterceptor } from './interceptors/language.interceptor';
+import { ResponseInterceptor } from '../core/interceptors/response.interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
             withInMemoryScrolling({
                 scrollPositionRestoration: 'enabled',
                 anchorScrolling: 'enabled',
-            })
+            }),
         ),
         provideHttpClient(withInterceptorsFromDi()),
         {
@@ -32,6 +33,11 @@ export const appConfig: ApplicationConfig = {
         {
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ResponseInterceptor,
             multi: true,
         },
         provideAnimations(),

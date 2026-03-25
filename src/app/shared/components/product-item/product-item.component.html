@@ -1,36 +1,39 @@
+@if (product) {
 <div class="product-item">
     <div class="position-relative">
-        <div [id]="'carousel-' + currentVariant.id" class="carousel slide">
+        @if (selectedVariant) {
+        <div #productCarousel [id]="'carousel-' + selectedVariant.id" class="carousel slide">
             <div class="carousel-indicators">
-                @for (item of currentVariant.images; track $index; let isFirst = $first) {
-                <button type="button" [attr.data-bs-target]="'#carousel-' + currentVariant.id"
+                @for (item of selectedVariant.images; track $index; let isFirst = $first) {
+                <button type="button" [attr.data-bs-target]="'#carousel-' + selectedVariant.id"
                     [attr.data-bs-slide-to]="$index" [class.active]="isFirst"></button>
                 }
             </div>
             <div class="carousel-inner">
-                @for (img of currentVariant.images; track $index; let isFirst = $first) {
+                @for (image of selectedVariant.images; track $index; let isFirst = $first) {
                 <div class="carousel-item" [class.active]="isFirst">
-                    <a [routerLink]="['/product', product.id, currentVariant.id, product.slug]">
-                        <img [src]="img" alt="Product images" class="product-image img-fluid">
+                    <a [routerLink]="product.id | productUrl:product.slug"
+                        [queryParams]="{ variant: selectedVariant.id}">
+                        <img [src]="image.url" alt="Product images" class="product-image img-fluid">
                     </a>
                 </div>
                 }
             </div>
-            <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel-' + currentVariant.id"
-                data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button"
+                [attr.data-bs-target]="'#carousel-' + selectedVariant.id" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel-' + currentVariant.id"
-                data-bs-slide="next">
+            <button class="carousel-control-next" type="button"
+                [attr.data-bs-target]="'#carousel-' + selectedVariant.id" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
 
-        <button type="button" class="btn btn-icon btn-wishlist" (click)="addToWishlist(currentVariant.id)">
-            <ng-container *appLoadingToggle="'wishlist-' + currentVariant.id">
-                @if (currentVariant.isFavorite) {
+        <button type="button" class="btn btn-icon btn-wishlist" (click)="toggleWishlist(selectedVariant.id)">
+            <ng-container *appLoadingToggle="'wishlist-' + selectedVariant.id">
+                @if (selectedVariant.isFavorite) {
                 <svg width="24" height="24" viewBox="0 0 24 24" class="is-wishlisted">
                     <use xlink:href="#heart-filled"></use>
                 </svg>
@@ -43,21 +46,41 @@
         </button>
         <div class="link-effect">
             <div class="d-flex gap-1 my-2">
-                @for (color of colors; track $index) {
-                <button class="btn btn-outline-light p-0" (click)="changeColor(color)">
-                    <span class="swatch-circle d-block rounded-pill" [class.active]="color.checked"
-                        [style.background-color]="color.hexCode"></span>
+                @for (color of product.availableColors; track color.id) {
+                <button class="btn btn-outline-light p-0" (click)="selectColor(color.id)">
+                    <span class="swatch-circle d-block rounded-pill" [class.active]="color.id == this.selectedColor"
+                        [style.background-color]="color.value_code"></span>
                 </button>
                 }
             </div>
             <h5 class="text-uppercase fs-5">
-                <a [routerLink]="['/product', product.id, currentVariant.id, product.slug]">{{product.name}}</a>
+                <a [routerLink]="product.id | productUrl:product.slug"
+                    [queryParams]="{ variant: selectedVariant.id}">{{product.name}}</a>
             </h5>
-            <ng-container *appLoadingToggle="'cart-' + currentVariant.id">
-                <a href="javascript:void(0)" class="text-decoration-none" [attr.data-after]="'COMMON.ADD_TO_CART' | translate"
-                    (click)="addToCart(currentVariant.id)"><span>${{currentVariant.price}}</span>
+            <ng-container *appLoadingToggle="'cart-' + selectedVariant.id">
+                <a href="javascript:void(0)" class="text-decoration-none"
+                    [attr.data-after]="'COMMON.ADD_TO_CART' | translate"
+                    (click)="addToCart(selectedVariant.id)"><span>{{selectedVariant.displayPrice |
+                        currency:selectedVariant.currency:'symbol':'1.0-2'}}</span>
                 </a>
             </ng-container>
         </div>
+        }
     </div>
 </div>
+} @else {
+<div class="w-100">
+    <div class="placeholder-wave">
+        <div class="placeholder w-100" style="aspect-ratio: 1/1;"></div>
+    </div>
+    <div class="placeholder-glow mt-2">
+        <div class="color d-flex gap-2">
+            <div class="placeholder swatch-circle rounded-pill"></div>
+            <div class="placeholder swatch-circle rounded-pill"></div>
+            <div class="placeholder swatch-circle rounded-pill"></div>
+        </div>
+        <p class="placeholder w-50 py-2 d-block my-2"></p>
+        <p class="placeholder w-25 py-2 d-block"></p>
+    </div>
+</div>
+}

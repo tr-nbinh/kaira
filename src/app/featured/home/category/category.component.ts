@@ -2,10 +2,10 @@ import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { delay, Observable, of } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
-import { Category } from '../../../models/category.interface';
-import { CategoryService } from '../../../services/category.service';
+import { CategoryService } from './services/category.service';
+import { Category } from './models/category.model';
 
 @Component({
     selector: 'app-category',

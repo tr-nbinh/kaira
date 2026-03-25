@@ -31,13 +31,12 @@ import { ToastComponent } from './shared/components/toast/toast.component';
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
 })
-export class AppComponent extends BaseComponent implements OnInit {
+export class AppComponent extends BaseComponent {
     title = 'kaira';
     currentLang: string = '';
     showLayout = false;
     // Các route không dùng layout (coming soon, error, not found...)
     noLayoutRoutes = [
-        '/blog',
         '/about',
         '/coming-soon',
         '/error',
@@ -51,18 +50,18 @@ export class AppComponent extends BaseComponent implements OnInit {
         private svgIconService: SvgIconService,
         private route: Router,
         protected toast: ToastService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
     ) {
         super();
 
         this.route.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
-                takeUntil(this.ngUnsubscribe)
+                takeUntil(this.ngUnsubscribe),
             )
             .subscribe((event: NavigationEnd) => {
                 this.showLayout = !this.noLayoutRoutes.some((path) =>
-                    event.urlAfterRedirects.startsWith(path)
+                    event.urlAfterRedirects.startsWith(path),
                 );
             });
         // Register SVG icons
@@ -78,7 +77,7 @@ export class AppComponent extends BaseComponent implements OnInit {
         // Register icons for mobile navigation
         this.svgIconService.registerIcons(
             ['home', 'bag-heart', 'subtask', 'envelope'],
-            'nav-mobile'
+            'nav-mobile',
         );
 
         // Configure language translation
@@ -87,12 +86,12 @@ export class AppComponent extends BaseComponent implements OnInit {
             this.translate.use(savedLang);
         } else {
             this.translate.addLangs(['en', 'vi']);
-            this.translate.setDefaultLang('en');
+            this.translate.setDefaultLang('vi');
 
             const browserLang = translate.getBrowserLang();
             console.log(browserLang);
             this.currentLang =
-                browserLang && browserLang.match(/en|vi/) ? browserLang : 'en';
+                browserLang && browserLang.match(/en|vi/) ? browserLang : 'vi';
             this.translate.use(this.currentLang);
         }
         this.translate.onLangChange.subscribe((event) => {
@@ -100,15 +99,6 @@ export class AppComponent extends BaseComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {
-        // AOS.init({
-        //     duration: 1200,
-        //     disable: 'mobile',
-        // });
-    }
-
-    @ViewChild('bodyTemplate', { static: true })
-    bodyTemplate!: TemplateRef<any>;
     @ViewChild('dialogPlaceholder', { read: ViewContainerRef })
     dialogPlaceholder!: ViewContainerRef;
 

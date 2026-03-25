@@ -1,26 +1,30 @@
+import { CurrencyPipe, LowerCasePipe } from '@angular/common';
 import {
     Component,
     ElementRef,
     OnInit,
-    Resource,
-    resource,
-    ResourceStatus,
     signal,
     ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { finalize, firstValueFrom, map, takeUntil, tap } from 'rxjs';
+import { finalize, takeUntil, tap } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
 import { ColorSelectItem } from '../../models/product-filter.interface';
-import { ProductDetail, ProductVariant } from '../../models/product.interface';
-import { CartService } from '../../services/cart.service';
 import { LoadingService } from '../../services/loading.service';
 import { ProductService } from '../../services/product.service';
 import { ToastService } from '../../services/toast.service';
-import { WishlistService } from '../../services/wishlist.service';
 import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
+import { SafeHtmlPipe } from '../../shared/pipes/safe-html.pipe';
+import { praseProductIdFromSlug } from '../../shared/utils/product-url.helper';
+import { CartService } from '../cart/services/cart.service';
+import {
+    Product,
+    ProductAttribute,
+    Variant,
+} from '../shop/models/product.model';
+import { WishlistService } from '../wishlist/services/wishlist.service';
 import { ProductDetailSkeletonComponent } from './product-detail-skeleton/product-detail-skeleton.component';
 
 @Component({
@@ -30,6 +34,9 @@ import { ProductDetailSkeletonComponent } from './product-detail-skeleton/produc
         FormsModule,
         LoadingToggleDirective,
         ProductDetailSkeletonComponent,
+        CurrencyPipe,
+        SafeHtmlPipe,
+        LowerCasePipe,
     ],
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.scss',
@@ -38,12 +45,13 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     @ViewChild('thumbSlider') thumbSlider!: ElementRef<any>;
     @ViewChild('swiperPagination') pagination!: ElementRef<any>;
     @ViewChild('largeSlider') largeSlider!: ElementRef<any>;
-    product!: ProductDetail;
-    private _swiperInitialized = false;
-    currentVariant!: ProductVariant;
-    selectedColor: ColorSelectItem | undefined;
+
+    variantId: string | null = null;
+    product: Product | null = null;
+    selectedVariant: Variant | undefined = undefined;
+    selectedColor: ProductAttribute | undefined = undefined;
     selectedQuantity: number = 1;
-    variantId!: number;
+    private _swiperInitialized = false;
     isLoading = signal(true);
 
     constructor(
@@ -52,23 +60,21 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         private cartService: CartService,
         private wishlistService: WishlistService,
         private toast: ToastService,
-        private loading: LoadingService
+        private loading: LoadingService,
     ) {
         super();
     }
 
     ngOnInit() {
-        this.route.paramMap
-            .pipe(
-                map((params) => ({
-                    productId: params.get('productId'),
-                    variantId: params.get('variantId'),
-                })),
-                takeUntil(this.ngUnsubscribe)
-            )
-            .subscribe(({ productId, variantId }) => {
-                this.getProductById(+productId!);
-                this.variantId = +variantId!;
+        const slug = this.route.snapshot.paramMap.get('slug');
+        const productId = praseProductIdFromSlug(slug);
+        this.route.queryParamMap
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((queryParams) => {
+                this.variantId = queryParams.get('variant');
+                if (productId) {
+                    this.getProductById(productId);
+                }
             });
     }
 
@@ -79,83 +85,79 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         }
     }
 
-    getProductById(productId: number) {
+    getProductById(productId: string) {
         this.productService
             .getProductById(productId)
             .pipe(
                 tap(() => this.isLoading.set(true)),
                 finalize(() => this.isLoading.set(false)),
-                takeUntil(this.ngUnsubscribe)
+                takeUntil(this.ngUnsubscribe),
             )
             .subscribe((res) => {
                 this.product = res;
-                this.setCurrentVariant();
+                this.initVariantAndColor(this.variantId);
                 this._swiperInitialized = false;
             });
     }
 
-    setCurrentVariant() {
-        this.currentVariant = this.product.variants.find(
-            (v) => v.id === this.variantId
-        )!;
-        const currentColor = this.product.colors.find(
-            (c) => c.id === this.currentVariant?.colorId
+    initVariantAndColor(variantId: string | null) {
+        if (!this.product) return;
+
+        this.selectedVariant =
+            this.product.variants.find((v) => v.id === variantId) ||
+            this.product.variants[0];
+
+        this.selectedColor = this.product.availableColors.find(
+            (c) => c.id === this.selectedVariant!.colorId,
         );
-        if (currentColor) {
-            currentColor.checked = true;
-            this.selectedColor = currentColor;
-        }
     }
 
-    onColorChange(color: ColorSelectItem) {
-        color.checked = true;
+    selectColor(color: ProductAttribute) {
         this.selectedColor = color;
-        this.currentVariant = this.product.variants.find(
-            (variant) => variant.colorId === this.selectedColor?.id
-        )!;
+        this.selectedVariant = this.product?.variants.find(
+            (v) => v.colorId == color.id,
+        );
     }
 
-    addToCart() {
-        const key = `cart-${this.currentVariant.id}`;
+    addToCart(variantId: string) {
+        const key = `cart-${variantId}`;
         this.loading.show(key);
         this.cartService
-            .addToCart(this.currentVariant.id, this.selectedQuantity)
+            .addToCart(variantId, this.selectedQuantity)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key))
+                finalize(() => this.loading.hide(key)),
             )
             .subscribe({
-                next: (res) => {
-                    this.toast.success(res.message);
-                },
                 error: (err) => {
                     this.toast.error(err.message);
                 },
             });
     }
 
-    addToWishlist() {
-        const key = `wishlist-${this.currentVariant.id}`;
+    toggleWishlist(variantId: string) {
+        const key = `wishlist-${variantId}`;
         this.loading.show(key);
         this.wishlistService
-            .addToWishlist(this.currentVariant.id)
+            .addToWishlist(variantId)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key))
+                finalize(() => this.loading.hide(key)),
             )
             .subscribe({
                 next: (res) => {
-                    this.currentVariant.isFavorite = true;
-                    this.toast.success(res.message);
+                    if (this.selectedVariant) {
+                        this.selectedVariant.isFavorite = res.isWishlisted;
+                    }
                 },
                 error: (err) => {
-                    this.toast.warning(err.message);
+                    this.toast.info(err.message);
                 },
             });
     }
 
     increaseQuantity() {
-        if (this.selectedQuantity >= this.currentVariant.quantity) return;
+        if (this.selectedQuantity >= this.selectedVariant!.stock) return;
         this.selectedQuantity += 1;
     }
 
@@ -175,11 +177,11 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                     0: {
                         direction: 'horizontal',
                     },
-                    992: {
+                    768: {
                         direction: 'vertical',
                     },
                 },
-            }
+            },
         );
 
         this.initializeSwiper(this.largeSlider.nativeElement, {

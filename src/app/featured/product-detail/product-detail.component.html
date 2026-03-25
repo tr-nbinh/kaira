@@ -1,40 +1,33 @@
 @if (isLoading()) {
 <app-product-detail-skeleton></app-product-detail-skeleton>
 } @else {
-<div class="mt-5">
-    <!-- <div class="container">
-        <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="#">Home</a>
-            <a class="breadcrumb-item" href="#">Pages</a>
-            <span class="breadcrumb-item active" aria-current="page">Shop</span>
-        </nav>
-    </div> -->
-
-    <section id="product-detail" class="single-product py-5 no-padding-top">
+@if (product && selectedVariant) {
+<div class="py-5 mt-5">
+    <section id="product-detail">
         <div class="container">
-            <div class="row g-5">
+            <div class="row">
                 <div class="col-12 col-lg-7">
-                    <div class="row flex-column-reverse flex-lg-row">
-                        <div class="col-md-12 col-lg-3">
+                    <div class="row flex-column-reverse flex-md-row">
+                        <div class="col-12 col-md-3">
                             <!-- product-thumbnail-slider -->
                             <div class="swiper product-thumbnail-slider" #thumbSlider>
                                 <div class="swiper-wrapper">
-                                    @for (img of currentVariant.images; track $index) {
+                                    @for (img of selectedVariant.images; track img.id) {
                                     <div class="swiper-slide">
-                                        <img [src]="img" alt="thumb image" class="img-fluid">
+                                        <img [src]="img.url" alt="thumb image" class="img-fluid">
                                     </div>
                                     }
                                 </div>
                             </div>
                             <!-- / product-thumbnail-slider -->
                         </div>
-                        <div class="col-md-12 col-lg-9">
+                        <div class="col-12 col-md-9">
                             <!-- product-large-slider -->
                             <div class="swiper product-large-slider" #largeSlider>
                                 <div class="swiper-wrapper">
-                                    @for (image of currentVariant.images; track $index) {
+                                    @for (image of selectedVariant.images; track image.id) {
                                     <div class="swiper-slide">
-                                        <img [src]="image" alt="product large" class="img-fluid">
+                                        <img [src]="image.url" alt="product large" class="img-fluid">
                                     </div>
                                     }
                                 </div>
@@ -47,62 +40,42 @@
                 <div class="col-12 col-lg-5">
                     <section class="product-info pt-3">
                         <h1 class="product-name text-uppercase">{{product.name}}</h1>
-                        <div class="rating-container d-flex align-items-center">
-                            <div class="rating">
-                                <svg width="32" height="32">
-                                    <use xlink:href="#star-solid"></use>
-                                </svg>
-                            </div>
-                            <div class="rating">
-                                <svg width="32" height="32">
-                                    <use xlink:href="#star-solid"></use>
-                                </svg>
-                            </div>
-                            <div class="rating">
-                                <svg width="32" height="32">
-                                    <use xlink:href="#star-solid"></use>
-                                </svg>
-                            </div>
-                            <div class="rating">
-                                <svg width="32" height="32">
-                                    <use xlink:href="#star-outline"></use>
-                                </svg>
-                            </div>
-                            <div class="rating">
-                                <svg width="32" height="32">
-                                    <use xlink:href="#star-outline"></use>
-                                </svg>
-                            </div>
-                            <span class="rating-count">(3.5)</span>
-                        </div>
-                        <div class="product-price">
-                            <span class="fs-3 me-1">${{currentVariant.price - currentVariant.price *
-                                ((currentVariant.discount ?? 0) / 100)}}</span>
-                            @if (currentVariant.discount) {
-                            <del>${{currentVariant.price}}</del>
+                        @if (product.description) {
+                        <p class="fs-14 mt-2">{{product.description}}</p>
+                        }
+
+                        <div class="product-price mt-2">
+                            <span class="fs-4 me-3">{{selectedVariant.displayPrice |
+                                currency:selectedVariant.currency:'symbol':'1.0-2'}}</span>
+                            @if (selectedVariant.displayCompareAtPrice) {
+                            <del>{{selectedVariant.displayCompareAtPrice |
+                                currency:selectedVariant.currency:'symbol':'1.0-2'}}</del>
                             }
                         </div>
-                        <p>{{product.description}}.</p>
+
+                        <div class="content mt-2" [innerHTML]="product.content | safeHtml"></div>
                         <div class="color-product-options mt-4">
                             <div class="color-toggle">
                                 <div class="item-title">{{"COMMON.COLOR" | translate}}:
                                     <span>{{selectedColor?.name}}</span>
                                 </div>
                                 <div class="d-flex">
-                                    @for (color of product.colors; track color.id ) {
-                                    <div class="form-check">
+                                    @for (color of product.availableColors; track color.id ) {
+                                    <div class="form-check mt-2">
                                         <label class="form-check-label" [for]="'color-id-' + color.id">
                                             <input class="form-check-input" type="radio" name="color-option"
-                                                [id]="'color-id-' + color.id" [checked]="color.checked"
-                                                (change)="onColorChange(color)">
-                                            <span class="checkmark" [style.background-color]="color.hexCode"></span>
+                                                [id]="'color-id-' + color.id" [checked]="color.id == selectedColor?.id"
+                                                (change)="selectColor(color)">
+                                            <span class="checkmark" [style]="{'background': color.value_code, 
+                                                '--checkmark-bg': (color.name | lowercase) == ('COMMON.BLACK_COLOR' | translate | lowercase) 
+                                                ? 'white' : '#444' }"></span>
                                         </label>
                                     </div>
                                     }
                                 </div>
                             </div>
                         </div>
-                        @if (product.sizes && product.sizes.length) {
+                        <!-- @if (product.sizes && product.sizes.length) {
                         <div class="swatch d-flex flex-wrap option-1 mt-4">
                             <div class="item-title">{{"COMMON.SIZE" | translate}}:</div>
                             @for (size of product.sizes; track size.id) {
@@ -112,13 +85,13 @@
                             </div>
                             }
                         </div>
-                        }
+                        } -->
                         <div class="product-action mt-4">
                             <div class="product-quantity d-flex align-items-center mb-3">
                                 <div class="input-group product-qty me-3" style="max-width: 150px;">
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-light" (click)="decreaseQuantity()"
-                                            [disabled]="currentVariant.quantity == 0">
+                                            [disabled]="selectedVariant.stock == 0">
                                             <svg width="16" height="16">
                                                 <use xlink:href="#minus"></use>
                                             </svg>
@@ -126,27 +99,27 @@
                                     </span>
                                     <input type="text" id="quantity" name="quantity"
                                         class="form-control input-number text-center" min="1"
-                                        [(ngModel)]="selectedQuantity" [disabled]="currentVariant.quantity == 0">
+                                        [(ngModel)]="selectedQuantity" [disabled]="selectedVariant.stock == 0">
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-light" (click)="increaseQuantity()"
-                                            [disabled]="currentVariant.quantity == 0">
+                                            [disabled]="selectedVariant.stock == 0">
                                             <svg width="16" height="16">
                                                 <use xlink:href="#plus"></use>
                                             </svg>
                                         </button>
                                     </span>
                                 </div>
-                                <p class="m-0">{{"SHOP.IN_STOCK" | translate:{quantity:currentVariant.quantity} }}</p>
+                                <p class="m-0">{{"SHOP.IN_STOCK" | translate:{quantity:selectedVariant.stock} }}</p>
                             </div>
-                            <ng-container *appLoadingToggle="'cart-' + currentVariant.id">
-                                <button class="btn btn-dark btn-lg text-uppercase me-3" (click)="addToCart()"
-                                    [disabled]="currentVariant.quantity == 0">
+                            <ng-container *appLoadingToggle="'cart-' + selectedVariant.id">
+                                <button class="btn btn-outline-dark btn-lg text-uppercase me-3"
+                                    (click)="addToCart(selectedVariant.id)" [disabled]="selectedVariant.stock == 0">
                                     <span id="add-to-cart">{{"COMMON.ADD_TO_CART" | translate}}</span>
                                 </button>
                             </ng-container>
-                            <ng-container *appLoadingToggle="'wishlist-' + currentVariant.id">
-                                <button class="btn btn-dark bg-dark" (click)="addToWishlist()">
-                                    @if (currentVariant.isFavorite) {
+                            <ng-container *appLoadingToggle="'wishlist-' + selectedVariant.id">
+                                <button class="btn btn-outline-dark" (click)="toggleWishlist(selectedVariant.id)">
+                                    @if (selectedVariant.isFavorite) {
                                     <svg width="24" height="24" viewBox="0 0 24 24" class="is-wishlisted">
                                         <use xlink:href="#heart-filled"></use>
                                     </svg>
@@ -165,4 +138,5 @@
         </div>
     </section>
 </div>
+}
 }

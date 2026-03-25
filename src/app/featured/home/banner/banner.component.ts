@@ -2,14 +2,15 @@ import { AsyncPipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { delay, finalize, Observable, of } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
 import { Banner } from '../../../models/banner.interface';
 import { BannerService } from '../../../services/banner.service';
+import { BannerSkeletonComponent } from './components/banner-skeleton/banner-skeleton.component';
 
 @Component({
     selector: 'app-banner',
-    imports: [TranslatePipe, AsyncPipe, RouterLink],
+    imports: [TranslatePipe, AsyncPipe, RouterLink, BannerSkeletonComponent],
     templateUrl: './banner.component.html',
     styleUrl: './banner.component.scss',
 })
@@ -30,6 +31,9 @@ export class BannerComponent extends BaseComponent {
     ngAfterViewInit() {
         this.initializeSwiper(this.swiperEl.nativeElement, {
             // loop: true, // error: not enough slide to loop
+            observer: true,
+            observeParents: true,
+            observeSlideChildren: true,
             speed: 900,
             navigation: {
                 nextEl: this.arrowRight.nativeElement,

@@ -1,62 +1,63 @@
 <section class="py-5">
     <div class="container">
         <div class="row">
+            @if (isLoading) {
+            <app-cart-skeleton></app-cart-skeleton>
+            } @else {
+
             @if(cartItems.length) {
 
             <div class="col-12 col-lg-9">
                 <div class="cart-list">
-                    @for (item of cartItems; track $index) {
-                    <div class="cart-item border-bottom">
-                        <div class="row align-items-center">
-                            <div class="col-9 col-md-5">
-                                <div class="cart-info d-flex align-items-center gap-3">
-                                    <div class="col-4">
-                                        <a [routerLink]="['/product', item.productId, item.variantId, item.slug]">
-                                            <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
-                                        </a>
-                                    </div>
-                                    <div class="col-8">
-                                        <h3 class="card-title">
-                                            <a [routerLink]="['/product', item.productId, item.variantId, item.slug]"
-                                                class="text-decoration-none">{{item.name}}</a>
-                                        </h3>
-                                        <p class="card-color">{{item.color}}</p>
-                                        <p class="card-price">{{item.price | currency}} </p>
-                                    </div>
+                    @for (item of cartItems; track item.variantId) {
+                    <div class="row align-items-center py-3 border-bottom gy-2">
+                        <div class="col-12 col-sm-7 col-md-5">
+                            <div class="cart-info d-flex align-items-center gap-2">
+                                <div class="col-4">
+                                    <a [routerLink]="item.productId | productUrl:item.slug" [queryParams]="{ variant: item.variantId}">
+                                        <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
+                                    </a>
+                                </div>
+                                <div class="col-8">
+                                    <h3 class="card-title product-infor">
+                                        <a [routerLink]="item.productId | productUrl:item.slug" [queryParams]="{ variant: item.variantId}"
+                                            class="text-decoration-none">{{item.name}}</a>
+                                    </h3>
+                                    <p class="card-color product-infor">{{item.color}}</p>
+                                    <p class="card-price product-infor">{{item.displayPrice |
+                                        currency:item.currency:'symbol':'1.0-2'}}</p>
                                 </div>
                             </div>
-                            <div class="col-2 d-none d-md-block">
-                                <p>{{item.price | currency}} </p>
+                        </div>
+                        <div
+                            class="col d-flex flex-row flex-sm-column flex-md-row align-items-center justify-content-between gap-2">
+                            <span class="card-price">{{item.displayPrice | currency:item.currency:'symbol':'1.0-2'}}
+                            </span>
+                            <div class="quantity-group w-md-100">
+                                <button type="button" (click)="decreaseQuantity(item)">
+                                    <svg width="16" height="16">
+                                        <use xlink:href="#minus"></use>
+                                    </svg>
+                                </button>
+                                <input type="number" id="quantity" name="quantity" readonly [value]="item.quantity"
+                                    min="1">
+                                <button type="button" (click)="increaseQuantity(item)">
+                                    <svg width="16" height="16">
+                                        <use xlink:href="#plus"></use>
+                                    </svg>
+                                </button>
                             </div>
-                            <div class="col-3 col-md-2">
-                                <div class="quantity-group">
-                                    <button type="button" (click)="decreaseQuantity(item)">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#minus"></use>
-                                        </svg>
-                                    </button>
-                                    <input type="number" id="quantity" name="quantity" readonly [value]="item.quantity"
-                                        min="1">
-                                    <button type="button" (click)="increaseQuantity(item)">
-                                        <svg width="16" height="16">
-                                            <use xlink:href="#plus"></use>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-2 d-none d-md-block">
-                                <p class="money text-dark text-center">{{item.finalPrice * item.quantity|
-                                    currency}}</p>
-                            </div>
-                            <div class="col-1 d-none d-md-block">
-                                <ng-container *appLoadingToggle="'cart-remove-' + item.variantId">
-                                    <button class="btn text-dark" (click)="removeFromCart(item.variantId)">
-                                        <svg width="32px">
-                                            <use xlink:href="#trash"></use>
-                                        </svg>
-                                    </button>
-                                </ng-container>
-                            </div>
+                            <span class="money text-dark text-center">{{item.displayFinalPrice |
+                                currency:item.currency:'symbol':'1.0-2'}}</span>
+                        </div>
+                        <div class="col-2 col-sm-1">
+                            <ng-container *appLoadingToggle="'cart-remove-' + item.variantId">
+                                <button class="btn text-dark" (click)="removeFromCart(item.variantId)">
+                                    <svg width="32px" height="32px">
+                                        <use xlink:href="#trash"></use>
+                                    </svg>
+                                </button>
+                            </ng-container>
                         </div>
                     </div>
                     }
@@ -68,11 +69,12 @@
                     <div class="d-flex align-items-center justify-content-between mb-2 py-2 border-bottom border-top">
                         <b class="text-dark text-uppercase ">{{"COMMON.SUBTOTAL" |
                             translate}}</b>
-                        <p class="text-dark mb-0">{{subTotal | currency}}</p>
+                        <p class="text-dark mb-0">{{subTotal | currency:currency:'symbol':'1.0-2'}}</p>
                     </div>
                     <div>
                         <div class="mb-2"><a [routerLink]="['/shop']"
-                                class="btn btn-dark text-uppercase btn-rounded-none w-100">{{"CART.CONTINUE_SHOPPING" |
+                                class="btn btn-dark text-uppercase text-white btn-rounded-none w-100">{{"CART.CONTINUE_SHOPPING"
+                                |
                                 translate}}</a>
                         </div>
                         <div class="col-md-12"><a class="btn btn-primary text-uppercase btn-rounded-none w-100"
@@ -84,8 +86,8 @@
             } @else {
             <app-cart-empty></app-cart-empty>
             }
+            }
 
         </div>
     </div>
 </section>
-<app-full-page-loading [visible]="isLoading"></app-full-page-loading>

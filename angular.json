@@ -48,7 +48,12 @@
                         ],
                         "allowedCommonJsDependencies": [
                             "leaflet"
-                        ]
+                        ],
+                        "stylePreprocessorOptions": {
+                            "includePaths": [
+                                "src"
+                            ]
+                        }
                     },
                     "configurations": {
                         "production": {

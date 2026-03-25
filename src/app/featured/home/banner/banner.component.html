@@ -3,9 +3,10 @@
         <div class="row">
             <div class="swiper overflow-hidden" #swiper>
                 <div class="swiper-wrapper">
-                    @for (banner of banners$ | async; track banner.id) {
+                    @if(banners$ | async; as banners) {
+                    @for (banner of banners; track banner.id) {
                     <div class="swiper-slide">
-                        <div class="row banner-item text-center align-items-center">
+                        <div class="row banner-item text-center align-items-center gy-3">
                             <div class="col-lg-6">
                                 <div class="image-holder">
                                     <img [src]="banner.imageUrl" [alt]="banner.altText" class="img-fluid">
@@ -14,10 +15,16 @@
                             <div class="banner-content col-lg-6 px-3">
                                 <h2 class="display-2 text-uppercase txt-fx slide-up">{{banner.headline}}</h2>
                                 <p>{{banner.subHeadline}}</p>
-                                <a [routerLink]="['/shop']" class="btn btn-outline-dark text-uppercase mt-3">{{"BANNER.BUTTON" |
+                                <a [routerLink]="['/shop']"
+                                    class="btn btn-outline-dark text-uppercase mt-3">{{"BANNER.BUTTON" |
                                     translate}}</a>
                             </div>
                         </div>
+                    </div>
+                    }
+                    } @else {
+                    <div class="swiper-slide">
+                        <app-banner-skeleton></app-banner-skeleton>
                     </div>
                     }
                 </div>

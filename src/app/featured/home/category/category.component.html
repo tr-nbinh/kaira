@@ -1,7 +1,8 @@
 <section class="categories full-width-container overflow-hidden py-5 slide-clip-animation aos-init aos-animate"
     data-aos="fade-in">
-    <div class="row d-flex flex-wrap">
-        @for (category of categories$ | async; track category.id) {
+    <div class="row flex-wrap">
+        @if (categories$ | async; as categories) {
+        @for (category of categories; track category.id) {
         <div class="col-md-4 col-6">
             <div class="image-zoom-effect position-relative">
                 <div class="image-holder">
@@ -16,6 +17,17 @@
                 </div>
             </div>
         </div>
+        }
+        } @else {
+        @for (i of [1, 2, 3]; track i) {
+        <div class="col-md-4 col-6">
+            <div class="image-zoom-effect">
+                <div class="image-holder placeholder-glow">
+                    <div class="placeholder rounded w-100" style="aspect-ratio: 2/3"></div>
+                </div>
+            </div>
+        </div>
+        }
         }
     </div>
 </section>

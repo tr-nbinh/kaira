@@ -39,6 +39,10 @@
     "TESTIMONIAL": {
         "TITLE": "Chúng tôi yêu những lời khen hay"
     },
+    "BLOG": {
+        "TITLE": "Khám phá blog",
+        "LINK": "Xem tất cả"
+    },
     "NEWSLETTER": {
         "TITLE": "Đăng ký nhận bản tin",
         "BUTTON": "Đăng ký"
@@ -72,7 +76,8 @@
         "CONTINUE_SHOPPING": "Tiếp tục mua sắm",
         "PROCEED_CHECKOUT": "Thanh toán",
         "EMPTY_TITLE": "Giỏ hàng của bạn trống",
-        "EMPTY_DESC": "Hiện tại bạn chưa có sản phẩm nào trong giỏ hàng."
+        "EMPTY_DESC": "Hiện tại bạn chưa có sản phẩm nào trong giỏ hàng.",
+        "MAX_QUATITY": "Chỉ còn {{stock}} sản phẩm trong kho."
     },
     "WISHLIST": {
         "UNIT_PRICE": "Đơn giá",
@@ -217,6 +222,8 @@
         "EMAIL_PLACEHOLDER": "Email",
         "CONFIRM": "Xác nhận",
         "REMOVE": "Xóa",
-        "CONTACT_US": "Liên hệ chúng tôi"
+        "CONTACT_US": "Liên hệ chúng tôi",
+        "UNAUTHORIZED": "Đăng nhập để sử dụng tính năng này",
+        "BLACK_COLOR": "Đen"
     }
 }

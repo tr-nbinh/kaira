@@ -1,7 +1,15 @@
 <div class="row g-3">
+    @if (products.length) {
     @for (product of products; track product.id) {
     <div class="col-6 col-lg-4">
         <app-product-item [product]="product"></app-product-item>
     </div>
+    }
+    } @else {
+    @for (product of fakeProducts; track $index) {
+    <div class="col-6 col-lg-4">
+        <app-product-item [product]="product"></app-product-item>
+    </div>
+    }
     }
 </div>

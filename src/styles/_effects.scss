@@ -1,0 +1,160 @@
+/*--- Image hover Effects
+-----------------------------------------------*/
+.image-zoom-effect {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.image-zoom-effect .image-holder {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    transform: scale(1);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.image-zoom-effect:hover .image-holder {
+    transform: scale(0.95);
+}
+
+.image-zoom-effect img {
+    transform: scale(1);
+    will-change: transform;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 0;
+}
+
+.image-zoom-effect:hover img {
+    transform: scale(1.1);
+}
+
+/* - Border Hover Effects
+------------------------------------------------------------- */
+.border-animation a,
+.border-animation a:after,
+.border-animation a:before {
+    transition: all .5s;
+}
+
+.border-animation a {
+    position: relative;
+}
+
+.border-animation a:after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 0;
+    content: '.';
+    color: transparent;
+    background: var(--bs-primary);
+    height: 2px;
+}
+
+.border-animation a:hover:after {
+    width: 100%;
+}
+
+.content-light .border-animation a:hover:after,
+.content-light .border-animation li.active a:after {
+    background: var(--bs-primary);
+}
+
+/* - Border Hover No Effects
+------------------------------------------------------------- */
+.border-animation .no-effect a:after {
+    background: none;
+}
+
+/* - Border Hover Effects 2
+------------------------------------------------------------- */
+.border-animation-left .item-anchor {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.border-animation-left .item-anchor:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1px;
+    left: 0;
+    bottom: 0;
+    z-index: 9;
+    background: var(--bs-dark);
+    transition: all 0.5s ease;
+}
+
+.border-animation-left.light-border .item-anchor:after,
+.border-animation-left .item-anchor:after {
+    background: var(--bs-dark);
+}
+
+.border-animation-left .item-anchor:hover:after,
+.border-animation-left .item-anchor:focus:after,
+.border-animation-left .item-anchor.active:after {
+    width: 100%;
+}
+
+/* Link Effect
+ - Place anywhere you want your link to animate
+ - Add data-after="Any text" to the link within the class
+ - Use span within the anchor tag for the effect to work
+------------------------------------------------------------- */
+.link-effect a {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    transition: opacity 0.5s, transform 0.5s;
+    display: block;
+}
+
+.link-effect a::after {
+    content: attr(data-after);
+    display: inline-block;
+    transform: translateY(100%);
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    font-size: 1rem;
+    text-align: inherit;
+    text-transform: uppercase;
+    transition: inherit;
+}
+
+.link-effect a>span {
+    display: inline-block;
+    transform: translateY(0%);
+    transition: inherit;
+}
+
+.link-effect:hover a>span {
+    transform: translateY(-100%);
+}
+
+.link-effect:hover a::after {
+    transform: translateY(0%);
+    opacity: 1;
+}
+
+.is-wishlisted {
+    color: tomato;
+}
+
+/* rotating text */
+.text-rotate {
+    animation: rotation 50s infinite linear;
+}
+
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}

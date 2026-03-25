@@ -1,0 +1,303 @@
+/* single product */
+/* product-thumbnail-slider */
+
+
+
+@media screen and (max-width: 991.98px) {
+    .product-thumbnail-slider {
+        height: 520px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .product-thumbnail-slider {
+        height: 400px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .product-thumbnail-slider {
+        height: 500px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .product-thumbnail-slider {
+        height: 550px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .product-thumbnail-slider {
+        margin-top: 20px;
+        height: auto;
+    }
+}
+
+.product-thumbnail-slider .swiper-slide {
+    height: fit-content !important;
+}
+
+/* ------ Quantity ------*/
+.qty-number .quntity-button {
+    min-width: 40px;
+    height: 40px;
+    font-size: 1.8em;
+    line-height: 1.5;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--accent-dim-color);
+    transition: .5s all ease-in-out;
+}
+
+.qty-number .quntity-button:hover {
+    background-color: var(--accent-lit-color);
+}
+
+.qty-number input {
+    font-size: 1.4em;
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    border-radius: 0;
+    border: 1px solid var(--bs-dark);
+}
+
+.qty-field .regular-price {
+    display: none;
+}
+
+/*--------------------------------------------------------------
+/** Single Product
+--------------------------------------------------------------*/
+.single-product-template .breadcrumbs li {
+    font-size: 1.5em;
+    padding-right: 15px;
+}
+
+.single-product-template .breadcrumbs span {
+    padding-left: 15px;
+}
+
+.product-preview .swiper-slide {
+    padding-bottom: 15px;
+}
+
+/*---- Single Product Information ----------*/
+.rating-container .rating {
+    color: var(--bs-yellow);
+    font-size: 1.4em;
+}
+
+/*---- Single Product Accordion ----------*/
+.review-style1 .review-item .rating-container .rating {
+    font-size: 1em;
+}
+
+.review-style1 .review-item span.author-name {
+    font-weight: 600;
+}
+
+/* button */
+.btn-link {
+    font-size: 0.875rem;
+    font-family: var(--bs-body-font-family);
+    letter-spacing: 0.0875rem;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+button.btn-link {
+    border: none;
+    outline: none;
+    background: unset;
+    padding: 0;
+}
+
+a.btn-link,
+button.btn-link,
+a.btn-link:after,
+button.btn-link:after {
+    transition: all .5s;
+}
+
+a.btn-link,
+button.btn-link {
+    position: relative;
+}
+
+a.btn-link:before,
+button.btn-link:before,
+a.btn-link:after,
+button.btn-link:after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    background-color: var(--bs-dark);
+    height: 1px;
+}
+
+[data-bs-theme=dark] a.btn-link:after,
+[data-bs-theme=dark] button.btn-link:after {
+    background-color: var(--bs-white);
+}
+
+a.btn-link:before,
+button.btn-link:before {
+    background-color: var(--bs-gray);
+    width: 100%;
+}
+
+a.btn-link.is-checked:after,
+a.btn-link:hover:after,
+button.btn-link.is-checked:after,
+button.btn-link:hover:after {
+    width: 100%;
+}
+
+a.btn-link.text-white:after,
+button.btn-link.text-white:after {
+    background-color: var(--bs-white);
+}
+
+a.btn-link.text-light:after,
+button.btn-link.text-light:after {
+    background-color: var(--bs-light);
+}
+
+/* color options */
+.form-check {
+    padding: 0;
+}
+
+.form-check-label {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.form-check-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+    --checkmark-bg: #444;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border: 1px solid #111;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.form-check-label:hover input~.checkmark {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.form-check-label input:checked~.checkmark {
+    background-color: #A226F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.form-check-label input:checked~.checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.form-check-label .checkmark:after {
+    top: 8px;
+    left: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--checkmark-bg);
+}
+
+.form-check-label.red input~.checkmark {
+    background-color: #CA7A7A;
+}
+
+.form-check-label.brown input~.checkmark {
+    background-color: #D5BB96;
+}
+
+.form-check-label.green input~.checkmark {
+    background-color: #A5BC73;
+}
+
+.form-check-label.aqua input~.checkmark {
+    background-color: #779B9D;
+}
+
+/* sidebar accordion */
+.product-info .accordion {
+    --bs-accordion-btn-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2Z"%2F%3E%3C%2Fsvg%3E');
+    --bs-accordion-btn-active-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M19 11H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2Z"%2F%3E%3C%2Fsvg%3E');
+}
+
+.product-filter .accordion {
+    --bs-accordion-btn-color: var(--bs-body-color);
+    --bs-accordion-btn-bg: var(--bs-accordion-bg);
+    --bs-accordion-btn-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2Z"%2F%3E%3C%2Fsvg%3E');
+    --bs-accordion-btn-active-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M19 11H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2Z"%2F%3E%3C%2Fsvg%3E');
+    --bs-accordion-body-padding-x: 0;
+    --bs-accordion-body-padding-y: 0;
+    --bs-accordion-active-color: #8C907E;
+}
+
+.product-filter .accordion-body>div,
+.product-filter .accordion-body .accordion-content {
+    display: block;
+    padding: 10px;
+    margin-bottom: 1.25rem;
+    border: 1px solid #EBEBEA;
+}
+
+.product-filter .accordion-body .accordion-content:hover,
+.product-filter .accordion-body .accordion-content.active {
+    border: 1px solid #999;
+}
+
+/* image zoom */
+.image-zoom {
+    position: relative;
+    float: left;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    transition: transform .3s ease-out;
+}
