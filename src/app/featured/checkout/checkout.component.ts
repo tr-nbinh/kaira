@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, signal, TemplateRef, ViewChild } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -7,15 +7,13 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { finalize, forkJoin, of, takeUntil } from 'rxjs';
 import { getChangedFields } from '../../../utils/object.util';
 import { BaseComponent } from '../../base/base.component';
 import { Address } from '../../models/address.interface';
-import { CartItem } from '../../models/cart.interface';
 import { District, Province, Ward } from '../../models/location.interface';
-import { Order } from '../../models/order.interface';
 import { AddressService } from '../../services/address.service';
 import { CheckoutService } from '../../services/checkout.service';
 import { DialogService } from '../../services/dialog.service';
@@ -24,6 +22,11 @@ import { MapService } from '../../services/map.service';
 import { ToastService } from '../../services/toast.service';
 import { MapComponent } from '../../shared/components/map/map.component';
 import { FormControlErrorDirective } from '../../shared/directives/form-control-error.directive';
+import { ProductUrlPipe } from '../../shared/pipes/product-url.pipe';
+import { CartItem } from '../cart/models/cart.model';
+import { CartService } from '../cart/services/cart.service';
+import { CheckoutRequest } from './models/checkout.model';
+import { uuidv4 } from '../../../utils/uuid.util';
 
 @Component({
     selector: 'app-checkout',
@@ -33,6 +36,8 @@ import { FormControlErrorDirective } from '../../shared/directives/form-control-
         FormsModule,
         FormControlErrorDirective,
         TranslatePipe,
+        RouterLink,
+        ProductUrlPipe,
     ],
     templateUrl: './checkout.component.html',
     styleUrl: './checkout.component.scss',
@@ -59,12 +64,15 @@ export class CheckoutComponent extends BaseComponent {
 
     private lastProvinceCode: number | null = null;
     private lastDistrictCode: number | null = null;
-    order: Order = {
-        addressId: this.selectedAddresId!,
+    order: CheckoutRequest = {
+        checkoutId: uuidv4(),
+        addressId: 0,
         note: '',
         paymentMethod: 'cod',
-        orderItems: this.orderItems,
+        shippingFee: 0,
+        items: [],
     };
+    isOrdering = signal(false);
 
     constructor(
         private locationService: LocationService,
@@ -75,16 +83,31 @@ export class CheckoutComponent extends BaseComponent {
         private dialog: DialogService,
         private map: MapService,
         private addressService: AddressService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private cartService: CartService,
     ) {
         super();
     }
 
     ngOnInit() {
+        this.cartService
+            .getCartItems()
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((res) => {
+                if (!res.cartItems.length) {
+                    this.toast.error(
+                        'Không có sản phẩm trong giỏ hàng, bạn sẽ được điều hướng qua trang sản phẩm',
+                    );
+                    setTimeout(() => {
+                        this.router.navigate(['/shop']);
+                    }, 3000);
+                }
+                this.orderItems = res.cartItems;
+                this.subTotal = res.subTotal;
+            });
         this.initForms();
         this.loadProvinces();
         this.getAddresses();
-        this.getOrderItems();
     }
 
     initForms() {
@@ -104,7 +127,7 @@ export class CheckoutComponent extends BaseComponent {
                 [
                     Validators.required,
                     Validators.pattern(
-                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                     ),
                 ],
             ],
@@ -120,22 +143,6 @@ export class CheckoutComponent extends BaseComponent {
                 this.addresses = addrs;
                 const defaultAddress = addrs.find((a) => a.isDefault);
                 this.setSelectedAddress(defaultAddress);
-            });
-    }
-
-    getOrderItems() {
-        this.checkoutService.selectedCartItems$
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((data) => {
-                this.orderItems = data;
-                this.subTotal = this.orderItems.reduce(
-                    (total, item) => total + item.finalPrice * item.quantity,
-                    0
-                );
-                if (!this.orderItems.length) {
-                    this.toast.warning('Have no any items to checkout');
-                    this.router.navigate(['/cart']);
-                }
             });
     }
 
@@ -208,22 +215,25 @@ export class CheckoutComponent extends BaseComponent {
         this.wardName = selectElement.options[selectElement.selectedIndex].text;
     }
 
-    onOrderSubmit() {
+    submitOrder() {
         if (!this.selectedAddresId) {
-            this.toast.warning(
-                this.translate.instant('CHECKOUT.ADD_YOUR_ADDRESS')
+            return this.toast.warning(
+                this.translate.instant('CHECKOUT.ADD_YOUR_ADDRESS'),
             );
-            return;
         }
         this.order.addressId = this.selectedAddresId!;
-        this.order.orderItems = this.orderItems;
+        this.order.items = this.orderItems.map((item) => ({
+            variantId: item.variantId,
+            quantity: item.quantity,
+        }));
+        console.log(this.order);
         this.checkoutService
-            .saveOrder(this.order)
+            .checkout(this.order)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe({
                 next: (res) => {
                     this.router.navigate(['/order-success'], {
-                        queryParams: { orderId: res.data.id },
+                        queryParams: { orderId: res.id },
                     });
                 },
                 error: (err) => {
@@ -234,7 +244,7 @@ export class CheckoutComponent extends BaseComponent {
 
     openAddressListDialog() {
         this.dialog.open({
-            title: 'Địa chỉ của tôi',
+            title: this.translate.instant('CHECKOUT.ADDRESS_DIALOG.TITLE'),
             body: this.addressList,
             onConfirm: () => {
                 if (this.selectedAddresId !== this.selectedAddress?.id) {
@@ -249,19 +259,18 @@ export class CheckoutComponent extends BaseComponent {
 
     openAddEditLocationDialog(addr?: Address) {
         if (addr) {
-            console.log(addr);
             const currentProvinceCode = addr.provinceCode;
             const currentDistrictCode = addr.districtCode;
             const getDistricts$ =
                 currentProvinceCode !== this.lastProvinceCode
                     ? this.locationService.getDistrictsByProvinceCode(
-                          currentProvinceCode
+                          currentProvinceCode,
                       )
                     : of(this.districts);
             const getWards$ =
                 currentDistrictCode !== this.lastDistrictCode
                     ? this.locationService.getWardsByDistrictCode(
-                          currentDistrictCode
+                          currentDistrictCode,
                       )
                     : of(this.wards);
 
@@ -283,7 +292,9 @@ export class CheckoutComponent extends BaseComponent {
                     }
 
                     this.dialog.open({
-                        title: 'Cập nhật địa chỉ',
+                        title: this.translate.instant(
+                            'CHECKOUT.UPDATE_ADDR_DIALOG.TITLE',
+                        ),
                         body: this.addEditAddress,
                         onConfirm: () => {
                             const isSuccess = this.updateAddress(addr);
@@ -305,7 +316,9 @@ export class CheckoutComponent extends BaseComponent {
                 this.addressForm.get('isDefault')?.disable();
             }
             this.dialog.open({
-                title: 'Địa chỉ mới',
+                title: this.translate.instant(
+                    'CHECKOUT.CREATE_ADDR_DIALOG.TITLE',
+                ),
                 body: this.addEditAddress,
                 onConfirm: () => {
                     const isSuccess = this.saveAddress();
@@ -324,7 +337,13 @@ export class CheckoutComponent extends BaseComponent {
         let isSuccess = true;
         if (this.addressForm.invalid) {
             this.addressForm.markAllAsTouched();
-            this.toast.error('Vui lòng điền đầy đủ thông tin');
+            Object.keys(this.addressForm.controls).forEach((key) => {
+                const control = this.addressForm.get(key);
+                control?.updateValueAndValidity({
+                    emitEvent: true,
+                    onlySelf: true,
+                });
+            });
             return false;
         }
         const addressData: Address = this.addressForm.getRawValue();
@@ -334,11 +353,10 @@ export class CheckoutComponent extends BaseComponent {
             .saveAddress(addressData)
             .pipe(
                 finalize(() => (isSuccess = true)),
-                takeUntil(this.ngUnsubscribe)
+                takeUntil(this.ngUnsubscribe),
             )
             .subscribe({
                 next: (newAddr: Address) => {
-                    this.toast.success('Địa chỉ đã được lưu thành công');
                     this.addresses.push(newAddr);
                     if (newAddr.isDefault) {
                         this.setSelectedAddress(newAddr);
@@ -360,7 +378,13 @@ export class CheckoutComponent extends BaseComponent {
         if (oldAddressData) {
             if (this.addressForm.invalid) {
                 this.addressForm.markAllAsTouched();
-                this.toast.error('Vui lòng điền đầy đủ thông tin');
+                Object.keys(this.addressForm.controls).forEach((key) => {
+                    const control = this.addressForm.get(key);
+                    control?.updateValueAndValidity({
+                        emitEvent: true,
+                        onlySelf: true,
+                    });
+                });
                 return false;
             }
             const newAddressData = this.addressForm.getRawValue();
@@ -387,12 +411,12 @@ export class CheckoutComponent extends BaseComponent {
             .updateAddress(updatedAddressData, addressId)
             .pipe(
                 finalize(() => (isSuccess = true)),
-                takeUntil(this.ngUnsubscribe)
+                takeUntil(this.ngUnsubscribe),
             )
             .subscribe({
                 next: (addr) => {
                     const indexToUpdate = this.addresses.findIndex(
-                        (a) => a.id === addr.id
+                        (a) => a.id === addr.id,
                     );
 
                     if (addr.isDefault) {
@@ -405,7 +429,6 @@ export class CheckoutComponent extends BaseComponent {
                     if (indexToUpdate !== -1) {
                         this.addresses[indexToUpdate] = addr;
                     }
-                    this.toast.success('Đã cập nhật địa chỉ thành công');
                 },
                 error: (err) => {
                     this.toast.error(err.message);
@@ -429,7 +452,7 @@ export class CheckoutComponent extends BaseComponent {
                     } else {
                         console.warn(
                             'Không tìm thấy tọa độ cho địa chỉ:',
-                            address
+                            address,
                         );
                         this.mapComponent.clearMarkers(); // Xóa marker nếu không tìm thấy
                     }
@@ -452,10 +475,5 @@ export class CheckoutComponent extends BaseComponent {
 
     getFullAddress(): string {
         return `${this.wardName}, ${this.districtName}, ${this.provinceName}`;
-    }
-
-    override ngOnDestroy(): void {
-        super.ngOnDestroy();
-        this.checkoutService.clearSelectedCartItems();
     }
 }

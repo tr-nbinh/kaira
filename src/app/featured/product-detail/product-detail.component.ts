@@ -11,9 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, takeUntil, tap } from 'rxjs';
 import { BaseComponent } from '../../base/base.component';
-import { ColorSelectItem } from '../../models/product-filter.interface';
 import { LoadingService } from '../../services/loading.service';
-import { ProductService } from '../../services/product.service';
 import { ToastService } from '../../services/toast.service';
 import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
 import { SafeHtmlPipe } from '../../shared/pipes/safe-html.pipe';
@@ -24,6 +22,7 @@ import {
     ProductAttribute,
     Variant,
 } from '../shop/models/product.model';
+import { ProductService } from '../shop/services/product.service';
 import { WishlistService } from '../wishlist/services/wishlist.service';
 import { ProductDetailSkeletonComponent } from './product-detail-skeleton/product-detail-skeleton.component';
 

@@ -135,7 +135,16 @@
         "UPDATE": "Cập nhật",
         "ADD_NEW_ADDRESS": "Thêm địa chỉ mới",
         "DEFAULT_ADDRESS": "Đặt làm địa chỉ mặc định",
-        "ADD_YOUR_ADDRESS": "Thêm địa chỉ giao hàng của bạn để tiếp tục"
+        "ADD_YOUR_ADDRESS": "Thêm địa chỉ giao hàng của bạn để tiếp tục",
+        "ADDRESS_DIALOG": {
+            "TITLE": "Địa chỉ của tôi"
+        },
+        "UPDATE_ADDR_DIALOG": {
+            "TITLE": "Cập nhật địa chỉ"
+        },
+        "CREATE_ADDR_DIALOG": {
+            "TITLE": "Địa chỉ mới"
+        }
     },
     "ORDER": {
         "TITLE": "Cảm ơn bạn đã mua hàng",
@@ -158,6 +167,7 @@
         "MIN_LENGTH": "Vui lòng nhập ít nhất {{requiredLength}} ký tự",
         "MAX_LENGTH": "Vui lòng nhập tối đa {{requiredLength}} ký tự",
         "PASSWORD_MIS_MATCH": "Mật khẩu không trùng khớp",
+        "ALREADY_EXIST_EMAIL": "Email đã được sử dụng",
         "GENERIC_ERROR": "Lỗi không xác định"
     },
     "USER": {
@@ -176,18 +186,71 @@
         "FORGOT_PASSWORD": "Quên mật khẩu",
         "CREATE_ACCOUNT": "Tạo tài khoản",
         "EMAIL_NOTI": "Vui lòng điền email",
-        "RESET_PASSWORD": "Đặt lại mật khẩu",
+        "VALIDATION": {
+            "EMAIL_NOT_EXIST": "Không tìm thấy tài khoản với email này"
+        },
         "VERIFICATION": {
-            "PENDING": {
-                "TITLE": "Kiểm tra hộp thứ đến của bạn!",
-                "TEXT": "Email xác thực đã được gửi đến.",
-                "TEXT_MUTED": "Vui lòng mở email đó và nhấp vào liên kết để kích hoạt tài khoản của bạn. Nếu bạn không thấy email, hãy kiểm tra thư mục **Spam/Thư rác** nhé!",
-                "NEED_HELP": "Cần hỗ trợ thêm?"
+            "RETRY_AFTER": "Thử lại sau",
+            "ERROR": {
+                "TITLE": "Truy cập không hợp lệ",
+                "DESC": "Có vẻ như bạn đã truy cập trực tiếp vào trang này. Vui lòng đăng ký tài khoản trước để nhận email xác thực.",
+                "BUTTON": "Đăng ký ngay",
+                "LINK": "Về trang chủ"
             },
-            "SUCCESS": "Tài khoản của bạn đã được xác thực",
-            "FAILED": "Xác thực tài khoản thất bại",
-            "BUTTON": "Gửi lại email xác thực",
-            "RESEND_AFTER": "Gửi lại sau"
+            "SUCCESS": {
+                "TITLE": "Xác thực Email của bạn",
+                "DESC": "Chúng tôi vừa gửi một liên kết xác nhận đến địa chỉ email:",
+                "ALERT": "Vui lòng kiểm tra cả hòm thư rác (Spam) nếu bạn không thấy email trong hòm thư chính.",
+                "BUTTON": "Gửi lại Email xác nhận",
+                "LINK": "Quay lại trang Đăng nhập"
+            }
+        },
+        "CONFIRM_EMAIL": {
+            "SUCCESS": {
+                "TITLE": "Thành công!",
+                "DESC": "Bây giờ bạn có thể đăng nhập.",
+                "BUTTON": "Đăng nhập ngay"
+            },
+            "ERROR": {
+                "TITLE": "Xác thực lỗi",
+                "ALERT": "Mã xác thực không tồn tại hoặc không hợp lệ.",
+                "BUTTON": "Quay lại trang Đăng ký",
+                "LINK": "Liên hệ hỗ trợ"
+            },
+            "LOADING": {
+                "TITLE": "Đang xác thực email",
+                "DES": "Vui lòng đợi trong giây lát."
+            }
+        },
+        "FOGOT_PASSWORD": {
+            "TITLE": "Quên mật khẩu?",
+            "DESC": "Nhập email của bạn và chúng tôi sẽ gửi hướng dẫn khôi phục mật khẩu.",
+            "BUTTON": "Gửi link khôi phục",
+            "LINK": "Quay lại trang Đăng nhập",
+            "SUCCESS": {
+                "TITLE": "Kiểm tra Email",
+                "DESC": "Chúng tôi đã gửi link đặt lại mật khẩu tới:",
+                "ALERT": "Link này sẽ hết hạn sau 30 phút.",
+                "BUTTON": "Thử lại với email khác",
+                "FOOTER": "Không nhận được email?",
+                "BTN_RESEND": "Gửi lại"
+            }
+        },
+        "RESET_PASSWORD": {
+            "ERROR": {
+                "TITLE": "Đặt lại mật khẩu",
+                "DESC": "Vui lòng nhập mật khẩu mới cho tài khoản của bạn.",
+                "BUTTON": "Cập nhật",
+                "LOADING_BTN": "Đang xử lý"
+            },
+            "NO_TOKEN": {
+                "ALERT": "Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.",
+                "BUTTON": "Yêu cầu link mới"
+            },
+            "SUCCESS": {
+                "TITLE": "Đã cập nhật!",
+                "DESC": "Bạn đang được chuyển hướng về trang Đăng nhập"
+            }
         }
     },
     "COMMON": {
@@ -224,6 +287,8 @@
         "REMOVE": "Xóa",
         "CONTACT_US": "Liên hệ chúng tôi",
         "UNAUTHORIZED": "Đăng nhập để sử dụng tính năng này",
-        "BLACK_COLOR": "Đen"
+        "BLACK_COLOR": "Đen",
+        "PROCESSING": "Đang xử lý",
+        "CANCEL": "Hủy"
     }
 }

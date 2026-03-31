@@ -28,3 +28,10 @@ button {
 p {
     margin: 0;
 }
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+    background-image: none !important;
+    padding-right: calc(1.5em + 0.75rem) !important;
+    /* Reset lại padding nếu muốn chữ không bị thụt vào quá nhiều */
+}

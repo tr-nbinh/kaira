@@ -1,94 +1,99 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject, signal } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
-    FormsModule,
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
-import { LoadingToggleDirective } from '../../../../shared/directives/loading-toggle.directive';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 import { BaseComponent } from '../../../../base/base.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingService } from '../../../../services/loading.service';
-import { ToastService } from '../../../../services/toast.service';
-import { UserService } from '../../../../services/user.service';
-import { passwordMatchValidator } from '../../validators/password-match.validator';
 import { FormControlErrorDirective } from '../../../../shared/directives/form-control-error.directive';
-import { finalize, takeUntil, tap } from 'rxjs';
+import { passwordMatchValidator } from '../../validators/password-match.validator';
+import { UserService } from '../../../../services/user.service';
+import { ResetPasswordRequest } from '../../models/authResponse.interface';
+import { ToastService } from '../../../../services/toast.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
-type PassWordType = 'text' | 'password';
+type InputType = 'text' | 'password';
 @Component({
     selector: 'app-reset-password',
     imports: [
         ReactiveFormsModule,
-        TranslatePipe,
-        LoadingToggleDirective,
         FormControlErrorDirective,
+        RouterLink,
+        TranslatePipe,
     ],
     templateUrl: './reset-password.component.html',
     styleUrl: './reset-password.component.scss',
 })
 export class ResetPasswordComponent extends BaseComponent {
-    resetPasswordForm!: FormGroup;
-    token: string | null = '';
-    pwInputType: PassWordType = 'password';
-    confirmInputType: PassWordType = 'password';
+    private fb = inject(FormBuilder);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private userService = inject(UserService);
+    private toast = inject(ToastService);
 
-    constructor(
-        private fb: FormBuilder,
-        private userService: UserService,
-        private toast: ToastService,
-        private route: ActivatedRoute,
-        private loading: LoadingService
-    ) {
-        super();
-    }
+    pwInputType: InputType = 'password';
+    confirmInputType: InputType = 'password';
+    token = signal<string | null>(null);
+    isSubmitting = signal(false);
+    isSuccess = signal(false);
+
+    resetForm: FormGroup = this.fb.group(
+        {
+            password: [
+                '',
+                [
+                    Validators.required,
+                    Validators.minLength(6),
+                    Validators.pattern(
+                        /^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).*$/,
+                    ),
+                ],
+            ],
+            confirmPassword: ['', Validators.required],
+        },
+        {
+            validators: passwordMatchValidator('password', 'confirmPassword'),
+        },
+    );
 
     ngOnInit() {
-        this.resetPasswordForm = this.fb.nonNullable.group(
-            {
-                password: [
-                    '',
-                    [
-                        Validators.required,
-                        Validators.minLength(6),
-                        Validators.pattern(
-                            /^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).*$/
-                        ), // At least one number, one uppercase letter and one special character
-                    ],
-                ],
-                confirmPassword: ['', Validators.required],
-            },
-            {
-                validators: passwordMatchValidator(
-                    'password',
-                    'confirmPassword'
-                ),
-            }
-        );
+        this.token.set(this.route.snapshot.queryParamMap.get('token'));
 
-        this.token = this.route.snapshot.queryParamMap.get('token');
+        if (!this.token()) {
+            // Nếu không có token, có thể điều hướng về trang chủ hoặc hiện lỗi
+            console.error('Không tìm thấy Token xác thực');
+        }
     }
 
-    resetPassword() {
-        if (!this.token || this.resetPasswordForm.invalid) return;
+    onSubmit() {
+        if (this.resetForm.invalid || !this.token()) {
+            this.resetForm.markAllAsTouched();
+            return;
+        }
+        this.isSubmitting.set(true);
+        const payload: ResetPasswordRequest = {
+            token: this.token()!,
+            password: this.resetForm.value.password,
+            confirmPassword: this.resetForm.value.confirmPassword,
+        };
+
         this.userService
-            .resetPassword(
-                this.token,
-                this.resetPasswordForm.get('password')?.value
-            )
-            .pipe(
-                tap(() => this.loading.show('reset-password-btn')),
-                finalize(() => this.loading.hide('reset-password-btn')),
-                takeUntil(this.ngUnsubscribe)
-            )
+            .resetPassword(payload)
+            .pipe(finalize(() => this.isSubmitting.set(false)))
             .subscribe({
-                next: (res) => {
-                    this.toast.success(res.message);
+                next: () => {
+                    this.isSuccess.set(true);
+                    setTimeout(
+                        () => this.router.navigate(['/auth/login']),
+                        3000,
+                    );
                 },
-                error: (err) => {
-                    this.toast.error(err.message);
+                error: (err: any) => {
+                    this.toast.error(err.message || 'Server error');
                 },
             });
     }

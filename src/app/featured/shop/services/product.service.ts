@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseService } from '../../../base/base.service';
-import { Product } from '../models/product.model';
+import { PaginationResponse } from '../../../models/paginatedResponse.interface';
+import { Product, ProductFilter } from '../models/product.model';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +15,13 @@ export class ProductService extends BaseService {
         super(http);
     }
 
-    getProducts(): Observable<Product[]> {
-        return this.get(this._endpoint);
+    getProducts(
+        filter?: ProductFilter,
+    ): Observable<PaginationResponse<Product>> {
+        return this.get(this._endpoint, filter);
+    }
+
+    getProductById(id: string): Observable<Product> {
+        return this.get(`${this._endpoint}/${id}`);
     }
 }

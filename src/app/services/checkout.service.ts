@@ -1,34 +1,27 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CartItem } from '../models/cart.interface';
+import { inject, Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { BaseService } from '../base/base.service';
-import { Order } from '../models/order.interface';
-import { ApiResponse } from '../models/api-response.interface';
+import { CartService } from '../featured/cart/services/cart.service';
+import {
+    CheckoutRequest,
+    CheckoutResponse,
+} from '../featured/checkout/models/checkout.model';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CheckoutService extends BaseService {
-    private readonly _endpoint = 'orders';
-    private readonly selectedCartItemsSubject = new BehaviorSubject<CartItem[]>(
-        []
-    );
-    selectedCartItems$ = this.selectedCartItemsSubject.asObservable();
+    private readonly _endpoint = 'checkout';
+    private cartService = inject(CartService);
 
-    setSelectedCartItems(items: CartItem[]) {
-        this.selectedCartItemsSubject.next(items);
-    }
-
-    getSelectedCartItems(): CartItem[] {
-        return this.selectedCartItemsSubject.getValue();
-    }
-
-    clearSelectedCartItems() {
-        this.selectedCartItemsSubject.next([]);
-    }
-
-    saveOrder(data: Order): Observable<ApiResponse<Order>> {
-        return this.post(this._endpoint, data);
+    checkout(data: CheckoutRequest): Observable<CheckoutResponse> {
+        return this.post<CheckoutResponse>(this._endpoint, data).pipe(
+            tap((res) => {
+                if (res) {
+                    this.cartService.updateCartCounts(0);
+                }
+            }),
+        );
     }
 
     initSession(cartId: number, userId: number): Observable<any> {

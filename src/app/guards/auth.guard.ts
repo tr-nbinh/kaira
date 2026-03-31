@@ -12,7 +12,7 @@ import { catchError, map, of } from 'rxjs';
 
 export const authGuard: CanActivateFn = (
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
 ): MaybeAsync<GuardResult> => {
     const userService = inject(UserService);
     const router = inject(Router);
@@ -27,14 +27,14 @@ export const authGuard: CanActivateFn = (
         return true;
     }
 
-    return userService.refreshAccessToken().pipe(
+    return userService.refreshToken().pipe(
         map(() => true),
         catchError(() => {
             return of(
                 router.createUrlTree(['/auth/login'], {
                     queryParams: { returnUrl: state.url },
-                })
+                }),
             );
-        })
+        }),
     );
 };

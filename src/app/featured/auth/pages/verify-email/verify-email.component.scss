@@ -1,0 +1,21 @@
+.bg-light-primary {
+    background-color: #f0f7ff;
+    color: #0056b3;
+}
+
+.display-1 {
+    font-size: 5rem;
+}
+
+.card {
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+}
+
+// Bỏ dấu chấm than nếu bạn dùng Bootstrap Icons mặc định (như đã thảo luận trước đó)
+.no-icon {
+    background-image: none !important;
+}

@@ -65,20 +65,6 @@ export const routes: Routes = [
                 (m) => m.CheckoutComponent,
             ),
     },
-    // {
-    //     path: 'purchase',
-    //     loadComponent: () =>
-    //         import('./featured/purchase/purchase.component').then(
-    //             (m) => m.PurchaseComponent
-    //         ),
-    // },
-    {
-        path: 'image-uploader',
-        loadComponent: () =>
-            import('./shared/components/image-uploader/image-uploader.component').then(
-                (m) => m.ImageUploaderComponent,
-            ),
-    },
     {
         path: 'products/:slug',
         loadComponent: () =>
@@ -104,10 +90,17 @@ export const routes: Routes = [
                     ),
             },
             {
-                path: 'pending-verify',
+                path: 'verify-email',
                 loadComponent: () =>
-                    import('./featured/auth/pages/pending-verify/pending-verify.component').then(
-                        (m) => m.PendingVerifyComponent,
+                    import('./featured/auth/pages/verify-email/verify-email.component').then(
+                        (m) => m.VerifyEmailComponent,
+                    ),
+            },
+            {
+                path: 'confirm-email',
+                loadComponent: () =>
+                    import('./featured/auth/pages/confirm-email/confirm-email.component').then(
+                        (m) => m.ConfirmEmailComponent,
                     ),
             },
             {

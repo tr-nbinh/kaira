@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -38,8 +38,7 @@ export class RegisterComponent {
         private fb: FormBuilder,
         private userService: UserService,
         private loading: LoadingService,
-        private toast: ToastService,
-        private router: Router
+        private router: Router,
     ) {}
 
     ngOnInit() {
@@ -50,7 +49,7 @@ export class RegisterComponent {
                     [
                         Validators.required,
                         Validators.minLength(3),
-                        Validators.maxLength(6),
+                        Validators.maxLength(15),
                     ],
                 ],
                 email: [
@@ -58,7 +57,7 @@ export class RegisterComponent {
                     [
                         Validators.required,
                         Validators.pattern(
-                            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+                            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                         ),
                     ],
                 ],
@@ -68,7 +67,7 @@ export class RegisterComponent {
                         Validators.required,
                         Validators.minLength(6),
                         Validators.pattern(
-                            /^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).*$/
+                            /^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).*$/,
                         ), // At least one number, one uppercase letter and one special character
                     ],
                 ],
@@ -77,29 +76,34 @@ export class RegisterComponent {
             {
                 validators: passwordMatchValidator(
                     'password',
-                    'confirmPassword'
+                    'confirmPassword',
                 ),
-            }
+            },
         );
     }
 
     onSubmit(): void {
-        const loadingKey = 'submitBtn';
-        this.loading.show(loadingKey);
         if (this.registrationForm.valid) {
+            const loadingKey = 'submitBtn';
+            this.loading.show(loadingKey);
             this.userService
                 .register(this.registrationForm.getRawValue())
                 .pipe(finalize(() => this.loading.hide(loadingKey)))
                 .subscribe({
                     next: (res) => {
-                        this.toast.show(res.message);
-                        this.userService.setPendingVerifyEmail(
-                            this.registrationForm.get('email')?.value
-                        );
-                        this.router.navigateByUrl('/auth/pending-verify');
+                        this.router.navigate(['/auth/verify-email'], {
+                            queryParams: { email: res.email },
+                        });
                     },
                     error: (error) => {
-                        this.toast.show(error.message);
+                        if (error.status == 409) {
+                            this.registrationForm.get('email')?.setErrors({
+                                alreadyExists: error.message,
+                            });
+                            this.registrationForm
+                                .get('email')
+                                ?.markAllAsTouched();
+                        }
                     },
                 });
         } else {
@@ -108,10 +112,12 @@ export class RegisterComponent {
     }
 
     togglePassword() {
-        this.pwInputType = this.pwInputType === 'password' ? 'text' : 'password';
+        this.pwInputType =
+            this.pwInputType === 'password' ? 'text' : 'password';
     }
 
     toggleConfirmPassword() {
-        this.confirmInputType = this.confirmInputType === 'password' ? 'text' : 'password';
+        this.confirmInputType =
+            this.confirmInputType === 'password' ? 'text' : 'password';
     }
 }

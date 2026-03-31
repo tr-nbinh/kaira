@@ -83,7 +83,7 @@
                         <li>
                             <a routerLink="/cart" class="fancy-link d-none d-lg-block text-uppercase mx-3">
                                 {{"COMMON.CART" | translate}}
-                                @if (wishlistCount$ | async; as count) {
+                                @if (cartItemCount$ | async; as count) {
                                 @if (count > 0) {
 
                                 <span class="cart-count">({{count}})</span>

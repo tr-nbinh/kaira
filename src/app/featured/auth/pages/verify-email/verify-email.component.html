@@ -1,0 +1,78 @@
+<div class="container d-flex align-items-center justify-content-center py-5">
+    <div class="card shadow-lg border-0 rounded-4 p-4 p-sm-5 text-center" style="max-width: 500px;">
+
+        @if (!isInvalidAccess()) {
+        <div class="mb-4">
+            <div class="text-primary mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                    class="bi bi-envelope-check" viewBox="0 0 16 16">
+                    <path
+                        d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z" />
+                    <path
+                        d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686" />
+                </svg>
+            </div>
+            <h2 class="fw-bold text-dark">{{'AUTH.VERIFICATION.SUCCESS.TITLE' | translate}}</h2>
+            <p class="text-muted">
+                {{'AUTH.VERIFICATION.SUCCESS.DESC' | translate}}
+                <strong class="text-dark">{{ userEmail() }}</strong>
+            </p>
+        </div>
+
+        <div class="d-flex align-items-center alert alert-info border-0 bg-light-primary text-start mb-4 gap-4">
+            <small class="d-block mb-1 font-weight-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                </svg>
+            </small>
+            <small class="text-muted">
+                {{'AUTH.VERIFICATION.SUCCESS.ALERT' | translate}}
+            </small>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button (click)="resendEmail()" class="btn btn-dark btn-md transition-all"
+                [class.btn-primary]="!isWaiting()" [class.btn-light]="isWaiting()" [disabled]="isWaiting()">
+                @if (isWaiting()) {
+                <span class="d-flex align-items-center justify-content-center">
+                    <div class="spinner-grow spinner-grow-sm me-2 text-secondary"></div>
+                    {{'AUTH.VERIFICATION.RETRY_AFTER' | translate}} {{ countdown() }}s
+                </span>
+                } @else {
+                {{'AUTH.VERIFICATION.SUCCESS.BUTTON' | translate}}
+                }
+            </button>
+            <a routerLink="/auth/login" class="btn btn-outline-dark btn-md">
+                {{'AUTH.VERIFICATION.SUCCESS.LINK' | translate}}
+            </a>
+        </div>
+
+        } @else {
+        <div class="mb-4">
+            <div class="text-warning mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                    class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                    <path
+                        d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z" />
+                    <path
+                        d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                </svg>
+            </div>
+            <h2 class="fw-bold text-dark">{{'AUTH.VERIFICATION.ERROR.TITLE' | translate}}</h2>
+            <p class="text-muted my-3">
+                {{'AUTH.VERIFICATION.ERROR.DESC' | translate}}
+            </p>
+        </div>
+        <a routerLink="/auth/register" class="btn btn-dark btn-lg text-white text-capitalize w-100 d-block mb-3">
+            {{'AUTH.VERIFICATION.ERROR.BUTTON' | translate}}
+        </a>
+        <a routerLink="/" class="fancy-link text-capitalize d-inline-block">
+            {{'AUTH.VERIFICATION.ERROR.LINK' | translate}}
+        </a>
+        }
+
+    </div>
+</div>

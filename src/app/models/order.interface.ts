@@ -1,4 +1,4 @@
-import { CartItem } from './cart.interface';
+import { CartItem } from '../featured/cart/models/cart.model';
 
 type OrderPaymentMethod = 'banking' | 'cod';
 
@@ -12,4 +12,3 @@ export interface Order {
     paymentMethod: OrderPaymentMethod;
     status?: OrderStatus;
 }
-

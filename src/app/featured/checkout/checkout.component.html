@@ -32,15 +32,56 @@
             </div>
             }
         </div>
-        <div class="row g-5">
-            <div class="col-12 col-lg-6">
-                <h4 class="text-dark pb-4">{{"CHECKOUT.ADDITIONAL_INFO" | translate}}</h4>
-                <div class="form-group">
+        <div class="row gy-5">
+            <div class="col-12 col-lg-7">
+                <h4 class="text-dark text-uppercase pb-2 border-bottom">{{"CHECKOUT.CART_SUMMARY" | translate}}</h4>
+                <div class="cart-list">
+                    @for (item of orderItems; track item.variantId) {
+                    <div class="row align-items-center w-100">
+                        <div class="col-7">
+                            <div class="cart-info d-flex flex-wrap align-items-center mb-4">
+                                <div class="col-4">
+                                    <a [routerLink]="item.productId | productUrl:item.slug"
+                                        [queryParams]="{ variant: item.variantId}" class="card-image">
+                                        <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
+                                    </a>
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-detail ps-3">
+                                        <h5 class="card-title">
+                                            <a [routerLink]="item.productId | productUrl:item.slug"
+                                                [queryParams]="{ variant: item.variantId}">
+                                                {{item.name}}
+                                            </a>
+                                        </h5>
+                                        <span class="text-dark d-block">{{item.color}}</span>
+                                        <span class="text-dark">{{item.displayPrice |
+                                            currency:item.currency:'symbol':'1.0-2'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <span class="quantity">x{{item.quantity}}</span>
+                        </div>
+                        <div class="col-4">
+                            <div class="total-price text-center">
+                                <span class="money text-dark">{{item.displayFinalPrice |
+                                    currency:item.currency:'symbol':'1.0-2'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <h4 class="text-dark text-uppercase pb-2 border-bottom">{{"CHECKOUT.ADDITIONAL_INFO" | translate}}</h4>
+                <div class="form-group ps-2">
                     <div class="billing-details">
                         <label for="note">{{"CHECKOUT.ORDER_NOTES" | translate}}</label>
-                        <textarea class="form-control pt-3 pb-3 ps-3 mt-2" id="note" name="note"
+                        <textarea class="form-control p-3 mt-2" id="note" name="note"
                             [(ngModel)]="order.note" [placeholder]="'CHECKOUT.NOTE_PLACEHOLDER' | translate"></textarea>
-                        <div class="list-group mt-5 mb-3">
+                        <div class="list-group mt-3">
                             <label class="list-group-item d-flex gap-2 border-0">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="paymentMethod"
                                     value="banking" [(ngModel)]="order.paymentMethod" required>
@@ -63,68 +104,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-6">
-                <h4 class="text-dark pb-4">{{"CHECKOUT.CART_SUMMARY" | translate}}</h4>
-                <div class="cart-item">
-                    @for (item of orderItems; track item.id) {
-                    <div class="row align-items-center">
-                        <div class="col-8">
-                            <div class="cart-info d-flex flex-wrap align-items-center mb-4">
-                                <div class="col-5">
-                                    <div class="card-image">
-                                        <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
-                                    </div>
-                                </div>
-                                <div class="col-7">
-                                    <div class="card-detail ps-3">
-                                        <h5 class="card-title">
-                                            {{item.name}}
-                                        </h5>
-                                        <span class="text-dark d-block">{{item.color}}</span>
-                                        <span class="text-dark">{{item.price | currency}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-1">
-                            <span class="quantity">x{{item.quantity}}</span>
-                        </div>
-                        <div class="col-3">
-                            <div class="total-price text-center">
-                                <span class="money text-dark">{{item.finalPrice * item.quantity|
-                                    currency}}</span>
-                            </div>
-                        </div>
+            <div class="col-12 offset-0 col-md-7 offset-md-5 align-self-end">
+                <div class="cart-totals bg-grey">
+                    <h4 class="text-dark text-uppercase">{{"COMMON.CART_TOTAL" | translate}}</h4>
+                    <div class="d-flex align-items-center justify-content-between py-3 border-bottom border-top">
+                        <b class="text-dark text-uppercase ">{{"COMMON.SUBTOTAL" |
+                            translate}}</b>
+                        <p class="text-dark">{{subTotal | currency:'VND':'symbol':'1.0-2'}}</p>
                     </div>
-                    }
+                    <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+                        <b class="text-dark text-uppercase ">{{"COMMON.TOTAL" |
+                            translate}}</b>
+                        <p class="text-dark">{{subTotal | currency:'VND':'symbol':'1.0-2'}}</p>
+                    </div>
                 </div>
-
-                <h4 class="display-7 text-dark pb-4">{{"COMMON.CART_TOTAL" | translate}}</h4>
-                <div class="total-price">
-                    <table cellspacing="0" class="table">
-                        <tbody>
-                            <tr class="subtotal border-top border-bottom pt-2 pb-2 text-uppercase">
-                                <th>{{"COMMON.SUBTOTAL" | translate}}</th>
-                                <td data-title="Subtotal">
-                                    <span class="price-amount amount ps-5">
-                                        <bdi>{{ subTotal | currency }}</bdi>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr class="order-total border-bottom pt-2 pb-2 text-uppercase">
-                                <th>{{"COMMON.TOTAL" | translate}}</th>
-                                <td data-title="Total">
-                                    <span class="price-amount amount ps-5">
-                                        <bdi>{{subTotal + shippingFee | currency}}</bdi>
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button class="btn btn-dark btn-lg text-uppercase btn-rounded-none w-100" (click)="onOrderSubmit()">
-                        {{"CHECKOUT.ORDER_BUTTON" | translate}}
-                    </button>
-                </div>
+                <button class="btn btn-dark btn-lg text-uppercase btn-rounded-none w-100 mt-3"
+                    (click)="submitOrder()">
+                    {{"CHECKOUT.ORDER_BUTTON" | translate}}
+                </button>
             </div>
         </div>
     </div>

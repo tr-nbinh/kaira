@@ -135,7 +135,16 @@
         "UPDATE": "Update",
         "ADD_NEW_ADDRESS": "Add new address",
         "DEFAULT_ADDRESS": "Set as default address",
-        "ADD_YOUR_ADDRESS": "Add your delivery address to continue"
+        "ADD_YOUR_ADDRESS": "Add your delivery address to continue",
+        "ADDRESS_DIALOG": {
+            "TITLE": "My addresses"
+        },
+        "UPDATE_ADDR_DIALOG": {
+            "TITLE": "Update address"
+        },
+        "CREATE_ADDR_DIALOG": {
+            "TITLE": "New address"
+        }
     },
     "ORDER": {
         "TITLE": "Thank you for your purchase",
@@ -158,6 +167,7 @@
         "MIN_LENGTH": "Please enter at least {{requiredLength}} characters",
         "MAX_LENGTH": "Please enter no more than {{requiredLength}} characters",
         "PASSWORD_MIS_MATCH": "Password does not match",
+        "ALREADY_EXIST_EMAIL": "Email aldready existed",
         "GENERIC_ERROR": "An error occurred, please try again later"
     },
     "USER": {
@@ -176,18 +186,71 @@
         "FORGOT_PASSWORD": "Forgot password",
         "CREATE_ACCOUNT": "Create an account",
         "EMAIL_NOTI": "Please enter your email",
-        "RESET_PASSWORD": "Reset password",
-        "VERIFICATION": {
-            "PENDING": {
-                "TITLE": "Please check your inbox for our confirmation email.",
-                "TEXT": "A verification email has been sent to your email address.",
-                "TEXT_MUTED": "Please open the email and click the verification link to activate your account. If the email is not there, make sure to check your Spam/Junk folder!",
-                "NEED_HELP": "Need more help?"
+        "VALIDATION": {
+            "EMAIL_NOT_EXIST": "We couldn’t find an account with that email"
+        },
+        "CONFIRM_EMAIL": {
+            "SUCCESS": {
+                "TITLE": "Successfully completed",
+                "DESC": "You can now log in to your account.",
+                "BUTTON": "Login now"
             },
-            "SUCCESS": "Your account has been successfully verified.",
-            "FAILED": "Account verification failed",
-            "BUTTON": "Resend verification",
-            "RESEND_AFTER": "Resend after"
+            "ERROR": {
+                "TITLE": "Verification failed",
+                "ALERT": "The verification code is invalid or has expired.",
+                "BUTTON": "Go back Register page",
+                "LINK": "Contact support"
+            },
+            "LOADING": {
+                "TITLE": "Verifying your email...",
+                "DES": "Please wait..."
+            }
+        },
+        "VERIFICATION": {
+            "RETRY_AFTER": "Re-try after",
+            "ERROR": {
+                "TITLE": "Invalid access",
+                "DESC": "You may have accessed this page directly. Please create an account to receive a verification email.",
+                "BUTTON": "Register now",
+                "LINK": "Go home"
+            },
+            "SUCCESS": {
+                "TITLE": "Email Verification",
+                "DESC": "We’ve sent you a verification email. Please check your inbox.",
+                "ALERT": "Be sure to check your Spam or Junk folder if the email doesn’t appear in your inbox.",
+                "BUTTON": "Resend verification email",
+                "LINK": "Go back register page"
+            }
+        },
+        "FOGOT_PASSWORD": {
+            "TITLE": "Forgot password?",
+            "DESC": "Provide your email and we’ll send you a link to reset your password.",
+            "BUTTON": "Send reset link",
+            "LINK": "Go back register page",
+            "SUCCESS": {
+                "TITLE": "Please check your email",
+                "DESC": "A password reset link has been sent to your email address:",
+                "ALERT": "This link expires in 30 minutes.",
+                "BUTTON": "Use a different email",
+                "FOOTER": "Haven’t received the email?",
+                "BTN_RESEND": "Resend"
+            }
+        },
+        "RESET_PASSWORD": {
+            "ERROR": {
+                "TITLE": "Reset password",
+                "DESC": "Please enter a new password for your account.",
+                "BUTTON": "Update password",
+                "LOADING_BTN": "Please wait"
+            },
+            "NO_TOKEN": {
+                "ALERT": "This reset link is invalid or has expired.",
+                "BUTTON": "Request new link"
+            },
+            "SUCCESS": {
+                "TITLE": "Updated successfully!",
+                "DESC": "Redirecting to the login page"
+            }
         }
     },
     "COMMON": {
@@ -220,10 +283,12 @@
         "SIGN_UP": "Sign up",
         "SIGN_OUT": "Sign out",
         "EMAIL_PLACEHOLDER": "Write your email here",
-        "CONFIRM": "CONFIRM",
+        "CONFIRM": "Confirm",
         "REMOVE": "Remove",
         "CONTACT_US": "Contact us",
         "UNAUTHORIZED": "Please log in to use this feature",
-        "BLACK_COLOR": "Black"
+        "BLACK_COLOR": "Black",
+        "PROCESSING": "Processing",
+        "CANCEL": "Cancel"
     }
 }
