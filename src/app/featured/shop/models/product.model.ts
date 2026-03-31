@@ -44,6 +44,9 @@ export interface ProductFilter {
     maxPrice?: number;
     limit: number;
     page: number;
+    bestSeller?: boolean;
+    bestReviewed?: boolean;
+    newArrival?: boolean;
     // sizes: number[];
     // brands: number[];
     // searchTerm?: string;

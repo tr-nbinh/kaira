@@ -4,18 +4,21 @@ import { ProductHighlightFilterValue } from '../enums/product-highlight-filter-v
 export const PRODUCT_HIGHLIGHT_FILTERS: BaseSelectableItem[] = [
     {
         id: 1,
+        key: 'bestSeller',
         text: 'COMMON.BEST_SELLERS',
         checked: true,
         value: ProductHighlightFilterValue.best_seller,
     },
     {
         id: 2,
+        key: 'newArrival',
         text: 'COMMON.NEW_ARRIVALS',
         checked: false,
         value: ProductHighlightFilterValue.new_arrivals,
     },
     {
         id: 3,
+        key: 'bestReviewed',
         text: 'COMMON.BEST_REVIEWED',
         checked: false,
         value: ProductHighlightFilterValue.best_reviewed,

@@ -3,7 +3,7 @@
         <div class="row">
             <div id="filters" class="button-group d-flex gap-4 justify-content-center py-5">
                 @for (item of productHightlightFilter; track $index) {
-                <button type="button" class="fancy-link text-uppercase" [class.active]="item.checked">{{item.text! |
+                <button type="button" class="fancy-link text-uppercase" [class.active]="item.checked" (click)="filter(item)">{{item.text! |
                     translate}}
                 </button>
                 }
@@ -11,8 +11,8 @@
             <div class="product-carousel product-element swiper-menu position-relative overflow-hidden">
                 <div class="swiper product-swiper" #swiper>
                     <div class="swiper-wrapper d-flex">
-                        @if (products$ | async; as products) {
-                        @for (product of products; track product.id) {
+                        @if (response$ | async) {
+                        @for (product of products(); track product.id) {
                         <div class="swiper-slide">
                             <app-product-item [product]="product"></app-product-item>
                         </div>
