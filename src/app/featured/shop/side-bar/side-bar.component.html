@@ -1,5 +1,5 @@
 <div class="sidebar">
-    <div class="sidebar-categories border-animation-left mb-5">
+    <!-- <div class="sidebar-categories border-animation-left mb-5">
         <div class="text-dark text-uppercase">{{"SHOP.BROWSE_BY_CATEGORIES" | translate}}:</div>
         <ul class="list-unstyled text-dark">
             <li>
@@ -13,34 +13,23 @@
             </li>
             }
         </ul>
-    </div>
+    </div> -->
     <div class="product-filter padding-small">
-        <div class="text-dark text-uppercase">{{"SHOP.FILTER_BY" | translate}}:</div>
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-                <div class="accordion-header" id="heading-one">
-                    <button class="accordion-button py-3" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
-                        <span class="accordion-title fs-3">{{"COMMON.COLOR" | translate}}</span>
+        <div class="color">
+            <span>{{"COMMON.COLOR" | translate}} {{selectedColorIdCount() > 0 ? `(${selectedColorIdCount()})` : ''
+                }}</span>
+            <div class="mt-2 d-flex align-items-center flex-wrap row-gap-2">
+                @for (color of colors$ | async; track color.id) {
+                <div class="swatch-wrapper">
+                    <button type="button" class="p-2 d-flex align-items-center gap-2 border-dark rounded-pill"
+                        [class.border]="selectedColorIdsMap().has(color.id)" (click)="toggleColor(color.id)">
+                        <span class="swatch-circle" [style]="{'background-color': color.value_code}"></span>
+                        <span class="swatch-name">{{color.name}}</span>
                     </button>
                 </div>
-                <div id="collapse-one" class="accordion-collapse collapse show" aria-labelledby="heading-one">
-                    <div class="accordion-body">
-                        @for (color of colors; track color.id) {
-                        <div class="form-check">
-                            <label class="form-check-label" [for]="'color-id-' + color.id">
-                                {{color.name}}
-                                <input class="form-check-input" type="checkbox" name="color-option"
-                                    [id]="'color-id-' + color.id" [checked]="color.checked"
-                                    (change)="toggleColorSelection(color)">
-                                <span class="checkmark" [style.background-color]="color.hexCode"></span>
-                            </label>
-                        </div>
-                        }
-                    </div>
-                </div>
+                }
             </div>
-            <div class="accordion-item">
+            <!-- <div class="accordion-item">
                 <div class="accordion-header" id="heading-two">
                     <button class="accordion-button py-3" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse-two" aria-expanded="true" aria-controls="collapse-two">
@@ -55,24 +44,19 @@
                         }
                     </div>
                 </div>
-            </div>
-            <div class="accordion-item">
-                <div class="accordion-header" id="heading-three">
-                    <button class="accordion-button py-3" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse-three" aria-expanded="true" aria-controls="collapse-three">
-                        <span class="accordion-title fs-3">{{"COMMON.PRICE" | translate}}</span>
-                    </button>
-                </div>
-                <div id="collapse-three" class="accordion-collapse collapse show" aria-labelledby="heading-three">
-                    <div class="accordion-body">
-                        @for (price of priceRanges; track price.id) {
-                        <span class="accordion-content cursor-pointer text-dark" [class.active]="price.checked"
-                            (click)="togglePriceSelection(price)">{{price.text}}</span>
-                        }
-                    </div>
+            </div> -->
+            <div class="mt-2 price">
+                <span>{{"COMMON.PRICE" | translate}} {{selectedPriceIdCount() > 0 ? `(${selectedPriceIdCount()})` : ''
+                    }}</span>
+                <div class="mt-2">
+                    @for (price of priceRanges; track price.id) {
+                    <button type="button" class="price-btn p-2 border border-dark d-block w-50 mt-2 text-left"
+                        [class.active]="selectedPriceRangeId() == price.id"
+                        (click)="togglePrice(price)">{{price.displayLabel}}</button>
+                    }
                 </div>
             </div>
-            <div class="accordion-item">
+            <!-- <div class="accordion-item">
                 <div class="accordion-header" id="heading-four">
                     <button class="accordion-button py-3" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse-four" aria-expanded="true" aria-controls="collapse-four">
@@ -87,9 +71,9 @@
                         }
                     </div>
                 </div>
-            </div>
-            <button class="btn btn-link text-uppercase item-anchor" (click)="resetFilter()">{{"SHOP.RESET_FILTER" |
-                translate}}</button>
+            </div> -->
+            <!-- <button class="btn btn-link text-uppercase item-anchor" (click)="resetFilter()">{{"SHOP.RESET_FILTER" |
+                translate}}</button> -->
         </div>
     </div>
 </div>

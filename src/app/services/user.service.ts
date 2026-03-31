@@ -1,13 +1,18 @@
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseService } from '../base/base.service';
-import { RegisterRequest } from '../models/auth/register.interface';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
-import { Login } from '../models/auth/login.interface';
-import { AuthResponse } from '../featured/auth/models/authResponse.interface';
-import { User } from '../featured/auth/models/user.interface';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { ApiResponse } from '../models/api-response.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { SHOW_TOAST } from '../../core/token';
+import { BaseService } from '../base/base.service';
+import {
+    LoginResponse,
+    RefreshTokenResponse,
+    RegisterResponse,
+    ResetPasswordRequest,
+} from '../featured/auth/models/authResponse.interface';
+import { User } from '../featured/auth/models/user.interface';
+import { Login } from '../models/auth/login.interface';
+import { RegisterRequest } from '../models/auth/register.interface';
 
 const ACCESSTOKEN_KEY = 'accessToken';
 const PENDING_VERIFY_EMAIL = 'pendingVerifyEmail';
@@ -19,97 +24,94 @@ const PROTECTED_ROUTES = ['/cart', '/wishlist', '/checkout'];
 export class UserService extends BaseService {
     private readonly _endpoint = 'auth';
     private isAuthenticatedSubject = new BehaviorSubject<boolean>(
-        !!localStorage.getItem(ACCESSTOKEN_KEY)
+        !!localStorage.getItem(ACCESSTOKEN_KEY),
     );
     isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-    constructor(http: HttpClient, private router: Router) {
+    constructor(
+        http: HttpClient,
+        private router: Router,
+    ) {
         super(http);
     }
 
-    register(data: RegisterRequest): Observable<ApiResponse> {
+    register(data: RegisterRequest): Observable<RegisterResponse> {
         return this.post(`${this._endpoint}/register`, data);
     }
 
-    login(data: Login): Observable<ApiResponse<AuthResponse>> {
+    login(data: Login): Observable<LoginResponse> {
         return this.post(`${this._endpoint}/login`, data, {
             withCredentials: true,
         });
     }
 
+    verifyEmail(token: string): Observable<any> {
+        return this.post(`${this._endpoint}/verify`, { token });
+    }
+
     logout() {
-        this.post(`${this._endpoint}/logout`, null, {
-            withCredentials: true,
-        }).subscribe((res) => {
-            this.clearTokens();
-            const currentUrl = this.router.url;
-            const isProtected = PROTECTED_ROUTES.some((route) =>
-                currentUrl.startsWith(route)
-            );
-            if (isProtected) {
-                this.router.navigate(['/auth/login'], {
-                    queryParams: { returnUrl: currentUrl },
-                });
-            }
-            this.isAuthenticatedSubject.next(false);
+        this.post(
+            `${this._endpoint}/logout`,
+            {},
+            {
+                withCredentials: true,
+            },
+        ).subscribe({
+            complete: () => {
+                this.handleLogout();
+            },
+            error: () => {
+                this.handleLogout();
+            },
         });
     }
 
-    refreshAccessToken(): Observable<ApiResponse<string>> {
-        // accessToken
-        return this.post<ApiResponse<string>>(
+    private handleLogout() {
+        this.clearTokens();
+        const currentUrl = this.router.url;
+        const isProtected = PROTECTED_ROUTES.some((route) =>
+            currentUrl.startsWith(route),
+        );
+        if (isProtected) {
+            this.router.navigate(['/auth/login'], {
+                queryParams: { returnUrl: currentUrl },
+            });
+        }
+        this.isAuthenticatedSubject.next(false);
+    }
+
+    refreshToken(): Observable<RefreshTokenResponse> {
+        return this.post<RefreshTokenResponse>(
             `${this._endpoint}/refresh-token`,
-            null,
+            {},
             {
                 withCredentials: true,
-            }
-        ).pipe(
-            tap((res: ApiResponse<string>) => {
-                if (res && res.data) {
-                    this.setTokens(res.data);
-                } else {
-                    this.logout();
-                }
-            }),
-            catchError((error) => {
-                this.logout();
-                return throwError(
-                    () => new Error('Refresh token failed:', error)
-                );
-            })
+            },
         );
     }
 
-    requestNewVerificationEmail(toEmail: string): Observable<ApiResponse> {
-        return this.post(`${this._endpoint}/resend-verification`, {
-            email: toEmail,
-        });
+    resendEmail(email: string): Observable<any> {
+        return this.post(
+            `${this._endpoint}/resend-verification`,
+            { email },
+            { context: new HttpContext().set(SHOW_TOAST, true) },
+        );
     }
 
-    requestNewResetEmail(toEmail: string): Observable<ApiResponse> {
-        return this.post(`${this._endpoint}/forgot-password`, {
-            email: toEmail,
-        });
+    forgotPassword(email: string): Observable<any> {
+        return this.post(
+            `${this._endpoint}/forgot-password`,
+            { email },
+            { context: new HttpContext().set(SHOW_TOAST, true) },
+        );
     }
 
-    resetPassword(token: string, newPassword: string): Observable<ApiResponse> {
-        return this.post(`${this._endpoint}/reset-password`, {
-            password: newPassword,
-            token,
-        });
+    resetPassword(payload: ResetPasswordRequest): Observable<any> {
+        return this.post(`${this._endpoint}/reset-password`, payload);
     }
 
     setTokens(accessToken: string) {
         localStorage.setItem(ACCESSTOKEN_KEY, accessToken);
-    }
-
-    setUser(user: User) {
-        if (!user) return;
-        localStorage.setItem('user', JSON.stringify(user));
-    }
-
-    setPendingVerifyEmail(email: string) {
-        localStorage.setItem(PENDING_VERIFY_EMAIL, email);
     }
 
     isLoggedIn(): boolean {
@@ -120,22 +122,9 @@ export class UserService extends BaseService {
         return localStorage.getItem(ACCESSTOKEN_KEY);
     }
 
-    getUser(): any | null {
-        const userString = localStorage.getItem('user');
-        return userString ? JSON.parse(userString) : null;
-    }
-
-    getPendingVerifyEmail(): string | null {
-        return localStorage.getItem(PENDING_VERIFY_EMAIL);
-    }
-
     clearTokens(): void {
         localStorage.removeItem(ACCESSTOKEN_KEY);
         localStorage.removeItem('user');
-    }
-
-    clearPendingVerifyEmail() {
-        localStorage.removeItem(PENDING_VERIFY_EMAIL);
     }
 
     isAccessTokenExpired(token: string): boolean {

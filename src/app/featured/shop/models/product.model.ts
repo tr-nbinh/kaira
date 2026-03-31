@@ -37,3 +37,14 @@ export interface ProductAttribute {
     name: string;
     slug?: string;
 }
+
+export interface ProductFilter {
+    colors?: string[];
+    minPrice?: number;
+    maxPrice?: number;
+    limit: number;
+    page: number;
+    // sizes: number[];
+    // brands: number[];
+    // searchTerm?: string;
+}

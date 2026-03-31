@@ -1,7 +1,7 @@
 <!-- Product -->
-<div style="margin-top: 120px">
+<div class="my-5 py-5">
     <div class="container">
-        <div class="product-filter-bar">
+        <div class="product-filter-bar mb-4">
             <button class="filter-toggler" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilterBar"
                 aria-controls="offcanvasFilterBar" class="btn btn-outline-dark">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -15,40 +15,33 @@
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilterBar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filter</h5>
+                    <h5 class="offcanvas-title text-uppercase" id="offcanvasNavbarLabel">{{'SHOP.FILTER_BY' | translate
+                        }}</h5>
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                         aria-label="Close"></button>
                 </div>
 
                 <div class="offcanvas-body">
-                <app-side-bar [params]="params" (onFilterChange)="filterProduct($event)"
-                    (onResetFilter)="resetFilter()"></app-side-bar>
+                    <app-side-bar [initialFilterState]="currentFilter()"
+                        (onFilterChange)="handleFilter($event)"></app-side-bar>
                 </div>
             </div>
         </div>
-        @if (isLoading) {
+        @if (isLoading()) {
         <app-product-list [products]="[]"></app-product-list>
 
         } @else {
-        @if (products.length) {
-        <div class="row py-2">
+        @if (products().length) {
+        <!-- <div class="row py-2">
             <div class="col-md-9">
                 <span>{{ "SHOP.RESULTS_SUMMARY" | translate:{start: listDisplayState.startIndex, end:
                     listDisplayState.endIndex, total:
-                    listDisplayState.totalItems} }}</span>
+                    metadata()?.totalCount} }}</span>
             </div>
-            <!-- <div class="col-md-3">
-                    <select class="form-select border-0" aria-label="Default select example">
-                        <option selected="">{{"SHOP.DEFAULT_SORT" | translate}}</option>
-                        <option value="1">{{"COMMON.COLOR" | translate}}</option>
-                        <option value="2">{{"COMMON.SIZE" | translate}}</option>
-                        <option value="3">{{"COMMON.PRICE" | translate}}</option>
-                    </select>
-                </div> -->
-        </div>
-        <app-product-list [products]="products"></app-product-list>
-        <!-- <app-pagination [totalItems]="listDisplayState.totalItems" [currentPage]="params.page" [limit]="params.limit"
-                [maxPagesToShow]="5" (pageChange)="onPageChange($event)"></app-pagination> -->
+        </div> -->
+        <app-product-list [products]="products()"></app-product-list>
+        <app-pagination [totalItems]="metadata()?.totalCount || 0" [currentPage]="metadata()?.page || 1"
+            [limit]="metadata()?.limit || 10" [maxPagesToShow]="5" (pageChange)="onPageChange($event)"></app-pagination>
         } @else {
         <div class="text-center">
             <span>{{"SHOP.NO_PRODUCT" | translate}}</span>

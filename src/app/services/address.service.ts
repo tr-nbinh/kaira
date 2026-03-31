@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Address } from '../models/address.interface';
 import { Observable } from 'rxjs';
 import { BaseService } from '../base/base.service';
+import { HttpContext } from '@angular/common/http';
+import { SHOW_TOAST } from '../../core/token';
 
 @Injectable({
     providedIn: 'root',
@@ -14,14 +16,18 @@ export class AddressService extends BaseService {
     }
 
     saveAddress(addressData: Address): Observable<Address> {
-        return this.post(this._endpoint, addressData);
+        return this.post(this._endpoint, addressData, {
+            context: new HttpContext().set(SHOW_TOAST, true),
+        });
     }
 
     updateAddress(
         addressData: Partial<Address>,
-        addressId: number
+        addressId: number,
     ): Observable<Address> {
-        return this.patch(`${this._endpoint}/${addressId}`, addressData);
+        return this.patch(`${this._endpoint}/${addressId}`, addressData, {
+            context: new HttpContext().set(SHOW_TOAST, true),
+        });
     }
 
     // Hàm này sẽ được sử dụng để xóa địa chỉ

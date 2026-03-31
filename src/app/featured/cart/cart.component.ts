@@ -144,7 +144,6 @@ export class CartComponent extends BaseComponent {
     }
 
     goToCheckout() {
-        // this.checkoutService.setSelectedCartItems(this.cartItems);
-        // this.router.navigate(['/checkout']);
+        this.router.navigate(['/checkout']);
     }
 }

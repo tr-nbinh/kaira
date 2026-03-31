@@ -1,144 +1,108 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
+import { Component, effect, OnInit, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BehaviorSubject, delay, finalize, tap } from 'rxjs';
 import {
-    parseNumberArray,
-    parseNumberOrDefault,
-    parseStringArray,
-} from '../../../utils/param-parser.util';
-import { BaseComponent } from '../../base/base.component';
-import { ListDisplayState } from '../../models/pagination.interface';
-import { ProductRequest } from '../../models/product.interface';
-import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+    catchError,
+    debounceTime,
+    distinctUntilChanged,
+    finalize,
+    map,
+    of,
+    shareReplay,
+    switchMap,
+    tap,
+} from 'rxjs';
 import { ProductListComponent } from '../../shared/components/product-list/product-list.component';
-import { SideBarComponent } from './side-bar/side-bar.component';
-
-import { Product } from './models/product.model';
+import { ProductFilter } from './models/product.model';
 import { ProductService } from './services/product.service';
+import { SideBarComponent } from './side-bar/side-bar.component';
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 
 @Component({
     selector: 'app-shop',
-    imports: [ProductListComponent, TranslatePipe, SideBarComponent],
+    imports: [
+        ProductListComponent,
+        TranslatePipe,
+        SideBarComponent,
+        PaginationComponent,
+    ],
     templateUrl: './shop.component.html',
     styleUrl: './shop.component.scss',
 })
-export class ShopComponent extends BaseComponent implements OnInit {
-    listDisplayState: ListDisplayState = {
-        totalItems: 0,
-        endIndex: 0,
-        startIndex: 0,
-    };
-    params!: ProductRequest;
-    private paramsSubject = new BehaviorSubject<ProductRequest>(this.params);
+export class ShopComponent implements OnInit {
+    isLoading = signal(true);
 
-    products: Product[] = [];
-    isLoading: boolean = true;
+    currentFilter = signal<ProductFilter>({
+        limit: 9,
+        page: 1,
+    });
+
+    private response$ = toObservable(this.currentFilter).pipe(
+        debounceTime(500),
+        distinctUntilChanged((p, c) => JSON.stringify(p) === JSON.stringify(c)),
+        tap(() => this.isLoading.set(true)),
+        switchMap((f) =>
+            this.productService.getProducts(f!).pipe(
+                catchError(() => of({ data: [], meta: null })),
+                finalize(() => this.isLoading.set(false)),
+            ),
+        ),
+        // Rất quan trọng: Chia sẻ kết quả để không gọi API 2 lần
+        shareReplay(1),
+    );
+
+    products = toSignal(this.response$.pipe(map((res) => res.data ?? [])), {
+        initialValue: [],
+    });
+
+    metadata = toSignal(this.response$.pipe(map((res) => res.meta)));
 
     constructor(
         private productService: ProductService,
         private route: ActivatedRoute,
         private router: Router,
     ) {
-        super();
+        effect(() => {
+            const state = this.currentFilter();
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: {
+                    colors: state?.colors?.length
+                        ? state.colors.join(',')
+                        : null,
+                    minPrice: state?.minPrice,
+                    maxPrice: state?.maxPrice,
+                    limit: state.limit,
+                    page: state.page,
+                },
+                queryParamsHandling: 'merge',
+                replaceUrl: true,
+            });
+        });
     }
 
     ngOnInit(): void {
-        // this.paramsSubject
-        //     .pipe(
-        //         skip(1),
-        //         tap((params) => {
-        //             (this.params = params), this.updateFilter();
-        //         }),
-        //         switchMap((params) => this.productService.getProducts(params)),
-        //         takeUntil(this.ngUnsubscribe)
-        //     )
-        //     .subscribe(({ data, totalCount, page }) => {
-        //         this.products = data;
-        //         this.listDisplayState.totalItems = totalCount;
-        //         this.listDisplayState.startIndex =
-        //             (page - 1) * this.params.limit + 1;
-        //         this.listDisplayState.endIndex = Math.min(
-        //             page * this.params.limit,
-        //             totalCount
-        //         );
-        //     });
-        // this.route.queryParamMap
-        //     .pipe(
-        //         map((paramsMap) => this._parseParams(paramsMap)),
-        //         take(1)
-        //     )
-        //     .subscribe((res) => {
-        //         this.params = res;
-        //         this.paramsSubject.next(res);
-        //     });
-        this.productService
-            .getProducts()
-            .pipe(
-                tap(() => (this.isLoading = true)),
-                finalize(() => (this.isLoading = false)),
-            )
-            .subscribe((res) => {
-                this.products = res;
-            });
-    }
-
-    private _parseParams(paramMap: ParamMap): ProductRequest {
-        return {
-            limit: parseNumberOrDefault(paramMap.get('limit'), 10),
-            page: parseNumberOrDefault(paramMap.get('page'), 1),
-            categoryIds: parseNumberArray(paramMap.get('categoryIds')),
-            colorIds: parseNumberArray(paramMap.get('colorIds')),
-            sizeIds: parseNumberArray(paramMap.get('sizeIds')),
-            brandIds: parseNumberArray(paramMap.get('brandIds')),
-            prices: parseStringArray(paramMap.get('prices')),
-        };
-    }
-
-    private convertToQueryParams(): Record<string, any> {
-        const queryParams: Record<string, any> = {};
-
-        for (const key in this.params) {
-            const value = this.params[key as keyof ProductRequest];
-
-            if (
-                value === null ||
-                value === undefined ||
-                (typeof value === 'string' &&
-                    (value as string).trim() === '') ||
-                (Array.isArray(value) && value.length === 0)
-            ) {
-                continue; // ❌ Không thêm vào queryParams nếu không có giá trị
-            }
-
-            if (Array.isArray(value)) {
-                queryParams[key] = value.join(',');
-            } else {
-                queryParams[key] = value;
-            }
-        }
-        return queryParams;
-    }
-
-    updateFilter() {
-        this.router.navigate([], {
-            relativeTo: this.route,
-            queryParams: this.convertToQueryParams(),
+        const params = this.route.snapshot.queryParams;
+        this.currentFilter.set({
+            colors: params['colors'] ? params['colors'].split(',') : [],
+            limit: Number(params['limit']) || 9,
+            page: Number(params['page']) || 1,
+            minPrice: params['minPrice']
+                ? Number(params['minPrice'])
+                : undefined,
+            maxPrice: params['maxPrice']
+                ? Number(params['maxPrice'])
+                : undefined,
         });
     }
 
-    onPageChange(newPage: number) {
-        this.paramsSubject.next({
-            ...this.paramsSubject.getValue(),
-            page: newPage,
-        });
+    handleFilter(filter: ProductFilter) {
+        console.log(filter);
+        this.currentFilter.set(filter);
     }
 
-    filterProduct(filterParams: ProductRequest) {
-        this.paramsSubject.next(filterParams);
-    }
-
-    resetFilter() {
-        this.paramsSubject.next({ page: 1, limit: 10 });
+    onPageChange(page: number) {
+        this.currentFilter.update((state) => ({ ...state, page }));
     }
 }

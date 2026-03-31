@@ -6,21 +6,22 @@
             } @else {
 
             @if(cartItems.length) {
-
-            <div class="col-12 col-lg-9">
+            <div class="col-12">
                 <div class="cart-list">
                     @for (item of cartItems; track item.variantId) {
-                    <div class="row align-items-center py-3 border-bottom gy-2">
+                    <div class="cart-item row align-items-center py-3 border-bottom gy-2">
                         <div class="col-12 col-sm-7 col-md-5">
                             <div class="cart-info d-flex align-items-center gap-2">
                                 <div class="col-4">
-                                    <a [routerLink]="item.productId | productUrl:item.slug" [queryParams]="{ variant: item.variantId}">
+                                    <a [routerLink]="item.productId | productUrl:item.slug"
+                                        [queryParams]="{ variant: item.variantId}">
                                         <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
                                     </a>
                                 </div>
                                 <div class="col-8">
                                     <h3 class="card-title product-infor">
-                                        <a [routerLink]="item.productId | productUrl:item.slug" [queryParams]="{ variant: item.variantId}"
+                                        <a [routerLink]="item.productId | productUrl:item.slug"
+                                            [queryParams]="{ variant: item.variantId}"
                                             class="text-decoration-none">{{item.name}}</a>
                                     </h3>
                                     <p class="card-color product-infor">{{item.color}}</p>
@@ -30,7 +31,7 @@
                             </div>
                         </div>
                         <div
-                            class="col d-flex flex-row flex-sm-column flex-md-row align-items-center justify-content-between gap-2">
+                            class="col d-flex flex-row flex-sm-column flex-md-row align-items-center justify-content-etween gap-2">
                             <span class="card-price">{{item.displayPrice | currency:item.currency:'symbol':'1.0-2'}}
                             </span>
                             <div class="quantity-group w-md-100">
@@ -53,7 +54,7 @@
                         <div class="col-2 col-sm-1">
                             <ng-container *appLoadingToggle="'cart-remove-' + item.variantId">
                                 <button class="btn text-dark" (click)="removeFromCart(item.variantId)">
-                                    <svg width="32px" height="32px">
+                                    <svg width="26px" height="26px">
                                         <use xlink:href="#trash"></use>
                                     </svg>
                                 </button>
@@ -63,15 +64,15 @@
                     }
                 </div>
             </div>
-            <div class="col-12 offset-0 col-md-6 offset-md-6 col-lg-3 offset-lg-0">
-                <div class="cart-totals bg-grey py-5">
-                    <h4 class="text-dark pb-4">{{"COMMON.CART_TOTAL" | translate}}</h4>
-                    <div class="d-flex align-items-center justify-content-between mb-2 py-2 border-bottom border-top">
+            <div class="col-12 offset-0 col-md-6 offset-md-6 col-lg-5 offset-lg-7 align-self-end">
+                <div class="cart-totals bg-grey mt-4">
+                    <h4 class="text-dark text-uppercase">{{"COMMON.CART_TOTAL" | translate}}</h4>
+                    <div class="d-flex align-items-center justify-content-between py-3 border-bottom border-top">
                         <b class="text-dark text-uppercase ">{{"COMMON.SUBTOTAL" |
                             translate}}</b>
-                        <p class="text-dark mb-0">{{subTotal | currency:currency:'symbol':'1.0-2'}}</p>
+                        <p class="text-dark">{{subTotal | currency:currency:'symbol':'1.0-2'}}</p>
                     </div>
-                    <div>
+                    <div class="mt-3">
                         <div class="mb-2"><a [routerLink]="['/shop']"
                                 class="btn btn-dark text-uppercase text-white btn-rounded-none w-100">{{"CART.CONTINUE_SHOPPING"
                                 |

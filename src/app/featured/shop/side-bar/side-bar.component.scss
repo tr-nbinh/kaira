@@ -1,0 +1,26 @@
+.swatch-wrapper {
+    width: 33%;
+
+    .swatch-circle {
+        display: block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid #000;
+        cursor: pointer;
+    }
+
+    .swatch-name {
+        font-size: 14px;
+    }
+}
+
+.price-btn.active {
+    background-color: #E9ECEF;
+}
+
+@media screen and (max-width: 630px) {
+    .swatch-wrapper {
+        width: 50%;
+    }
+}

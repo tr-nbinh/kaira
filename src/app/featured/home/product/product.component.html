@@ -3,8 +3,8 @@
         <div class="row">
             <div id="filters" class="button-group d-flex gap-4 justify-content-center py-5">
                 @for (item of productHightlightFilter; track $index) {
-                <button type="button" class="fancy-link text-uppercase" [class.active]="item.checked"
-                    (click)="onFilterChange(item.value)">{{item.text! | translate}}
+                <button type="button" class="fancy-link text-uppercase" [class.active]="item.checked">{{item.text! |
+                    translate}}
                 </button>
                 }
             </div>

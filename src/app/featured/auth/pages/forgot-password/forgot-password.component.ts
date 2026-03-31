@@ -1,53 +1,71 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject, signal } from '@angular/core';
+import {
+    FormBuilder,
+    FormGroup,
+    FormsModule,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
+import { finalize } from 'rxjs';
 import { BaseComponent } from '../../../../base/base.component';
-import { LoadingToggleDirective } from '../../../../shared/directives/loading-toggle.directive';
-import { DialogService } from '../../../../services/dialog.service';
+import { FormControlErrorDirective } from '../../../../shared/directives/form-control-error.directive';
+import { RouterLink } from '@angular/router';
 import { UserService } from '../../../../services/user.service';
-import { finalize, takeUntil, takeWhile, tap } from 'rxjs';
-import { ApiError } from '../../../../models/api-response.interface';
-import { ToastService } from '../../../../services/toast.service';
-import { LoadingService } from '../../../../services/loading.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-forgot-password',
-    imports: [TranslatePipe, FormsModule, LoadingToggleDirective],
+    imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        FormControlErrorDirective,
+        RouterLink,
+        TranslatePipe,
+    ],
     templateUrl: './forgot-password.component.html',
     styleUrl: './forgot-password.component.scss',
 })
 export class ForgotPasswordComponent extends BaseComponent {
-    email: string = '';
-    message: string = '';
-    @ViewChild('notifyTpl') notifyTpl!: TemplateRef<HTMLElement>;
+    private fb = inject(FormBuilder);
+    private userService = inject(UserService);
 
-    constructor(
-        private dialog: DialogService,
-        private userService: UserService,
-        private toast: ToastService,
-        private loading: LoadingService
-    ) {
-        super();
-    }
+    isSubmitting = signal(false);
+    isSent = signal(false);
+    userEmail = signal('');
 
-    requestNewResetEmail() {
+    forgotForm: FormGroup = this.fb.group({
+        email: [
+            '',
+            [
+                Validators.required,
+                Validators.pattern(
+                    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                ),
+            ],
+        ],
+    });
+
+    onSubmit() {
+        if (this.forgotForm.invalid) {
+            this.forgotForm.markAllAsTouched();
+            return;
+        }
+        const email = this.forgotForm.value.email;
         this.userService
-            .requestNewResetEmail(this.email)
-            .pipe(
-                tap(() => this.loading.show('forgot-password-btn')),
-                finalize(() => this.loading.hide('forgot-password-btn')),
-                takeUntil(this.ngUnsubscribe)
-            )
+            .forgotPassword(email)
+            .pipe(finalize(() => this.isSubmitting.set(false)))
             .subscribe({
-                next: (res) => {
-                    this.message = res.message;
-                    this.dialog.open({
-                        title: 'Quên mật khẩu',
-                        body: this.notifyTpl,
-                    });
+                next: () => {
+                    this.userEmail.set(email);
+                    this.isSent.set(true);
                 },
-                error: (error: ApiError) => {
-                    this.toast.error(error.message);
+                error: (err) => {
+                    if (err.status === 404) {
+                        this.forgotForm
+                            .get('email')
+                            ?.setErrors({ notFound: true });
+                    }
                 },
             });
     }

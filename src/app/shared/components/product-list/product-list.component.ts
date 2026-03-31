@@ -11,8 +11,4 @@ import { ProductItemComponent } from '../product-item/product-item.component';
 export class ProductListComponent {
     @Input() products: Product[] = [];
     fakeProducts = new Array(6).fill(undefined);
-
-    ngOnInit() {
-        console.log(this.products);
-    }
 }

@@ -4,12 +4,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { SHOW_TOAST } from '../../../../core/token';
 import { BaseService } from '../../../base/base.service';
-import { ApiResponse } from '../../../models/api-response.interface';
 import { UserService } from '../../../services/user.service';
 import {
     AddToCartResponse,
     CartCountResponse,
-    CartItem,
     CartResponse,
     DeleteCartItemResponse,
     UpdateCartQuantityResponse,
@@ -74,6 +72,7 @@ export class CartService extends BaseService {
     removeFromCart(variantId: string): Observable<DeleteCartItemResponse> {
         return this.delete<DeleteCartItemResponse>(
             `${this._endpoint}/${variantId}`,
+            { context: new HttpContext().set(SHOW_TOAST, true) },
         ).pipe(
             tap((res) => {
                 if (res) {

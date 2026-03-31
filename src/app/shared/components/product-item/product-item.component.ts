@@ -4,13 +4,11 @@ import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, takeUntil } from 'rxjs';
 import { BaseComponent } from '../../../base/base.component';
-import { Product, Variant } from '../../../featured/shop/models/product.model';
-import { ColorSelectItem } from '../../../models/product-filter.interface';
-import { ProductVariant } from '../../../models/product.interface';
 import { CartService } from '../../../featured/cart/services/cart.service';
+import { Product, Variant } from '../../../featured/shop/models/product.model';
+import { WishlistService } from '../../../featured/wishlist/services/wishlist.service';
 import { LoadingService } from '../../../services/loading.service';
 import { ToastService } from '../../../services/toast.service';
-import { WishlistService } from '../../../featured/wishlist/services/wishlist.service';
 import { LoadingToggleDirective } from '../../directives/loading-toggle.directive';
 import { ProductUrlPipe } from '../../pipes/product-url.pipe';
 
@@ -32,9 +30,6 @@ export class ProductItemComponent extends BaseComponent {
     @Input() product: Product | undefined = undefined;
     @ViewChild('productCarousel') carouselRef!: ElementRef;
 
-    colors: ColorSelectItem[] = [];
-    colorChecked: ColorSelectItem | undefined;
-
     selectedColor: string | null = null;
     selectedVariant: Variant | undefined = undefined;
 
@@ -49,7 +44,7 @@ export class ProductItemComponent extends BaseComponent {
 
     ngOnInit() {
         if (this.product) {
-            this.selectColor(this.product.availableColors[0].id);
+            this.selectColor(this.product.availableColors[0]?.id);
         }
     }
 

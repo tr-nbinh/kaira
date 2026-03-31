@@ -1,7 +1,7 @@
 <section id="login-form" class="auth py-5">
     <div class="container-sm">
         <div class="row justify-content-center">
-            <div class="col-4">
+            <div class="col-12 col-md-8 col-lg-6">
                 <h2 class="section-title text-uppercase">{{'COMMON.SIGN_UP' | translate}}</h2>
                 <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="form-group flex-wrap">
                     <div class="col-12 pb-3">
@@ -23,8 +23,8 @@
                                 [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate" class="form-control"
                                 autocomplete="current-password" [formControlError]
                                 [errorMessages]="{'pattern': 'FORM_MESSAGE.PASSWORD_PATTERN'}">
-                            <button type="button" [hidden]="!!registrationForm.get('password')?.errors"
-                                class="password-toggle btn btn-outline position-absolute h-100 top-0 end-0"
+                            <button type="button" [hidden]="!registrationForm.get('password')?.value"
+                                class="password-toggle btn btn-outline position-absolute top-0 end-0"
                                 (click)="togglePassword()">
                                 <svg width="18" height="18" viewBox="0 0 18 18">
                                     @if (pwInputType === 'password') {
@@ -43,12 +43,12 @@
                                 [placeholder]="'AUTH.CF_PASSWORD_PLACEHOLDER' | translate" class="form-control"
                                 autocomplete="confirm-password"
                                 [class.is-invalid]="registrationForm.errors?.['passwordMismatch'] && registrationForm.get('confirmPassword')?.touched">
-                            <button type="button" [hidden]="registrationForm.errors?.['passwordMismatch'] || !!registrationForm.get('confirmPassword')?.errors"
-                                class="password-toggle btn btn-outline position-absolute h-100 top-0 end-0"
+                            <button type="button" [hidden]="!registrationForm.get('confirmPassword')?.value"
+                                class="password-toggle btn btn-outline position-absolute top-0 end-0"
                                 (click)="toggleConfirmPassword()">
                                 <svg width="18" height="18" viewBox="0 0 18 18">
-                                    @if (confirmInputType === 'password') {
                                     <use xlink:href="#eye"></use>
+                                    @if (confirmInputType === 'password') {
                                     } @else {
                                     <use xlink:href="#eye-slash"></use>
                                     }
@@ -59,14 +59,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 pb-3">
+                    <div class="col-12 pb-3 text-center">
                         <ng-container *appLoadingToggle="'submitBtn'">
-                            <button type="submit" class="btn btn-dark btn-large text-uppercase"
-                                [disabled]="registrationForm.invalid">{{'COMMON.SIGN_UP' | translate}}</button>
+                            <button type="submit" class="btn btn-dark btn-large text-uppercase w-50"
+                                (click)="onSubmit()">{{'COMMON.SIGN_UP' |
+                                translate}}</button>
                         </ng-container>
                     </div>
-                    <div class="col-12">
-                        <a [routerLink]="['/auth/login']" class="btn-link d-inline-block">{{'AUTH.HAS_ACCOUNT' |
+                    <div class="col-12 text-center">
+                        <a [routerLink]="['/auth/login']"
+                            class="fancy-link d-inline-block border-bottom border-black text-uppercase">{{'AUTH.HAS_ACCOUNT'
+                            |
                             translate}}</a>
                     </div>
                 </form>
