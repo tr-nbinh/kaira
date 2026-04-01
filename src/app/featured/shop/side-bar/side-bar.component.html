@@ -46,8 +46,7 @@
                 </div>
             </div> -->
             <div class="mt-2 price">
-                <span>{{"COMMON.PRICE" | translate}} {{selectedPriceIdCount() > 0 ? `(${selectedPriceIdCount()})` : ''
-                    }}</span>
+                <span>{{"COMMON.PRICE" | translate}}</span>
                 <div class="mt-2">
                     @for (price of priceRanges; track price.id) {
                     <button type="button" class="price-btn p-2 border border-dark d-block w-50 mt-2 text-left"

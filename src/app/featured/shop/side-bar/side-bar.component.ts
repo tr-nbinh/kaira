@@ -47,8 +47,6 @@ export class SideBarComponent extends BaseComponent implements OnInit {
         );
         return matchedRange ? matchedRange.id : 'all';
     });
-    selectedPriceIdCount = computed(() => this.selectedPriceRangeId().length);
-
     priceRanges: any[] = [];
 
     onFilterChange = output<ProductFilter>();
