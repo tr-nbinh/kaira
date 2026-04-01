@@ -98,8 +98,7 @@ export class ShopComponent implements OnInit {
     }
 
     handleFilter(filter: ProductFilter) {
-        console.log(filter);
-        this.currentFilter.set(filter);
+        this.currentFilter.set({ ...filter, page: 1 });
     }
 
     onPageChange(page: number) {
