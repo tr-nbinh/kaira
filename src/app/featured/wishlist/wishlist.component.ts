@@ -72,21 +72,19 @@ export class WishlistComponent extends BaseComponent {
         const key = `wishlist-remove-${variantId}`;
         this.loading.show(key);
         this.wishlistService
-            .removeFromWishlist(variantId)
+            .toggleWishlist(variantId)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 finalize(() => this.loading.hide(key)),
             )
             .subscribe({
                 next: (res) => {
-                    console.log(res);
                     this.wishlistItems = this.wishlistItems.filter(
                         (item) => item.variantId !== variantId,
                     );
-                    this.toast.success(res.message);
                 },
                 error: (err) => {
-                    this.toast.error(err.message);
+                    this.toast.info(err.message);
                 },
             });
     }

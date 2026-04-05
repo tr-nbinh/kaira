@@ -41,7 +41,7 @@ export class WishlistService extends BaseService {
         return this.get(this._endpoint);
     }
 
-    addToWishlist(variantId: string): Observable<WishlistToggleResponse> {
+    toggleWishlist(variantId: string): Observable<WishlistToggleResponse> {
         if (!this._isLoggedIn) {
             return throwError(
                 () => new Error(this.translate.instant('COMMON.UNAUTHORIZED')),
@@ -58,18 +58,6 @@ export class WishlistService extends BaseService {
             tap((res) => {
                 if (res) {
                     this.updateWishlistCounts(res.wishlistCount);
-                }
-            }),
-        );
-    }
-
-    removeFromWishlist(variantId: string): Observable<ApiResponse<number>> {
-        return this.delete<ApiResponse<number>>(
-            `${this._endpoint}/${variantId}`,
-        ).pipe(
-            tap((res) => {
-                if (res && (res.data || res.data == 0)) {
-                    this.updateWishlistCounts(res.data || 0);
                 }
             }),
         );

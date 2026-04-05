@@ -72,7 +72,7 @@ export class ProductItemComponent extends BaseComponent {
         const key = `wishlist-${variantId}`;
         this.loading.show(key);
         this.wishlistService
-            .addToWishlist(variantId)
+            .toggleWishlist(variantId)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 finalize(() => this.loading.hide(key)),
