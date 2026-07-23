@@ -1,0 +1,39 @@
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 transition-all duration-200 cursor-pointer;
+}
+
+@utility btn-primary {
+    @apply border border-black bg-black text-white hover:bg-white hover:text-black;
+}
+
+@utility btn-secondary {
+    @apply border border-neutral-300 bg-white text-black hover:bg-neutral-100;
+}
+
+@utility btn-ghost {
+    @apply bg-transparent text-black hover:bg-neutral-100;
+}
+
+@utility btn-link {
+    @apply p-0 bg-transparent rounded-none text-neutral-600 hover:text-black;
+}
+
+@utility btn-icon {
+    @apply size-11 p-0 rounded-full hover:bg-gray-100;
+}
+
+@utility btn-sm {
+    @apply px-4 py-2 text-xs;
+}
+
+@utility btn-lg {
+    @apply px-6 py-3.5 text-base;
+}
+
+@utility btn-full {
+    @apply w-full;
+}
+
+@utility btn-disabled {
+    @apply opacity-50 pointer-events-none;
+}

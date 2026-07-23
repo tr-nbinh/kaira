@@ -1,0 +1,156 @@
+<header class="w-full border-b border-gray-100 bg-white sticky top-0 z-50">
+    <div class="container-fluid h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <!-- Button mở Category Drawer -->
+            <button type="button" (click)="openCategoryDrawer()" aria-label="Open category" class="btn btn-icon">
+                <!-- Grid/Menu Icon -->
+                <i class="ti ti-layout-grid text-2xl"></i>
+            </button>
+
+            <!-- Logo shop -->
+            <div class="shrink-0">
+                <a routerLink="/" class="font-serif text-2xl font-bold tracking-wider text-stone-950">
+                    TNB.Studio
+                </a>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden lg:flex items-center space-x-8">
+            @if (menusResource.isLoading()) {
+            @for (item of [1, 2, 3, 4]; track $index) {
+            <div class="h-5 w-17 animate-pulse bg-neutral-200"></div>
+            }
+            }
+
+            @if (menusResource.value()) {
+            @for (item of menus(); track item.id) {
+            <a [routerLink]="item.path" routerLinkActive="active" router class="nav-link">{{
+                item.name }}</a>
+            }
+            }
+        </nav>
+
+        <div class="flex items-center gap-4">
+            <!-- Search -->
+            <button class="btn btn-icon" (click)="isSearchOpen.set(true)">
+                <i class="ti ti-search text-[22px]"></i>
+            </button>
+
+            <!-- Language -->
+            <div class="hidden md:block group relative">
+                <button class="flex items-center uppercase text-sm gap-1">
+                    {{ activeCurrentLanguage.code }}
+                    <i class="ti ti-chevron-down transition-transform duration-200 group-hover:rotate-180"></i>
+                </button>
+
+                <div class="dropdown-menu w-42">
+                    @for (lang of languages; track lang.code) {
+                    <button (click)="switchLanguage(lang)"
+                        class="w-full text-left dropdown-item hover:bg-neutral-100 hover:text-black"
+                        [class.dropdown-item-active]="lang.code == activeCurrentLanguage.code">
+                        {{lang.label | translate}}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <!-- Wistlist & Cart -->
+            <div class="flex items-center gap-1">
+                <a routerLink="/wishlist" class="hidden md:flex relative btn btn-icon" id="target-wishlist-icon">
+                    <i class="ti ti-heart text-[22px]"></i>
+                    <span
+                        class="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-black px-1 text-[10px] text-white">
+                        {{ wishlistStore.count() > 99 ? '99+' : wishlistStore.count().toString() }}
+                    </span>
+                </a>
+                <a routerLink="/cart" class="relative btn btn-icon" id="target-cart-icon">
+                    <i class="ti ti-shopping-bag text-[22px]"></i>
+                    <span
+                        class="absolute right-0 top-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-black px-1 text-[10px] text-white">
+                        {{ cartStore.count() > 99 ? '99+' : cartStore.count().toString() }}
+                    </span>
+                </a>
+            </div>
+
+            <!-- Account -->
+            <div class="hidden sm:block relative group">
+                <button class="flex items-center">
+                    @if (currentUser()) {
+                    @if (currentUser()?.avatar_url) {
+                    <img [src]="currentUser()?.avatar_url" [alt]="currentUser()?.username"
+                        class="size-8 rounded-full object-cover" />
+                    } @else {
+                    <div
+                        class="flex size-8 items-center justify-center rounded-full bg-neutral-200 text-sm font-medium text-neutral-700">
+                        B
+                    </div>
+                    }
+                    } @else {
+                    <i class="ti ti-user text-[22px]"></i>
+                    <i class="ti ti-chevron-down text-sm transition-transform duration-200 group-hover:rotate-180"></i>
+                    }
+                </button>
+                <div class="dropdown-menu">
+                    @for (menu of accountMenu(); track menu.id) {
+                    <a [routerLink]="menu.path" class="dropdown-item capitalize hover:bg-neutral-100 hover:text-black">
+                        {{menu.name | translate}}
+                    </a>
+                    }
+                    @if (authService.isLoggedIn()) {
+                    <hr class="my-2 border-neutral-200">
+                    <button class="dropdown-item capitalize w-full text-left hover:text-black" (click)="onLogout()">
+                        {{ 'COMMON.SIGN_OUT' | translate }}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <!-- Nav Icon -->
+            <button class="btn btn-icon justify-center lg:hidden" (click)="openMobileMenu()">
+                <i class="ti ti-menu-2 text-[24px]"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- SEARCH OVERLAY -->
+@if (isSearchOpen()) {
+<div class="fixed inset-0 z-100 bg-black/20 backdrop-blur-sm" (click)="isSearchOpen.set(false)">
+    <div class="container mt-20" (click)="$event.stopPropagation()">
+        <div class="rounded-2xl bg-white p-8 shadow-2xl">
+            <div class="mb-6 flex items-center justify-between">
+                <h2 class="text-xs font-medium uppercase tracking-[0.2em] text-neutral-400">
+                    Search
+                </h2>
+                <button class="flex size-10 items-center justify-center rounded-full hover:bg-neutral-100"
+                    (click)="isSearchOpen.set(false)">
+                    <i class="ti ti-x text-xl"></i>
+                </button>
+            </div>
+            <input type="search" placeholder="Search products..." autofocus
+                class="w-full border-b border-neutral-200 pb-4 text-3xl font-light outline-none placeholder:text-neutral-400">
+            <div class="mt-8">
+                <p class="mb-3 text-xs uppercase tracking-[0.2em] text-neutral-400">
+                    Popular Searches
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <button class="rounded-full border border-neutral-200 px-4 py-2 text-sm hover:bg-neutral-100">
+                        T-Shirts
+                    </button>
+                    <button class="rounded-full border border-neutral-200 px-4 py-2 text-sm hover:bg-neutral-100">
+                        Hoodies
+                    </button>
+                    <button class="rounded-full border border-neutral-200 px-4 py-2 text-sm hover:bg-neutral-100">
+                        Oversized
+                    </button>
+                    <button class="rounded-full border border-neutral-200 px-4 py-2 text-sm hover:bg-neutral-100">
+                        Pants
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+}

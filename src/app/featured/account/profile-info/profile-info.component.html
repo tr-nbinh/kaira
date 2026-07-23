@@ -1,0 +1,102 @@
+<div class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Tiêu đề trang -->
+    <div class="border-b border-neutral-200 pb-6 mb-10">
+        <h1 class="text-xl font-medium tracking-tight mb-1.5">Thông tin tài khoản</h1>
+        <p class="text-xs text-neutral-400">Cập nhật thông tin hồ sơ cá nhân và mật khẩu của bạn.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <!-- CỘT TRÁI: Menu phụ điều hướng nhanh nếu cần (hoặc ghi chú) -->
+        <div class="md:col-span-1 space-y-2">
+            <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-900 mb-4">Hồ sơ của bạn</h2>
+            <p class="text-xs text-neutral-400 leading-relaxed">
+                Địa chỉ email đăng nhập của bạn là cố định và không thể thay đổi vì lý do bảo mật tài khoản.
+            </p>
+        </div>
+
+        <!-- CỘT PHẢI: Khối điền Form Form -->
+        <div class="md:col-span-2 space-y-12">
+            <!-- PHÂN KHU 1: THÔNG TIN CƠ BẢN -->
+            <form (ngSubmit)="onUpdateProfile()" class="space-y-5">
+                <h3 class="text-xs uppercase tracking-wider font-medium text-neutral-400 mb-2">Thông tin cơ bản</h3>
+
+                <!-- Trường Email (Read-only) -->
+                <div class="space-y-1.5">
+                    <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-400 block">Địa chỉ
+                        Email</label>
+                    <input type="email" [value]="profileData.email" disabled
+                        class="w-full bg-neutral-50 border border-neutral-200 px-4 py-2.5 text-xs text-neutral-400 cursor-not-allowed font-mono outline-none" />
+                </div>
+
+                <!-- Trường Họ và Tên -->
+                <div class="space-y-1.5">
+                    <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">Họ và
+                        Tên</label>
+                    <input type="text" [(ngModel)]="profileData.fullName" name="fullName"
+                        class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                </div>
+
+                <!-- Trường Số điện thoại -->
+                <div class="space-y-1.5">
+                    <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">Số điện
+                        thoại</label>
+                    <input type="tel" [(ngModel)]="profileData.phone" name="phone"
+                        class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" [disabled]="isSavingProfile"
+                        class="bg-black text-white px-6 py-2.5 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-800 disabled:bg-neutral-200 transition-colors">
+                        {{ isSavingProfile ? 'Đang lưu...' : 'Cập nhật hồ sơ' }}
+                    </button>
+                </div>
+            </form>
+
+            <hr class="border-neutral-200" />
+
+            <!-- PHÂN KHU 2: ĐỔI MẬT KHẨU -->
+            <form (ngSubmit)="onChangePassword()" class="space-y-5">
+                <h3 class="text-xs uppercase tracking-wider font-medium text-neutral-400 mb-2">Đổi mật khẩu</h3>
+
+                <!-- Mật khẩu hiện tại -->
+                <div class="space-y-1.5">
+                    <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">Mật khẩu hiện
+                        tại</label>
+                    <input type="password" [(ngModel)]="passwordData.currentPassword" name="currentPassword"
+                        class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                </div>
+
+                <!-- Mật khẩu mới -->
+                <div class="space-y-1.5">
+                    <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">Mật khẩu
+                        mới</label>
+                    <input type="password" [(ngModel)]="passwordData.newPassword" name="newPassword"
+                        class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                </div>
+
+                <!-- Xác nhận mật khẩu mới -->
+                <div class="space-y-1.5">
+                    <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">Xác nhận mật
+                        khẩu mới</label>
+                    <input type="password" [(ngModel)]="passwordData.confirmPassword" name="confirmPassword"
+                        class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                </div>
+
+                <!-- Thông báo lỗi hoặc thành công nhanh (nếu có) -->
+                @if (passwordError) {
+                <p class="text-[11px] text-red-600">{{ passwordError }}</p>
+                }
+                @if (passwordSuccess) {
+                <p class="text-[11px] text-emerald-600">Thay đổi mật khẩu thành công.</p>
+                }
+
+                <div class="pt-2">
+                    <button type="submit" [disabled]="isSavingPassword"
+                        class="border border-neutral-200 bg-white text-neutral-900 px-6 py-2.5 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-50 disabled:bg-neutral-100 transition-colors">
+                        {{ isSavingPassword ? 'Đang xử lý...' : 'Thay đổi mật khẩu' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

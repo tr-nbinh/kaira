@@ -1,91 +1,115 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, computed, inject, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { finalize, takeUntil, tap } from 'rxjs';
-import { BaseComponent } from '../../base/base.component';
-import { CartService } from '../cart/services/cart.service';
-import { LoadingService } from '../../services/loading.service';
-import { ToastService } from '../../services/toast.service';
-import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
-import { WishlistEmptyComponent } from './components/wishlist-empty/wishlist-empty.component';
-import { WishlistItem } from './models/wishlist.model';
-import { WishlistService } from './services/wishlist.service';
-import { WishlistSkeletonComponent } from './components/wishlist-skeleton/wishlist-skeleton.component';
-import { ProductUrlPipe } from '../../shared/pipes/product-url.pipe';
+import { WishlistItem } from '../../../core/models/wishlist.model';
+import { WishlistService } from '../../../core/sevices/wishlist.service';
+import { WishlistStore } from '../../../core/stores/wishlist.store';
+import { PaginatedRequest } from '../../../shared/models/pagination.model';
+import { PricePipe } from '../../../shared/pipes/price.pipe';
+import { WishlistSkeletonComponent } from './wishlist-skeleton/wishlist-skeleton.component';
+import { CartStore } from '../../../core/stores/cart.store';
+import { AddCartItem } from '../../../core/models/cart.model';
+import { RequireAuthService } from '../../../core/auth/require-auth.service';
+import { FlyAnimationService } from '../../../shared/services/fly-animation.service';
 
 @Component({
     selector: 'app-wishlist',
-    imports: [
-        TranslatePipe,
-        RouterModule,
-        LoadingToggleDirective,
-        WishlistEmptyComponent,
-        WishlistSkeletonComponent,
-        ProductUrlPipe,
-    ],
+    standalone: true,
+    imports: [TranslatePipe, RouterLink, PricePipe, WishlistSkeletonComponent],
     templateUrl: './wishlist.component.html',
-    styleUrl: './wishlist.component.scss',
 })
-export class WishlistComponent extends BaseComponent {
-    wishlistItems: WishlistItem[] = [];
-    isLoading = true;
+export class WishlistComponent {
+    private wishlistService = inject(WishlistService);
+    private wishlistStore = inject(WishlistStore);
+    private cartStore = inject(CartStore);
+    private requireAuth = inject(RequireAuthService);
+    private flyService = inject(FlyAnimationService);
 
-    constructor(
-        private wishlistService: WishlistService,
-        private cartService: CartService,
-        private toast: ToastService,
-        private loading: LoadingService,
-    ) {
-        super();
-    }
+    paginatedRequest = signal<PaginatedRequest>({ limit: 10, page: 1 });
+    private localOverride = signal<WishlistItem[] | null>(null);
+    activeProductIndex = signal<number>(0);
 
-    ngOnInit() {
-        this.wishlistService
-            .getWishlistItems()
-            .pipe(
-                tap(() => (this.isLoading = true)),
-                finalize(() => (this.isLoading = false)),
-                takeUntil(this.ngUnsubscribe),
-            )
-            .subscribe((wishListItems) => {
-                this.wishlistItems = wishListItems;
-            });
-    }
+    wishlistResource = rxResource({
+        request: () => this.paginatedRequest(),
+        loader: ({ request }) => {
+            return this.wishlistService.getWishlistItems(request);
+        },
+    });
 
-    addToCart(variantId: number) {
-        const key = `cart-add-${variantId}`;
-        this.loading.show(key);
-        this.cartService
-            .addToCart('123', 1)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key)),
-            )
-            .subscribe({
-                error: (err) => {
-                    this.toast.error(err.message);
-                },
-            });
-    }
+    readonly wishlistProducts = computed(() => {
+        const value = this.wishlistResource.value();
+        const override = this.localOverride();
+        if (override !== null) return override; // Nếu FE đã bấm xóa, dùng mảng này ngay
 
-    removeFromWishlist(variantId: string) {
-        const key = `wishlist-remove-${variantId}`;
-        this.loading.show(key);
-        this.wishlistService
-            .toggleWishlist(variantId)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key)),
-            )
-            .subscribe({
-                next: (res) => {
-                    this.wishlistItems = this.wishlistItems.filter(
+        return value?.data || []; // Mặc định dùng từ API Resource
+    });
+
+    readonly meta = computed(
+        () =>
+            this.wishlistResource.value()?.meta ?? {
+                limit: 10,
+                page: 1,
+                totalCount: 0,
+                totalPages: 0,
+            },
+    );
+
+    async handleWishlistToggle(variantId: string) {
+        const currentList = this.wishlistProducts();
+        const updatedList = currentList.filter(
+            (item) => item.variantId !== variantId,
+        );
+        this.localOverride.set(updatedList);
+
+        try {
+            await this.wishlistStore.toggle(variantId);
+
+            this.wishlistResource.update((currentResponse) => {
+                if (!currentResponse) return currentResponse;
+                return {
+                    ...currentResponse,
+                    data: currentResponse.data.filter(
                         (item) => item.variantId !== variantId,
-                    );
-                },
-                error: (err) => {
-                    this.toast.info(err.message);
-                },
+                    ),
+
+                    meta: currentResponse.meta
+                        ? {
+                              ...currentResponse.meta,
+                              totalCount:
+                                  currentResponse.meta.totalCount > 0
+                                      ? currentResponse.meta.totalCount - 1
+                                      : 0,
+                          }
+                        : currentResponse.meta,
+                };
             });
+        } catch (error) {
+            console.error(
+                'Gỡ sản phẩm thất bại, hệ thống đang khôi phục dòng này:',
+                error,
+            );
+        } finally {
+            this.localOverride.set(null);
+        }
+    }
+
+    async addToCart(event: MouseEvent, item: WishlistItem) {
+        try {
+            await this.requireAuth.execute(async () => {
+                const body: AddCartItem = {
+                    variantId: item.variantId,
+                    quantity: 1,
+                };
+                this.flyService.triggerFly(
+                    event,
+                    item.imageUrl,
+                    'target-cart-icon',
+                );
+                await this.cartStore.addToCart(body);
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

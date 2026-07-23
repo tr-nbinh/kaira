@@ -1,0 +1,18 @@
+<section role="dialog" aria-modal="true" cdkTrapFocus [cdkTrapFocusAutoCapture]="true"
+    [attr.aria-labelledby]="modalTitleId"
+    class="relative flex flex-col w-full bg-white shadow-xl border border-gray-100 overflow-hidden transform transition-all">
+
+    <header class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <h2 [id]="modalTitleId" class="text-base font-medium uppercase tracking-[0.25em]">
+            {{ config.title || 'Thông báo' }}
+        </h2>
+        <button (click)="modalRef.close()" class="btn btn-icon">
+            <i class="ti ti-x text-xl"></i>
+        </button>
+    </header>
+
+    <div role="document" class="flex-1 max-h-[75vh] overflow-y-auto">
+        <ng-template [cdkPortalOutlet]="selectedPortal"></ng-template>
+    </div>
+
+</section>

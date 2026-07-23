@@ -1,94 +1,149 @@
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            @if (isLoading) {
-            <app-cart-skeleton></app-cart-skeleton>
-            } @else {
+<div class="min-h-[calc(100vh-var(--spacing-header))] bg-white tracking-widest">
+    <div class="container section-tight py-section-compact">
+        <h1 id="cart-heading"
+            class="text-lg font-light uppercase border-b border-neutral-100 pb-6 mb-12 tracking-[0.2em] md:text-xl">
+            {{ 'CART.HEADING' | translate }}
+            <span class="text-xs font-normal tracking-normal text-neutral-400 lowercase font-mono">
+                ({{ meta().totalCount }} {{ 'CART.ITEMS_COUNT' | translate }})
+            </span>
+        </h1>
 
-            @if(cartItems.length) {
-            <div class="col-12">
-                <div class="cart-list">
-                    @for (item of cartItems; track item.variantId) {
-                    <div class="cart-item row align-items-center py-3 border-bottom gy-2">
-                        <div class="col-12 col-sm-7 col-md-5">
-                            <div class="cart-info d-flex align-items-center gap-2">
-                                <div class="col-4">
-                                    <a [routerLink]="item.productId | productUrl:item.slug"
-                                        [queryParams]="{ variant: item.variantId}">
-                                        <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
-                                    </a>
+        @if (cartResource.isLoading()) {
+        <app-cart-skeleton />
+        }
+
+        @if(cartResource.hasValue()) {
+
+        @if (meta().totalCount > 0) {
+        <div class="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-12">
+            <section [attr.aria-label]="'CART.LEFT_COLUMN_ARIA' | translate" class="lg:col-span-7">
+                <ul class="divide-y divide-neutral-100 border-b border-neutral-100">
+                    @for (item of cartItems(); track item.id; let i = $index) {
+                    <li class="flex py-6 first:pt-0 sm:py-8 group/item">
+                        <article class="flex w-full gap-4 sm:gap-6">
+
+                            <!-- PRODUCT IMAGE -->
+                            <a [routerLink]="{id: item.productId, slug: item.slug } | productUrl"
+                                class="aspect-3/4 w-24 overflow-hidden bg-neutral-50 border border-neutral-100 shrink-0 sm:w-32 focus-visible:outline-2 focus-visible:outline-black">
+                                <img [src]="item.imageUrl" [alt]="item.name" loading="lazy" decoding="async"
+                                    class="h-full w-full object-cover object-center transition-transform duration-500 group-hover/item:scale-102">
+                            </a>
+
+                            <!-- PRODUCT DETAILS -->
+                            <div class="flex flex-1 flex-col justify-between">
+                                <div class="space-y-1 pe-6 relative">
+                                    <!-- Brand / Title -->
+                                    <h2
+                                        class="text-xs font-medium uppercase tracking-[0.15em] text-neutral-900 sm:text-sm">
+                                        <a [routerLink]="{id: item.productId, slug: item.slug } | productUrl"
+                                            class="hover:underline focus-visible:outline-none">
+                                            {{ item.name }}
+                                        </a>
+                                    </h2>
+
+                                    <!-- Variant Attributes Summary -->
+                                    <p class="text-[11px] uppercase tracking-wider text-neutral-400 font-light">
+                                        {{ item.variantSummary }}
+                                    </p>
+
+                                    <!-- REMOVE BUTTON (Hitbox rộng tối thiểu 44px chống bấm trượt) -->
+                                    <button type="button" (click)="handleRemoveItem(item.id)"
+                                        class="absolute top-0 right-0 p-2 -mr-2 btn btn-icon"
+                                        [attr.aria-label]="'CART.REMOVE_ITEM_ARIA' | translate:{ productName: item.name }">
+                                        <i class="ti ti-x text-lg"></i>
+                                    </button>
                                 </div>
-                                <div class="col-8">
-                                    <h3 class="card-title product-infor">
-                                        <a [routerLink]="item.productId | productUrl:item.slug"
-                                            [queryParams]="{ variant: item.variantId}"
-                                            class="text-decoration-none">{{item.name}}</a>
-                                    </h3>
-                                    <p class="card-color product-infor">{{item.color}}</p>
-                                    <p class="card-price product-infor">{{item.displayPrice |
-                                        currency:item.currency:'symbol':'1.0-2'}}</p>
+
+                                <!-- QUANTITY & PRICE CONTROLS -->
+                                <div class="flex items-end justify-between pt-4">
+                                    <app-quantity-selector size="sm" [value]="item.quantity"
+                                        (valueChange)="handleUpdateQuantity(item.id, $event)" />
+
+                                    <!-- Price Block -->
+                                    <div class="text-right space-y-0.5">
+                                        @if (item.compareAtPrice && item.compareAtPrice > item.price) {
+                                        <span class="block text-[11px] text-neutral-400 line-through tracking-wider">
+                                            {{ item.compareAtPrice * item.quantity | price:item.currency }}
+                                        </span>
+                                        }
+                                        <span
+                                            class="block text-xs font-medium tracking-widest text-neutral-900 sm:text-sm">
+                                            {{ item.price * item.quantity | price:item.currency }}
+                                        </span>
+                                    </div>
                                 </div>
+
                             </div>
-                        </div>
-                        <div
-                            class="col d-flex flex-row flex-sm-column flex-md-row align-items-center justify-content-etween gap-2">
-                            <span class="card-price">{{item.displayPrice | currency:item.currency:'symbol':'1.0-2'}}
-                            </span>
-                            <div class="quantity-group w-md-100">
-                                <button type="button" (click)="decreaseQuantity(item)">
-                                    <svg width="16" height="16">
-                                        <use xlink:href="#minus"></use>
-                                    </svg>
-                                </button>
-                                <input type="number" id="quantity" name="quantity" readonly [value]="item.quantity"
-                                    min="1">
-                                <button type="button" (click)="increaseQuantity(item)">
-                                    <svg width="16" height="16">
-                                        <use xlink:href="#plus"></use>
-                                    </svg>
-                                </button>
-                            </div>
-                            <span class="money text-dark text-center">{{item.displayFinalPrice |
-                                currency:item.currency:'symbol':'1.0-2'}}</span>
-                        </div>
-                        <div class="col-2 col-sm-1">
-                            <ng-container *appLoadingToggle="'cart-remove-' + item.variantId">
-                                <button class="btn text-dark" (click)="removeFromCart(item.variantId)">
-                                    <svg width="26px" height="26px">
-                                        <use xlink:href="#trash"></use>
-                                    </svg>
-                                </button>
-                            </ng-container>
-                        </div>
-                    </div>
+                        </article>
+                    </li>
                     }
-                </div>
-            </div>
-            <div class="col-12 offset-0 col-md-6 offset-md-6 col-lg-5 offset-lg-7 align-self-end">
-                <div class="cart-totals bg-grey mt-4">
-                    <h4 class="text-dark text-uppercase">{{"COMMON.CART_TOTAL" | translate}}</h4>
-                    <div class="d-flex align-items-center justify-content-between py-3 border-bottom border-top">
-                        <b class="text-dark text-uppercase ">{{"COMMON.SUBTOTAL" |
-                            translate}}</b>
-                        <p class="text-dark">{{subTotal | currency:currency:'symbol':'1.0-2'}}</p>
-                    </div>
-                    <div class="mt-3">
-                        <div class="mb-2"><a [routerLink]="['/shop']"
-                                class="btn btn-dark text-uppercase text-white btn-rounded-none w-100">{{"CART.CONTINUE_SHOPPING"
-                                |
-                                translate}}</a>
-                        </div>
-                        <div class="col-md-12"><a class="btn btn-primary text-uppercase btn-rounded-none w-100"
-                                (click)="goToCheckout()">{{"CART.PROCEED_CHECKOUT"
-                                | translate}}</a></div>
-                    </div>
-                </div>
-            </div>
-            } @else {
-            <app-cart-empty></app-cart-empty>
-            }
-            }
+                </ul>
+            </section>
 
+            <aside [attr.aria-label]="'CART.SUMMARY_COLUMN_ARIA' | translate" class="lg:col-span-5">
+                <div class="sticky top-28 border border-neutral-100 bg-neutral-50 p-6 shadow-sm sm:p-8">
+                    <h2
+                        class="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-900 border-b border-neutral-200 pb-4">
+                        {{ 'CART.ORDER_SUMMARY' | translate }}
+                    </h2>
+
+                    <div class="mt-6 space-y-4">
+                        <!-- Subtotal -->
+                        <div class="flex items-center justify-between text-xs tracking-wider text-neutral-600">
+                            <span>{{ 'CART.SUBTOTAL' | translate }}</span>
+                            <span class="font-mono font-medium text-neutral-900">{{ orderSummary().subtotal |
+                                price:orderSummary().currency }}</span>
+                        </div>
+
+                        <!-- Estimated Shipping -->
+                        <div class="flex items-center justify-between text-xs tracking-wider text-neutral-600">
+                            <span>{{ 'CART.SHIPPING' | translate }}</span>
+                            <span class="font-light uppercase text-[10px] text-neutral-500">
+                                {{ orderSummary().shipping === 0 ? ('CART.FREE_SHIPPING' | translate) :
+                                (orderSummary().shipping | price:orderSummary().currency) }}
+                            </span>
+                        </div>
+
+                        <!-- Total Ordinal -->
+                        <div class="flex items-baseline justify-between pt-2">
+                            <span class="text-xs font-medium uppercase tracking-widest text-neutral-900">{{ 'CART.TOTAL'
+                                |
+                                translate }}</span>
+                            <span class="text-lg font-semibold tracking-widest text-black font-mono">
+                                {{ orderSummary().total | price:orderSummary().currency }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Action -->
+                    <button type="button" [routerLink]="['/checkout']" [disabled]="isUpdating()"
+                        class="mt-8 flex w-full items-center justify-center bg-black py-4 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-black disabled:bg-neutral-300 disabled:cursor-not-allowed">
+                        {{ 'CART.PROCEED_TO_CHECKOUT' | translate }}
+                    </button>
+
+                    <!-- Secondary Safe Sign -->
+                    <p class="mt-4 text-center text-[10px] text-neutral-400 uppercase tracking-widest">
+                        🔒 {{ 'CART.SECURE_CHECKOUT_NOTICE' | translate }}
+                    </p>
+                </div>
+            </aside>
         </div>
+        }
+        @else {
+        <!-- EMPTY STATE LAYER -->
+        <section class="py-24 text-center">
+            <h2 class="text-sm uppercase tracking-[0.15em] text-neutral-400">
+                {{ 'CART.EMPTY.TITLE' | translate }}
+            </h2>
+            <p class="mt-3 text-sm text-neutral-500 font-light">
+                {{ 'CART.EMPTY.DESCRIPTION' | translate }}
+            </p>
+            <a routerLink="/shop"
+                class="mt-8 inline-block bg-black px-8 py-4 text-xs uppercase tracking-[0.2em] text-white transition-colors hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-black">
+                {{ 'CART.EMPTY.CTA_BUTTON' | translate }}
+            </a>
+        </section>
+        }
+        }
     </div>
-</section>
+</div>

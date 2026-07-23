@@ -1,0 +1,23 @@
+<nav aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-neutral-500">
+        @for (item of items(); track item.label; let last = $last) {
+        <li>
+            @if (item.url) {
+            <a [routerLink]="item.url" class="transition-colors hover:text-black"
+                [class]="{ 'text-black': last, 'font-medium': last }">
+                {{ item.label }}
+            </a>
+            } @else {
+            <span aria-current="page" class="text-black font-medium"
+                [class]="{ 'text-black': last, 'font-medium': last }">
+                {{ item.label }}
+            </span>
+            }
+        </li>
+
+        @if (!last) {
+        <li class="text-neutral-300" aria-hidden="true">/</li>
+        }
+        }
+    </ol>
+</nav>

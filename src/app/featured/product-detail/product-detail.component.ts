@@ -1,199 +1,185 @@
-import { CurrencyPipe, LowerCasePipe } from '@angular/common';
-import {
-    Component,
-    ElementRef,
-    OnInit,
-    signal,
-    ViewChild,
-} from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.componet';
+import { BreadcrumbItem } from '../../../shared/components/breadcrumb/breadcrumb.model';
+import { ColorSwatchComponent } from '../../../shared/components/color-swatch/color-swatch.component';
+import { QuantitySelectorComponent } from '../../../shared/components/quantity-selector/quantity-selector.component';
+import { SizeSelectorComponent } from '../../../shared/components/size-selector/size-selector.component';
+import { ColorOption, Option } from '../../../shared/models/option.model';
+import { PricePipe } from '../../../shared/pipes/price.pipe';
+import { ProductService } from '../../../shared/services/product.service';
+import { parseProductUrl } from '../../../shared/utils/product-url.helper';
 import { TranslatePipe } from '@ngx-translate/core';
-import { finalize, takeUntil, tap } from 'rxjs';
-import { BaseComponent } from '../../base/base.component';
-import { LoadingService } from '../../services/loading.service';
-import { ToastService } from '../../services/toast.service';
-import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
-import { SafeHtmlPipe } from '../../shared/pipes/safe-html.pipe';
-import { praseProductIdFromSlug } from '../../shared/utils/product-url.helper';
-import { CartService } from '../cart/services/cart.service';
-import {
-    Product,
-    ProductAttribute,
-    Variant,
-} from '../shop/models/product.model';
-import { ProductService } from '../shop/services/product.service';
-import { WishlistService } from '../wishlist/services/wishlist.service';
+import { AccordionComponent } from '../../../shared/components/accordion/accordion.component';
+import { CdkAccordion } from '@angular/cdk/accordion';
 import { ProductDetailSkeletonComponent } from './product-detail-skeleton/product-detail-skeleton.component';
+import { AddCartItem } from '../../../core/models/cart.model';
+import { CartStore } from '../../../core/stores/cart.store';
+import { RequireAuthService } from '../../../core/auth/require-auth.service';
+import { FlyAnimationService } from '../../../shared/services/fly-animation.service';
 
 @Component({
     selector: 'app-product-detail',
-    imports: [
-        TranslatePipe,
-        FormsModule,
-        LoadingToggleDirective,
-        ProductDetailSkeletonComponent,
-        CurrencyPipe,
-        SafeHtmlPipe,
-        LowerCasePipe,
-    ],
     templateUrl: './product-detail.component.html',
-    styleUrl: './product-detail.component.scss',
+    imports: [
+        BreadcrumbComponent,
+        ColorSwatchComponent,
+        QuantitySelectorComponent,
+        SizeSelectorComponent,
+        PricePipe,
+        TranslatePipe,
+        AccordionComponent,
+        CdkAccordion,
+        ProductDetailSkeletonComponent,
+    ],
 })
-export class ProductDetailComponent extends BaseComponent implements OnInit {
-    @ViewChild('thumbSlider') thumbSlider!: ElementRef<any>;
-    @ViewChild('swiperPagination') pagination!: ElementRef<any>;
-    @ViewChild('largeSlider') largeSlider!: ElementRef<any>;
+export class ProductDetailComponent {
+    private route = inject(ActivatedRoute);
+    private productService = inject(ProductService);
+    private cartStore = inject(CartStore);
+    private requireAuth = inject(RequireAuthService);
+    private flyService = inject(FlyAnimationService);
 
-    variantId: string | null = null;
-    product: Product | null = null;
-    selectedVariant: Variant | undefined = undefined;
-    selectedColor: ProductAttribute | undefined = undefined;
-    selectedQuantity: number = 1;
-    private _swiperInitialized = false;
-    isLoading = signal(true);
+    productId = toSignal(
+        this.route.paramMap.pipe(
+            map((params) => parseProductUrl(params.get('slug'))),
+        ),
+        { initialValue: null },
+    );
+    quantity = signal<number>(1);
+    selectedColorOption = signal<ColorOption | null>(null);
+    selectedSizeOption = signal<Option | null>(null);
 
-    constructor(
-        private route: ActivatedRoute,
-        private productService: ProductService,
-        private cartService: CartService,
-        private wishlistService: WishlistService,
-        private toast: ToastService,
-        private loading: LoadingService,
-    ) {
-        super();
-    }
+    breadcrumbs: BreadcrumbItem[] = [
+        {
+            label: 'Bags',
+            url: '/bags',
+        },
+        {
+            label: 'Iconic Baguette',
+            url: '/iconic-baguette',
+        },
+        {
+            label: 'Baguette Mid',
+        },
+    ];
 
-    ngOnInit() {
-        const slug = this.route.snapshot.paramMap.get('slug');
-        const productId = praseProductIdFromSlug(slug);
-        this.route.queryParamMap
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((queryParams) => {
-                this.variantId = queryParams.get('variant');
-                if (productId) {
-                    this.getProductById(productId);
-                }
-            });
-    }
+    productResource = rxResource({
+        request: () => this.productId(),
+        loader: ({ request }) => {
+            return this.productService.getProductById(request!.id);
+        },
+    });
 
-    ngAfterViewChecked() {
-        if (this.product && this.thumbSlider && !this._swiperInitialized) {
-            this.initSwiper();
-            this._swiperInitialized = true;
-        }
-    }
+    colorOptions = computed(() => {
+        const prod = this.productResource.value();
+        if (!prod) return [];
 
-    getProductById(productId: string) {
-        this.productService
-            .getProductById(productId)
-            .pipe(
-                tap(() => this.isLoading.set(true)),
-                finalize(() => this.isLoading.set(false)),
-                takeUntil(this.ngUnsubscribe),
-            )
-            .subscribe((res) => {
-                this.product = res;
-                this.initVariantAndColor(this.variantId);
-                this._swiperInitialized = false;
-            });
-    }
+        return prod.colors.map((c) => {
+            const availableColorIds = prod.variants
+                .filter((v) => v.stock > 0)
+                .map((v) => v.color.id);
+            const availableColorValues = new Set<string>(availableColorIds);
 
-    initVariantAndColor(variantId: string | null) {
-        if (!this.product) return;
-
-        this.selectedVariant =
-            this.product.variants.find((v) => v.id === variantId) ||
-            this.product.variants[0];
-
-        this.selectedColor = this.product.availableColors.find(
-            (c) => c.id === this.selectedVariant!.colorId,
-        );
-    }
-
-    selectColor(color: ProductAttribute) {
-        this.selectedColor = color;
-        this.selectedVariant = this.product?.variants.find(
-            (v) => v.colorId == color.id,
-        );
-    }
-
-    addToCart(variantId: string) {
-        const key = `cart-${variantId}`;
-        this.loading.show(key);
-        this.cartService
-            .addToCart(variantId, this.selectedQuantity)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key)),
-            )
-            .subscribe({
-                error: (err) => {
-                    this.toast.error(err.message);
-                },
-            });
-    }
-
-    toggleWishlist(variantId: string) {
-        const key = `wishlist-${variantId}`;
-        this.loading.show(key);
-        this.wishlistService
-            .toggleWishlist(variantId)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key)),
-            )
-            .subscribe({
-                next: (res) => {
-                    if (this.selectedVariant) {
-                        this.selectedVariant.isFavorite = res.isWishlisted;
-                    }
-                },
-                error: (err) => {
-                    this.toast.info(err.message);
-                },
-            });
-    }
-
-    increaseQuantity() {
-        if (this.selectedQuantity >= this.selectedVariant!.stock) return;
-        this.selectedQuantity += 1;
-    }
-
-    decreaseQuantity() {
-        if (this.selectedQuantity === 1) return;
-        this.selectedQuantity -= 1;
-    }
-
-    initSwiper() {
-        const thumbSlider = this.initializeSwiper(
-            this.thumbSlider.nativeElement,
-            {
-                slidesPerView: 3,
-                spaceBetween: 20,
-                direction: 'vertical',
-                breakpoints: {
-                    0: {
-                        direction: 'horizontal',
-                    },
-                    768: {
-                        direction: 'vertical',
-                    },
-                },
-            },
-        );
-
-        this.initializeSwiper(this.largeSlider.nativeElement, {
-            slidesPerView: 1,
-            spaceBetween: 0,
-            effect: 'fade',
-            thumbs: {
-                swiper: thumbSlider,
-            },
-            pagination: {
-                el: this.pagination.nativeElement,
-                clickable: true,
-            },
+            const result: ColorOption = {
+                label: c.name,
+                value: c.id,
+                hex: c.value_code,
+                disabled: !availableColorValues.has(c.id),
+            };
+            return result;
         });
+    });
+
+    readonly sizeOptions = computed(() => {
+        const prod = this.productResource.value();
+        if (!prod || !prod.sizes) return [];
+
+        return prod.sizes.map((s) => {
+            const availableSizeIds = prod.variants
+                .filter((v) => v.stock > 0)
+                .map((v) => v.size!.id);
+            const availableSizeValues = new Set<string>(availableSizeIds);
+
+            const result: ColorOption = {
+                label: s.name,
+                value: s.id,
+                hex: s.value_code,
+                disabled: !availableSizeValues.has(s.id),
+            };
+            return result;
+        });
+    });
+
+    selectedVariant = computed(() => {
+        const prod = this.productResource.value();
+        const color = this.selectedColorOption();
+        const size = this.selectedSizeOption();
+        if (!prod || !color) return null;
+
+        return (
+            prod.variants.find(
+                (v) => v.color.id === color.value && v.size?.id === size?.value,
+            ) ?? null
+        );
+    });
+
+    imagesByColor = computed(() => {
+        const prod = this.productResource.value();
+        const color = this.selectedColorOption();
+        if (!prod || !color) return [];
+
+        return prod.images.filter(
+            (img) => img.attributeValueId === color.value,
+        );
+    });
+
+    constructor() {
+        effect(() => {
+            const product = this.productResource.value();
+            if (!product) return;
+
+            const defaultVariant =
+                product.variants.find((v) => v.isDefault && v.stock > 0) ??
+                product.variants.find((v) => v.stock > 0) ??
+                product.variants[0];
+            if (!defaultVariant) return;
+
+            this.selectedColorOption.set({
+                label: defaultVariant.color.name,
+                value: defaultVariant.color.id,
+                hex: defaultVariant.color.value_code,
+            });
+            if (defaultVariant.size) {
+                this.selectedSizeOption.set({
+                    label: defaultVariant.size.name,
+                    value: defaultVariant.size.id,
+                });
+            }
+        });
+    }
+
+    async onAddToBag(event: MouseEvent) {
+        const variant = this.selectedVariant();
+        if (!variant) return;
+
+        try {
+            await this.requireAuth.execute(async () => {
+                const body: AddCartItem = {
+                    variantId: variant.id,
+                    quantity: this.quantity(),
+                };
+                this.flyService.triggerFly(
+                    event,
+                    this.imagesByColor()[0].url,
+                    'target-cart-icon',
+                );
+                await this.cartStore.addToCart(body);
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

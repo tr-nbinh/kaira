@@ -1,4 +1,4 @@
-import { CartItem } from '../featured/cart/models/cart.model';
+import { CartItem } from '../../core/models/cart.model';
 
 type OrderPaymentMethod = 'banking' | 'cod';
 

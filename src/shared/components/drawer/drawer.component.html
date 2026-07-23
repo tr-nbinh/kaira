@@ -1,0 +1,16 @@
+<aside role="dialog" aria-modal="true" class="absolute flex flex-col bg-white shadow-xl h-full w-full border-gray-100"
+    [class]="panelClasses()" [@slideInOut]="animationParams()" (click)="$event.stopPropagation()">
+
+    <header class="shrink-0 flex items-center justify-between px-4 py-3 border-b border-gray-100">
+        <h2 class="text-base font-medium uppercase tracking-[0.25em]">
+            {{ config.title || 'Thông tin' }}
+        </h2>
+        <button (click)="drawerRef.close()" class="btn btn-icon">
+            <i class="ti ti-x text-xl"></i>
+        </button>
+    </header>
+
+    <div class="flex-1 min-h-0">
+        <ng-template [cdkPortalOutlet]="selectedPortal"></ng-template>
+    </div>
+</aside>

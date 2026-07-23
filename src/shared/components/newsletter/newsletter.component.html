@@ -1,0 +1,45 @@
+<section aria-labelledby="newsletter-heading" class="bg-stone-50 py-section-compact">
+    <div class="container">
+        <div class="mx-auto max-w-3xl text-center">
+            <!-- Header -->
+            <app-section-header [title]="'NEWSLETTER.TITLE' | translate"
+                [subtitle]="'NEWSLETTER.SUBTITLE' | translate" />
+
+            <!-- Form -->
+            <form [formGroup]="newsletterForm" (ngSubmit)="onSubmit()" novalidate class="mx-auto mt-12 max-w-2xl">
+                <div class="flex flex-col gap-4 md:flex-row">
+                    <!-- Email -->
+
+                    <div class="flex-1">
+                        <label for="newsletter-email" class="sr-only">
+                            {{'COMMON.EMAIL_ADDRESS' | translate}}
+                        </label>
+
+                        <input id="newsletter-email" type="email" formControlName="email" autocomplete="email"
+                            [placeholder]="'COMMON.EMAIL_PLACEHOLDER' | translate"
+                            aria-describedby="newsletter-email-error"
+                            class="h-14 w-full border border-neutral-300 bg-white px-5 text-sm placeholder:text-neutral-400 outline-none transition-colors focus:border-black" />
+
+                        @if (emailControl.invalid && emailControl.touched) {
+                        <p id="newsletter-email-error" class="mt-2 text-left text-xs text-red-600">
+                            {{'NEWSLETTER.EMAIL_ERROR' | translate }}
+                        </p>
+                        }
+                    </div>
+
+                    <!-- Button -->
+
+                    <button type="submit"
+                        class="h-14 min-w-45 bg-black px-8 text-sm font-medium uppercase tracking-[0.15em] text-white transition-colors hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">
+                        {{'NEWSLETTER.SUBMIT_BTN' | translate }}
+                    </button>
+                </div>
+            </form>
+
+            <!-- Privacy -->
+            <p class="mx-auto mt-6 max-w-2xl text-xs leading-6 text-neutral-500">
+                {{'NEWSLETTER.TERMS' | translate }}
+            </p>
+        </div>
+    </div>
+</section>

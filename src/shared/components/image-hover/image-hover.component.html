@@ -1,0 +1,16 @@
+<div class="relative overflow-hidden bg-neutral-100 aspect-3/4" (mouseenter)="onMouseEnter()">
+    <img [src]="primary()" [alt]="alt()" loading="lazy" decoding="async"
+        class="absolute inset-0 h-full w-full object-cover transition-all duration-700 opacity-100 scale-100 lg:group-hover:opacity-0 lg:group-hover:scale-105" />
+
+    <!-- <img [ngSrc]="primary()" [alt]="alt()" width="560" height="560" loading="lazy" decoding="async"
+        class="absolute inset-0 h-full w-full object-cover transition-all duration-700 opacity-100 scale-100 lg:group-hover:opacity-0 lg:group-hover:scale-105" /> -->
+
+
+    @if (secondary() && secondaryLoaded()) {
+    <img [src]="secondary()" alt="" aria-hidden="true" loading="lazy" decoding="async"
+        class="absolute inset-0 h-full w-full object-cover transition-all duration-700 opacity-0 scale-105 lg:group-hover:opacity-100 lg:group-hover:scale-100" />
+
+    <!-- <img [ngSrc]="secondary()" alt="" aria-hidden="true" width="560" height="560" loading="lazy" decoding="async"
+        class="absolute inset-0 h-full w-full object-cover transition-all duration-700 opacity-0 scale-105 lg:group-hover:opacity-100 lg:group-hover:scale-100" /> -->
+    }
+</div>

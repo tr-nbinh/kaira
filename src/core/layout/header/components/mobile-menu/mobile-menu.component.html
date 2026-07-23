@@ -1,0 +1,99 @@
+<div class="mobile-menu-body">
+    <nav aria-label="Primary navigation">
+        @if (menus.length) {
+        @for (item of menus; track item.id) {
+        <a [routerLink]="item.path" routerLinkActive="!text-black font-bold"
+            class="flex items-center gap-2 p-3 rounded-lg uppercase text-neutral-700 hover:text-black hover:bg-neutral-100">
+            <i aria-hidden="true" class="ti text-lg" [class]="`ti-${item.icon}`"></i>
+            {{ item.name }}
+        </a>
+        }
+        }
+    </nav>
+
+    <hr aria-hidden="true" class="my-2 border-neutral-200 md:hidden" />
+
+    <!-- Wishlist -->
+    <nav aria-label="Wishlist" class="md:hidden">
+        <a routerLink="/wishlist" routerLinkActive="font-bold !text-black"
+            class="flex items-center gap-2 rounded-lg p-3 uppercase text-neutral-700 hover:bg-neutral-100 hover:text-black">
+            <i class="ti ti-heart text-lg" aria-hidden="true"></i>
+            <span>{{ "COMMON.WISHLIST" | translate }}</span>
+        </a>
+    </nav>
+
+    <!-- Language -->
+    <section class="md:hidden">
+        <button type="button" aria-label="Toggle language menu" [attr.aria-expanded]="isLangOpen()"
+            aria-controls="mobile-language-menu" (click)="isLangOpen.set(!isLangOpen())"
+            class="btn w-full justify-between uppercase p-3 text-neutral-700 hover:text-black hover:bg-neutral-100">
+            <div class="flex items-center gap-2">
+                <i aria-hidden="true" class="ti ti-world text-lg"></i>
+                <span>{{ "COMMON.LANGUAGE" | translate }}</span>
+            </div>
+            <i aria-hidden="true" class="ti ti-chevron-down text-sm transition-transform duration-200"
+                [class.rotate-180]="isLangOpen()"></i>
+        </button>
+
+        <ul id="mobile-language-menu" [class]="
+                isLangOpen()
+                    ? 'max-h-40 opacity-100'
+                    : 'max-h-0 opacity-0 overflow-hidden'
+            " class="px-4 transition-all duration-300 ease-in-out">
+            @for (lang of languages; track lang.code) {
+            <li>
+                <button class="btn w-full justify-between py-2 text-sm text-neutral-500 hover:text-black"
+                    [class.!text-black.font-bold]="
+                            lang.code === activeLang.code
+                        " (click)="changeLang.emit(lang)">
+                    {{ lang.label | translate }}
+                    @if (lang.code == activeLang.code) {
+                    <i aria-hidden="true" class="ti ti-check text-xs"></i>
+                    }
+                </button>
+            </li>
+            }
+        </ul>
+    </section>
+
+    <hr aria-hidden="true" class="my-2 border-neutral-200 sm:hidden" />
+
+    <!-- Account -->
+    <div class="sm:hidden">
+        <button type="button" aria-label="Toggle account menu" [attr.aria-expanded]="isAccountOpen()"
+            aria-controls="mobile-account-menu" (click)="isAccountOpen.set(!isAccountOpen())"
+            class="btn w-full justify-between uppercase p-3 text-neutral-700 hover:text-black hover:bg-neutral-100">
+            <div class="flex items-center gap-2">
+                @if (user) {
+                @if (user.avatar_url) {
+                <img [src]="user.avatar_url" [alt]="user.username + ' avatar'"
+                    class="size-8 rounded-full object-cover" />
+                } @else {
+                <div
+                    class="flex size-8 items-center justify-center rounded-full bg-neutral-200 text-sm font-medium text-neutral-700">
+                    B
+                </div>
+                }
+                } @else {
+                <i aria-hidden="true" class="ti ti-user text-lg"></i>
+                }
+                <span>Binh Tran</span>
+            </div>
+            <i aria-hidden="true" class="ti ti-chevron-down text-sm transition-transform duration-200"
+                [class.rotate-180]="isAccountOpen()"></i>
+        </button>
+
+        <nav id="mobile-account-menu" aria-label="Account navigation" [class]="
+                isAccountOpen()
+                    ? 'max-h-40 opacity-100'
+                    : 'max-h-0 opacity-0 overflow-hidden'
+            " class="px-4 transition-all duration-300 ease-in-out">
+            @for (menu of accountMenu; track menu.id) {
+            <a [routerLink]="menu.path"
+                class="btn w-full justify-between capitalize py-2 text-sm text-neutral-700 hover:text-black">
+                {{ menu.name | translate }}
+            </a>
+            }
+        </nav>
+    </div>
+</div>

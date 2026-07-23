@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../base/base.service';
+import { BaseService } from '../../core/sevices/base.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class MapService extends BaseService {
 
     getCoordinates(address: string): Observable<any[]> {
         return this.get<any[]>(
-            `search?q=${encodeURIComponent(address)}&format=json`
+            `search?q=${encodeURIComponent(address)}&format=json`,
         );
     }
 }

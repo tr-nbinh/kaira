@@ -9,45 +9,60 @@
     },
     "LANGUAGE": {
         "ENGLISH": "Tiếng Anh (EN)",
-        "VIETNAMESE": "Tiếng Việt (VN)"
+        "VIETNAMESE": "Tiếng Việt (VI)"
     },
-    "BANNER": {
-        "BUTTON": "Bộ sưu tập"
+    "HERO": {
+        "EYE_BROW": "Mùa mới 2026",
+        "TITLE": "Những mảnh ghép vượt thời gian cho cuộc sống hiện đại",
+        "SUBTITLE": "Khám phá những sản phẩm thiết yếu được chế tác tỉ mỉ, mang lại vẻ thanh lịch cho mỗi ngày.",
+        "CTA": "Khám phá bộ sưu tập"
     },
-    "FEATURES": {
-        "FEATURE_1": {
-            "TITLE": "Đặt lịch",
-            "SUBTITLE": "Chọn dịch vụ và thời gian của bạn và được xác nhận ngay lập tức"
-        },
-        "FEATURE_2": {
-            "TITLE": "Nhận tại của hàng",
-            "SUBTITLE": "Đặt online, lấy tại cửa hàng, tiết kiệm phí ship và thời gian chờ đợi."
-        },
-        "FEATURE_3": {
-            "TITLE": "Hộp Quà Sang Trọng",
-            "SUBTITLE": "Biến mọi món quà thành một trải nghiệm độc đáo."
-        },
-        "FEATURE_4": {
-            "TITLE": "Trả Hàng Miễn Phí",
-            "SUBTITLE": "Trả hàng miễn phí từ mọi nơi trên thế giới."
-        }
+    "CATEGORIES": {
+        "TITLE": "Mua sắm theo danh mục",
+        "SUBTITLE": "Khám phá các bộ sưu tập được tuyển chọn.",
+        "CTA": "Xem ngay"
     },
-    "CATEGORY": {
-        "ALL": "Tất cả",
-        "BUTTON": "Xem ngay"
+    "BEST_SELLERS": {
+        "TITLE": "Bán chạy nhất",
+        "SUBTITLE": "Khám phá những sản phẩm được yêu thích nhất.",
+        "BUTTON": "Xem tất cả",
+        "TAG": "Bán chạy",
+        "QUICK_VIEW": "Xem ngay"
     },
-    "TESTIMONIAL": {
-        "TITLE": "Chúng tôi yêu những lời khen hay"
+    "COLLECTIONS": {
+        "TITLE": "Bộ sưu tập",
+        "SUBTITLE": "Gu thời trang tinh tế cho mọi khoảnh khắc.",
+        "EXPLORE_COLLECTION": "Khám phá bộ sưu tập",
+        "EXPLORE": "Khám phá",
+        "CTA": "Xem tất cả"
     },
-    "BLOG": {
-        "TITLE": "Khám phá blog",
-        "LINK": "Xem tất cả"
+    "BRAND_VALUE": {
+        "TITLE": "Lý Do Nên Chọn Chúng Tôi",
+        "SUBTITLE": "Kiến tạo từ chất lượng, sự thoải mái và phong cách vượt thời gian."
+    },
+    "TESTIMONIALS": {
+        "TITLE": "Khách Hàng Nói Gì Về Chúng Tôi",
+        "SUBTITLE": "Những chia sẻ thực lòng từ trải nghiệm mua sắm thực tế."
     },
     "NEWSLETTER": {
-        "TITLE": "Đăng ký nhận bản tin",
-        "BUTTON": "Đăng ký"
+        "TITLE": "Nhận Tin Mới Nhất",
+        "SUBTITLE": "Trở thành người đầu tiên khám phá các sản phẩm mới, bộ sưu tập giới hạn và xu hướng theo mùa.",
+        "EMAIL_ERROR": "Vui lòng nhập đúng định dạng email",
+        "SUBMIT_BTN": "Đăng ký",
+        "TERMS": "Bằng cách đăng ký, bạn đồng ý nhận các thông tin từ chúng tôi. Bạn có thể hủy đăng ký bất kỳ lúc nào."
     },
     "SHOP": {
+        "HERO": {
+            "SEASON": "Xuân Hè 2026",
+            "TITLE": "Phong Cách Hiện Đại Cho Trang Phục Hàng Ngày",
+            "DESCRIPTION": "Những phom dáng đương đại được chế tác từ chất liệu vải cao cấp, thiết kế để cân bằng giữa sự thoải mái, nét thanh lịch và tính linh hoạt."
+        },
+        "TOOL_BAR": {
+            "FILTER": "Bộ lọc",
+            "SEARCH": "Tìm kiếm",
+            "PRODUCT": "Sản phẩm",
+            "SORT": "Sắp xếp"
+        },
         "RESULTS_SUMMARY": "Hiển thị {{start}}-{{end}} trong tổng số {{total}}",
         "DEFAULT_SORT": "Sắp xếp mặc định",
         "BROWSE_BY_CATEGORIES": "Duyệt theo danh mục",
@@ -55,6 +70,89 @@
         "RESET_FILTER": "Đặt lại bộ lọc",
         "IN_STOCK": "{{quantity}} trong kho",
         "NO_PRODUCT": "Oops! Không có sản phẩm trùng khớp với tìm kiếm."
+    },
+    "CATEGORY_DRAWER": {
+        "TITLE": "Danh mục",
+        "ALL_COLLECTION": "Tất cả bộ sưu tập",
+        "FOOTER": "Bộ sưu tập thu / đông"
+    },
+    "PDP": {
+        "TAX": "Đã gồm VAT & thuế hải quan.",
+        "REFERENCE": "Mã sản phẩm",
+        "CTA": "Thêm vào giỏ hàng",
+        "FIND_IN_BOUTIQUE": "Tìm tại cửa hàng",
+        "PRODUCT_DETAILS": "Thông tin chi tiết",
+        "SHIPPING": {
+            "TITLE": "Giao hàng & Hoàn trả",
+            "POLICY": "Mỗi đơn hàng từ TNB.Studio đều được áp dụng chính sách giao hàng bảo mật miễn phí và có thể hoàn trả trong vòng 14 ngày kể từ ngày nhận.",
+            "PACKAGING": "Sản phẩm sẽ được đóng gói trong hộp nguyên bản thắt nơ lụa satin cao cấp từ Ý."
+        }
+    },
+    "WISHLIST": {
+        "HEADING": "SẢN PHẨM YÊU THÍCH",
+        "CTA": "Tiếp tục mua sắm",
+        "PRODUCT": "sản phẩm",
+        "EMPTY": {
+            "TITLE": "DANH SÁCH CỦA BẠN HIỆN ĐANG TRỐNG",
+            "DESCRIPTION": "Hãy khám phá bộ sưu tập mới và lưu lại những sản phẩm bạn yêu thích.",
+            "CTA": "KHÁM PHÁ BỘ SƯU TẬP MỚI"
+        }
+    },
+    "CART": {
+        "HEADING": "GIỎ HÀNG CỦA BẠN",
+        "ITEMS_COUNT": "sản phẩm",
+        "LEFT_COLUMN_ARIA": "Chi tiết các sản phẩm trong giỏ hàng",
+        "SUMMARY_COLUMN_ARIA": "Thông tin thanh toán đơn hàng",
+        "REMOVE_ITEM_ARIA": "Xóa {{ productName }} khỏi giỏ hàng",
+        "QUANTITY_SELECTOR": "Thay đổi số lượng sản phẩm",
+        "DECREASE_QUANTITY": "Giảm số lượng đi một",
+        "INCREASE_QUANTITY": "Tăng số lượng lên một",
+        "CURRENT_QUANTITY": "Số lượng hiện tại là {{ count }}",
+        "ORDER_SUMMARY": "TÓM TẮT ĐƠN HÀNG",
+        "SUBTOTAL": "Tạm tính",
+        "SHIPPING": "Phí vận chuyển",
+        "FREE_SHIPPING": "Miễn phí",
+        "TAX": "Thuế ước tính (VAT 8%)",
+        "TOTAL": "TỔNG CỘNG",
+        "PROCEED_TO_CHECKOUT": "TIẾN HÀNH THANH TOÁN",
+        "SECURE_CHECKOUT_NOTICE": "Thanh toán an toàn và bảo mật tuyệt đối",
+        "EMPTY": {
+            "TITLE": "GIỎ HÀNG CỦA BẠN ĐANG TRỐNG",
+            "DESCRIPTION": "Hiện tại không có sản phẩm nào trong túi đồ của bạn.",
+            "CTA_BUTTON": "TIẾP TỤC MUA SẮM"
+        }
+    },
+    "CHECKOUT": {
+        "RETURN_TO_CART": "Quay lại giỏ hàng",
+        "CONTACT_INFO": "Thông tin liên hệ",
+        "SHIPPING_ADDRESS": "Địa chỉ giao hàng",
+        "FIRST_NAME": "Họ",
+        "LAST_NAME": "Tên",
+        "PHONE": "Số điện thoại",
+        "ADDRESS_PLACEHOLDER": "Địa chỉ (Số nhà, tên đường)",
+        "PAYMENT_METHOD": "Phương thức thanh toán",
+        "PAYMENT": {
+            "COD_NAME": "Thanh toán khi nhận hàng (COD)",
+            "COD_DESC": "Thanh toán bằng tiền mặt khi đơn vị vận chuyển giao hàng.",
+            "VNPAY_NAME": "Cổng thanh toán VNPAY",
+            "VNPAY_DESC": "Thanh toán quét mã QR qua ứng dụng Ngân hàng hoặc thẻ ATM.",
+            "MOMO_NAME": "Ví điện tử MoMo",
+            "MOMO_DESC": "Thanh toán nhanh chóng bằng cách quét mã QR qua ứng dụng MoMo.",
+            "STRIPE_NAME": "Thẻ quốc tế (Stripe)",
+            "STRIPE_DESC": "Hỗ trợ thanh toán bảo mật qua các loại thẻ Visa, Mastercard, JCB."
+        },
+        "PLACE_ORDER": "Hoàn tất đặt hàng",
+        "ORDER_SUMMARY": "Tóm tắt đơn hàng",
+        "COLOR": "Màu",
+        "SIZE": "Size",
+        "EMPTY_CART": "Không có sản phẩm nào trong giỏ hàng.",
+        "SUBTOTAL": "Tạm tính",
+        "SHIPPING": "Phí vận chuyển",
+        "FREE_SHIPPING": "Miễn phí",
+        "TOTAL": "Tổng cộng",
+        "TAX_INCLUDED": "Đã bao gồm thuế VAT",
+        "ORDER_NOTE": "Ghi chú đơn hàng",
+        "NOTE_PLACEHOLDER": "Ghi chú cho đơn hàng (Ví dụ: Giao giờ hành chính, gọi trước khi giao 30 phút...)"
     },
     "CONTACT": {
         "TITLE": "Liên hệ",
@@ -70,23 +168,6 @@
         "SUBJECT_PLACEHOLDER": "Chủ đề",
         "MESSAGE_PLACEHOLDER": "Tin nhắn"
     },
-    "CART": {
-        "TITLE": "Giỏ hàng",
-        "UPDATE_CART": "Cập nhật giỏ hàng",
-        "CONTINUE_SHOPPING": "Tiếp tục mua sắm",
-        "PROCEED_CHECKOUT": "Thanh toán",
-        "EMPTY_TITLE": "Giỏ hàng của bạn trống",
-        "EMPTY_DESC": "Hiện tại bạn chưa có sản phẩm nào trong giỏ hàng.",
-        "MAX_QUATITY": "Chỉ còn {{stock}} sản phẩm trong kho."
-    },
-    "WISHLIST": {
-        "UNIT_PRICE": "Đơn giá",
-        "STOCK_STATUS": "Tình trạng",
-        "ADD_TO_CART": "Thêm giỏ hàng",
-        "EMPTY_TITLE": "Danh sách yêu thích của bạn trống",
-        "EMPTY_DESC": "Hiện tại bạn chưa yêu thích sản phẩm nào.",
-        "BUTTON": "Tiếp tục mua sắm"
-    },
     "FOOTER": {
         "QUICK_LINK": "Truy cập nhanh",
         "HELP_INFO": "Trợ giúp & Thông tin",
@@ -96,55 +177,6 @@
         "FAQ": "Câu hỏi thường gặp",
         "QUESTION_TEXT": "Bạn có bất kỳ câu hỏi nào?",
         "SUPPORT_TEXT": "Bạn cần giúp đỡ? Liên hệ chúng tôi."
-    },
-    "CHECKOUT": {
-        "TITLE": "Thanh toán",
-        "FNAME": "Tên",
-        "LNAME": "Họ",
-        "FULL_NAME": "Họ và tên",
-        "COMPANY_NAME": "Công ty",
-        "COUNTRY_REGION": "Quốc gia / Khu vực",
-        "STREET_ADDRESS": "Địa chỉ",
-        "DISTRICT": "Quận / Huyện",
-        "WARD": "Phường / Xã",
-        "ADDR_PLACEHOLDER": "Số nhà, tên đường",
-        "ADDR_PLACEHOLDER_2": "Căn hộ, số phòng, v.v.",
-        "TOWN_CITY": "Thị trấn / Thành phố",
-        "STATE": "Bang",
-        "ZIP_CODE": "Mã bưu điện",
-        "ADDITIONAL_INFO": "Thông tin bổ sung",
-        "ORDER_NOTES": "Ghi chú",
-        "NOTE_PLACEHOLDER": "Ghi chú cho đơn hàng của bạn",
-        "METHOD": {
-            "BANK": "Chuyển khoản",
-            "BANK_DECS": "Vui lòng chuyển khoản trực tiếp vào tài khoản ngân hàng của chúng tôi. Hãy sử dụng Mã đơn hàng của bạn khi thanh toán. Đơn hàng sẽ được gửi đi sau khi chúng tôi nhận được tiền.",
-            "CHECK_PAYMENTS": "Thanh toán bằng séc",
-            "CHECK_PAYMENTS_DESC": "Vui lòng gửi séc đến địa chỉ: [Tên cửa hàng], [Địa chỉ đường], [Thị trấn/Thành phố], [Tỉnh/Bang], [Mã bưu điện].",
-            "CASH": "Thanh toán khi nhận hàng",
-            "CASH_DESC": "Trả tiền mặt khi nhận hàng.",
-            "PAYPAL": "Paypal",
-            "PAYPAL_DESC": "Thanh toán bằng PayPal – nếu bạn không có tài khoản, vẫn có thể dùng thẻ tín dụng để thanh toán."
-        },
-        "ORDER_BUTTON": "Đặt hàng",
-        "DELIVERY_ADDRESS": "Địa chỉ nhận hàng",
-        "SELECT_ADDRESS": "Chọn địa chỉ",
-        "ADD_ADDRESS": "Thêm địa chỉ",
-        "DEFAULT": "Default",
-        "CHANGE": "Thay đổi",
-        "CART_SUMMARY": "Tóm tắt giỏ hàng",
-        "UPDATE": "Cập nhật",
-        "ADD_NEW_ADDRESS": "Thêm địa chỉ mới",
-        "DEFAULT_ADDRESS": "Đặt làm địa chỉ mặc định",
-        "ADD_YOUR_ADDRESS": "Thêm địa chỉ giao hàng của bạn để tiếp tục",
-        "ADDRESS_DIALOG": {
-            "TITLE": "Địa chỉ của tôi"
-        },
-        "UPDATE_ADDR_DIALOG": {
-            "TITLE": "Cập nhật địa chỉ"
-        },
-        "CREATE_ADDR_DIALOG": {
-            "TITLE": "Địa chỉ mới"
-        }
     },
     "ORDER": {
         "TITLE": "Cảm ơn bạn đã mua hàng",
@@ -157,37 +189,38 @@
         "FROM_TO": "{{minPrice}} - {{maxPrice}}",
         "MORE_THAN": "Trên {{price}}"
     },
-    "FORM_MESSAGE": {
-        "REQUIRED": "Trường này là bắt buộc",
-        "EMAIL": "Vui lòng nhập địa chỉ email hợp lệ",
-        "PHONE": "Vui lòng nhập số điện thoại hợp lệ",
-        "PATTERN": "Sai định dạng",
-        "PASSWORD_PATTERN": "Tối thiểu 1 số, 1 chữ hoa và 1 ký tự đặc biệt",
-        "EMAIL_PATTERN": "Email không đúng định dạng",
-        "MIN_LENGTH": "Vui lòng nhập ít nhất {{requiredLength}} ký tự",
-        "MAX_LENGTH": "Vui lòng nhập tối đa {{requiredLength}} ký tự",
-        "PASSWORD_MIS_MATCH": "Mật khẩu không trùng khớp",
-        "ALREADY_EXIST_EMAIL": "Email đã được sử dụng",
-        "GENERIC_ERROR": "Lỗi không xác định"
-    },
     "USER": {
         "MY_PURCHASE": "Đơn mua",
         "MY_ACCOUNT": "Tài khoản của tôi"
     },
     "AUTH": {
-        "USERNAME": "Tên đăng nhập",
-        "USERNAME_PLACEHOLDER": "Tên đăng nhập",
         "PASSWORD": "Mật khẩu",
-        "PASSWORD_PLACEHOLDER": "Nhập mật khẩu",
-        "CONFIRM_PASSWORD": "Xác nhận mật khẩu",
-        "CF_PASSWORD_PLACEHOLDER": "Nhập lại mật khẩu",
-        "HAS_ACCOUNT": "Đã có tài khoản",
-        "REMEMBER_ME": "Ghi nhớ đăng nhập",
+        "CONFIRM_PASSWORD": "Nhập lại mật khẩu",
         "FORGOT_PASSWORD": "Quên mật khẩu",
         "CREATE_ACCOUNT": "Tạo tài khoản",
-        "EMAIL_NOTI": "Vui lòng điền email",
-        "VALIDATION": {
-            "EMAIL_NOT_EXIST": "Không tìm thấy tài khoản với email này"
+        "EMAIL_LABEL": "Địa chỉ email",
+        "SIGN_IN": "Đăng nhập",
+        "FULL_NAME": "Họ và tên",
+        "OTP_VERIFICATION": "Mã xác thực OTP",
+        "LOGIN": {
+            "TITLE": "Đăng nhập tài khoản",
+            "DESC": "Vui lòng nhập thông tin của bạn để tiếp tục",
+            "GOOGLE_BTN": "Đăng nhập với Google",
+            "FOOTER": "Bạn chưa có tài khoản"
+        },
+        "REGISTER": {
+            "TITLE": "Tạo tài khoản mới",
+            "DESC": "Đăng ký để nhận các ưu đãi và trải nghiệm mua sắm tối ưu",
+            "GOOGLE_BTN": "Đăng ký với Google",
+            "LEGAL_SUFFIX": "của hệ thống",
+            "FOOTER": "Bạn đã có tài khoản",
+            "SUBMIT_BTN": "Tạo tài khoản"
+        },
+        "LEGAL": {
+            "TOS_TITLE": "Điều khoản dịch vụ",
+            "PRIVACY_TITLE": "Chính sách bảo mật",
+            "AGREEMENT_PREFIX": "Tôi đồng ý với các",
+            "AGREEMENT_AND": "và"
         },
         "VERIFICATION": {
             "RETRY_AFTER": "Thử lại sau",
@@ -253,10 +286,60 @@
             }
         }
     },
+    "VERIFY_EMAIL": {
+        "TITLE": "Xác minh email của bạn",
+        "DESC": "Chúng tôi đã gửi mã OTP đến",
+        "VERIFICATION_ERROR_TITLE": "Yêu cầu xác thực không hợp lệ",
+        "VERIFICATION_ERROR_DESC": "Không tìm thấy yêu cầu xác thực này. Vui lòng đăng ký lại",
+        "VERIFICATION_ERROR_LINK": "Quay lại trang Đăng ký",
+        "LOADING_TXT": "Đang tải thông tin xác thực",
+        "VERIFYING_TXT": "Đang xác minh tài khoản của bạn",
+        "VERIFY_ERROR_TXT": "Vui lòng kiểm tra lại mã OTP và thử lại",
+        "VERIFY_SUCCESS_TXT": "Tài khoản đã được xác thực. Bạn sẽ được chuyển hướng đến trang đăng nhập...",
+        "DIVIDER": "Cần giúp đỡ",
+        "SENDING_OTP": "Đang gửi lại mã OTP",
+        "SENDING_OTP_SUCCESS": "Mã OTP mới đã được gửi đến email của bạn",
+        "SENDING_OTP_ERROR": "Không thể gửi mã OTP. Vui lòng thử lại",
+        "RESEND_TXT": "Chưa nhận được mã OTP",
+        "RESEND_BTN": "Gửi lại mã OTP",
+        "RESEND_BTN_COOLDOWN": "Gửi lại trong",
+        "FOOTER_LINK": "Quay lại trang Đăng nhập"
+    },
+    "FORGOT_PASSWORD": {
+        "TITLE": "Quên mật khẩu",
+        "DESC": "Nhập email để chúng tôi gửi mã otp giúp bạn tạo mật khẩu mới",
+        "ALERT": "Nếu email hợp lệ, chúng tôi đã gửi email chứa OTP và liên kết đặt lại mật khẩu. Vui lòng kiểm tra hộp thư",
+        "SUBMIT_BTN": "Gửi liên kết đặt lại",
+        "LOADING": "Đang kiểm tra yêu cầu khôi phục mật khẩu...",
+        "VERIFICATION_ERROR_TITLE": "Yêu cầu khôi phục không hợp lệ",
+        "VERIFICATION_ERROR_DESC": "Không tìm thấy yêu cầu khôi phục này. Vui lòng đăng ký lại",
+        "VERIFICATION_ERROR_LINK": "Quay lại trang Quên mật khẩu"
+    },
+    "RESET_PASSWORD": {
+        "TITLE": "Đặt lại mật khẩu",
+        "DESC": "Nhập đầy đủ thông tin để đặt lại mật khẩu",
+        "SUBMIT_BTN": "Xác nhận"
+    },
+    "VALIDATION": {
+        "INVALID": "Dữ liệu không hợp lệ",
+        "REQUIRED": "Trường này không được để trống",
+        "EMAIL_INVALID": "Email không đúng định dạng",
+        "MIN_LENGTH": "Vui lòng nhập tối thiểu {{requiredLength}} ký tự",
+        "MAX_LENGTH": "Vui lòng nhập tối đa {{requiredLength}} ký tự",
+        "PATTERN_INVALID": "Định dạng dữ liệu nhập vào không hợp lệ",
+        "PASSWORD_PATTERN": "Mật khẩu bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt",
+        "PASSWORD_MISMATCH": "Mật khẩu không trùng khớp",
+        "EMAIL_EXISTS": "Email này đã sử dụng để đăng ký tài khoản",
+        "FULLNAME_PATTERN": "Họ và tên chỉ được chứa chữ cái, khoảng trắng, dấu gạch nối (-) và dấu nháy (')."
+    },
+    "SERVER_ERROR": {
+        "INVALID_CREDENTIALS": "Email hoặc mật khẩu không chính xác.",
+        "EMAIL_NOT_VERIFIED": "Tài khoản chưa được xác thực. Chúng tôi đã gửi liên kết xác thực và mã OTP đến: {{email}}",
+        "OTP_INCORRECT": "Mã OTP không hợp lệ. Bạn còn {{remainingAttempts}} thử"
+    },
     "COMMON": {
         "WISHLIST": "Yêu thích",
         "CART": "Giỏ hàng",
-        "CATEGORY": "Category",
         "BEST_SELLERS": "Bán chạy nhất",
         "NEW_ARRIVALS": "Sản phẩm mới",
         "BEST_REVIEWED": "Đánh giá tốt nhất",
@@ -279,16 +362,28 @@
         "TOTAL": "Tổng cộng",
         "PHONE": "Điện thoại",
         "EMAIL_ADDRESS": "Địa chỉ email",
-        "SIGN_IN": "Đăng nhập",
         "SIGN_UP": "Đăng ký",
         "SIGN_OUT": "Đăng xuất",
-        "EMAIL_PLACEHOLDER": "Email",
+        "EMAIL_PLACEHOLDER": "Nhập email",
         "CONFIRM": "Xác nhận",
         "REMOVE": "Xóa",
         "CONTACT_US": "Liên hệ chúng tôi",
         "UNAUTHORIZED": "Đăng nhập để sử dụng tính năng này",
         "BLACK_COLOR": "Đen",
         "PROCESSING": "Đang xử lý",
-        "CANCEL": "Hủy"
+        "CANCEL": "Hủy",
+        "LANGUAGE": "Ngôn ngữ",
+        "OR": "Hoặc",
+        "SHOW": "Hiện",
+        "HIDE": "Ẩn",
+        "VIEW_DETAIL": "Xem chi tiết",
+        "FREE_SHIPPING": "Miễn phí vận chuyển",
+        "SIZE_GUIDE": "Hướng dẫn chọn size",
+        "FROM": "Từ",
+        "TO": "Đến",
+        "SELECTED": "Đã chọn",
+        "CLEAR_ALL": "Xóa tất cả",
+        "APPLY_FILTER": "Áp dụng bộ lọc",
+        "FILTER": "Bộ lọc"
     }
 }

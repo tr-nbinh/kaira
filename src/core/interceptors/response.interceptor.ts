@@ -1,46 +1,36 @@
 import {
-    HttpEvent,
-    HttpHandler,
-    HttpInterceptor,
+    HttpInterceptorFn,
     HttpRequest,
     HttpResponse,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { ApiResponse } from '../../app/models/api-response.interface';
-import { SHOW_TOAST } from '../token';
+import { inject } from '@angular/core';
 import { ToastService } from '../../app/services/toast.service';
+import { SHOW_TOAST } from '../token';
+import { map } from 'rxjs';
+import { ApiResponse } from '../../app/models/api-response.interface';
 
-@Injectable()
-export class ResponseInterceptor implements HttpInterceptor {
-    constructor(private toast: ToastService) {}
+export const responseInterceptor: HttpInterceptorFn = (req, next) => {
+    const toast = inject(ToastService);
+    const showToast = req.context.get(SHOW_TOAST);
 
-    intercept(
-        request: HttpRequest<any>,
-        next: HttpHandler,
-    ): Observable<HttpEvent<any>> {
-        const showToast = request.context.get(SHOW_TOAST);
-        return next.handle(request).pipe(
-            map((event: HttpEvent<any>) => {
-                if (event instanceof HttpResponse) {
-                    const body = event.body as ApiResponse;
-
-                    if (body && body.success) {
-                        if (body.message && showToast) {
-                            this.toast.success(body.message);
-                        }
-
-                        if (body.data !== undefined) {
-                            return event.clone({ body: body.data });
-                        }
+    return next(req).pipe(
+        map((event) => {
+            if (event instanceof HttpResponse) {
+                const body = event.body as ApiResponse;
+                if (body && body.success) {
+                    if (body.message && showToast) {
+                        toast.success(body.message);
                     }
 
-                    if (body && !body.success && body.message && showToast) {
-                        this.toast.error(body.message);
+                    if (body.data !== undefined) {
+                        return event.clone({ body: body.data });
                     }
                 }
-                return event;
-            }),
-        );
-    }
-}
+                if (body && !body.success && body.message && showToast) {
+                    toast.error(body.message);
+                }
+            }
+            return event;
+        }),
+    );
+};

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
+import { authGuard } from '../core/auth/auth.guard';
 
 export const routes: Routes = [
     {
@@ -19,20 +19,6 @@ export const routes: Routes = [
         loadComponent: () =>
             import('./featured/shop/shop.component').then(
                 (m) => m.ShopComponent,
-            ),
-    },
-    {
-        path: 'blog',
-        loadComponent: () =>
-            import('./featured/blog/blog.component').then(
-                (m) => m.BlogComponent,
-            ),
-    },
-    {
-        path: 'blog/:slug',
-        loadComponent: () =>
-            import('./featured/blog/pages/blog-detail/blog-detail.component').then(
-                (m) => m.BlogDetailComponent,
             ),
     },
     {
@@ -60,6 +46,7 @@ export const routes: Routes = [
     },
     {
         path: 'checkout',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./featured/checkout/checkout.component').then(
                 (m) => m.CheckoutComponent,
@@ -78,54 +65,47 @@ export const routes: Routes = [
             {
                 path: 'register',
                 loadComponent: () =>
-                    import('./featured/auth/pages/register/register.component').then(
+                    import('./featured/auth/register/register.component').then(
                         (m) => m.RegisterComponent,
                     ),
             },
             {
                 path: 'login',
                 loadComponent: () =>
-                    import('./featured/auth/pages/login/login.component').then(
+                    import('./featured/auth/login/login.component').then(
                         (m) => m.LoginComponent,
                     ),
             },
             {
                 path: 'verify-email',
                 loadComponent: () =>
-                    import('./featured/auth/pages/verify-email/verify-email.component').then(
+                    import('./featured/auth/verify-email/verify-email.component').then(
                         (m) => m.VerifyEmailComponent,
-                    ),
-            },
-            {
-                path: 'confirm-email',
-                loadComponent: () =>
-                    import('./featured/auth/pages/confirm-email/confirm-email.component').then(
-                        (m) => m.ConfirmEmailComponent,
                     ),
             },
             {
                 path: 'forgot-password',
                 loadComponent: () =>
-                    import('./featured/auth/pages/forgot-password/forgot-password.component').then(
+                    import('./featured/auth/forgot-password/forgot-password.component').then(
                         (m) => m.ForgotPasswordComponent,
                     ),
             },
             {
                 path: 'reset-password',
                 loadComponent: () =>
-                    import('./featured/auth/pages/reset-password/reset-password.component').then(
+                    import('./featured/auth/reset-password/reset-password.component').then(
                         (m) => m.ResetPasswordComponent,
                     ),
             },
         ],
     },
     {
-        path: 'order-success',
-        async loadComponent() {
-            const m =
-                await import('./featured/checkout/order-success/order-success.component');
-            return m.OrderSuccessComponent;
-        },
+        path: 'account',
+        canActivate: [authGuard],
+        loadChildren: () =>
+            import('./featured/account/account.routes').then(
+                (m) => m.ACCOUNT_ROUTES,
+            ),
     },
     {
         path: 'not-found',

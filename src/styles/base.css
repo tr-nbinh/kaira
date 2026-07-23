@@ -1,0 +1,23 @@
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: var(--font-sans);
+        background: var(--color-background);
+        color: var(--color-foreground);
+
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+    }
+
+    button {
+        cursor: pointer;
+    }
+}

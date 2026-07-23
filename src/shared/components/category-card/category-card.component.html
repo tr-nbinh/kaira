@@ -1,0 +1,28 @@
+<article class="group" [attr.aria-labelledby]="headingId()">
+    <a [routerLink]="['/categories', slug()]"
+        class="block focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4">
+        <div class="relative overflow-hidden aspect-4/5 bg-neutral-100">
+            <!-- Image -->
+            <img [src]="image()" [alt]="name()" loading="lazy"
+                class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-black/25 transition duration-300 lg:group-hover:bg-black/35"></div>
+
+            <!-- Content -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-white">
+                <h3 [id]="headingId()"
+                    class="text-xl font-medium uppercase tracking-[0.25em] transition-transform duration-300 lg:group-hover:-translate-y-2">
+                    {{ name() }}
+                </h3>
+
+                <span
+                    class="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] opacity-100 translate-y-0 transition-all duration-300 lg:opacity-0 lg:translate-y-3 group-hover:translate-y-0 group-hover:opacity-100">
+                    {{'CATEGORIES.CTA' | translate}}
+                    <span aria-hidden="true" class="transition-transform duration-300 lg:group-hover:translate-x-1"> →
+                    </span>
+                </span>
+            </div>
+        </div>
+    </a>
+</article>

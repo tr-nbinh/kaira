@@ -9,45 +9,60 @@
     },
     "LANGUAGE": {
         "ENGLISH": "English (EN)",
-        "VIETNAMESE": "Vietnamese (VN)"
+        "VIETNAMESE": "Vietnamese (VI)"
     },
-    "BANNER": {
-        "BUTTON": "Shop Collection"
+    "HERO": {
+        "EYE_BROW": "New season 2026",
+        "TITLE": "Timeless Pieces For Modern Living",
+        "SUBTITLE": "Discover carefully crafted essentials designed for everyday elegance.",
+        "CTA": "Shop collection"
     },
-    "FEATURES": {
-        "FEATURE_1": {
-            "TITLE": "Book an appointment",
-            "SUBTITLE": "Pick your service and time, and confirm instantly."
-        },
-        "FEATURE_2": {
-            "TITLE": "Pick up in store",
-            "SUBTITLE": "Order online and collect at the store, saving on shipping fees"
-        },
-        "FEATURE_3": {
-            "TITLE": "Special packaging",
-            "SUBTITLE": "Transforms any gift into a unique experience."
-        },
-        "FEATURE_4": {
-            "TITLE": "Free Global Returns",
-            "SUBTITLE": "Return items for free from anywhere in the world."
-        }
+    "CATEGORIES": {
+        "TITLE": "Shop by Category",
+        "SUBTITLE": "Explore our curated collections.",
+        "CTA": "Shop now"
     },
-    "CATEGORY": {
-        "ALL": "All",
-        "BUTTON": "Shop it now"
+    "BEST_SELLERS": {
+        "TITLE": "Best Sellers",
+        "SUBTITLE": "Discover our most loved pieces.",
+        "BUTTON": "View all best sellers",
+        "TAG": "Best seller",
+        "QUICK_VIEW": "Quick view"
     },
-    "TESTIMONIAL": {
-        "TITLE": "We love good compliments"
+    "COLLECTIONS": {
+        "TITLE": "Collections",
+        "SUBTITLE": "Curated styles for every occasion.",
+        "EXPLORE_COLLECTION": "Explore collection",
+        "EXPLORE": "Explore",
+        "CTA": "View all collections"
     },
-    "BLOG": {
-        "TITLE": "Read Blog Posts",
-        "LINK": "View all"
+    "BRAND_VALUE": {
+        "TITLE": "Why Shop With Us",
+        "SUBTITLE": "Designed with quality, comfort and timeless style in mind."
+    },
+    "TESTIMONIALS": {
+        "TITLE": "What Our Customers Say",
+        "SUBTITLE": "Real feedback from real shopping experiences."
     },
     "NEWSLETTER": {
-        "TITLE": "Sign up for our newsletter",
-        "BUTTON": "Sign up"
+        "TITLE": "Stay In The Know",
+        "SUBTITLE": "Be the first to discover new arrivals, exclusive releases and seasonal collections.",
+        "EMAIL_ERROR": "Please enter a valid email address",
+        "SUBMIT_BTN": "Subscribe",
+        "TERMS": "By subscribing, you agree to receive marketing communications. You can unsubscribe at any time."
     },
     "SHOP": {
+        "HERO": {
+            "SEASON": "Spring Summer 2026",
+            "TITLE": "Modern Essentials For Everyday Wear",
+            "DESCRIPTION": "Contemporary silhouettes crafted from premium fabrics, designed to balance comfort, elegance and versatility."
+        },
+        "TOOL_BAR": {
+            "FILTER": "Filter",
+            "SEARCH": "Search",
+            "PRODUCT": "Product(s)",
+            "SORT": "Sort"
+        },
         "RESULTS_SUMMARY": "Showing {{start}}-{{end}} of {{total}} results",
         "DEFAULT_SORT": "Default sorting",
         "BROWSE_BY_CATEGORIES": "Browse by categories",
@@ -55,6 +70,89 @@
         "RESET_FILTER": "Rest all filters",
         "IN_STOCK": "{{quantity}} in stock",
         "NO_PRODUCT": "Oops! No products match your search."
+    },
+    "CATEGORY_DRAWER": {
+        "TITLE": "Category",
+        "ALL_COLLECTION": "All collection",
+        "FOOTER": "AUTUMN / WINTER COLLECTION"
+    },
+    "PDP": {
+        "TAX": "Prices include VAT and all customs duties.",
+        "REFERENCE": "Reference",
+        "CTA": "Add to shopping bag",
+        "FIND_IN_BOUTIQUE": "Find in boutique",
+        "PRODUCT_DETAILS": "Product details",
+        "SHIPPING": {
+            "TITLE": "Shipping & Returns",
+            "POLICY": "Every order from the TNB.Studio includes complimentary secure shipping and is eligible for returns within 14 days of receipt.",
+            "PACKAGING": "Your items will be beautifully presented in our signature original box, elegantly tied with premium Italian satin ribbon."
+        }
+    },
+    "WISHLIST": {
+        "HEADING": "YOUR WISHLIST",
+        "CTA": "Continue shopping",
+        "PRODUCT": "product(s)",
+        "EMPTY": {
+            "TITLE": "YOUR WISHLIST IS CURRENTLY EMPTY",
+            "DESCRIPTION": "Explore our latest collections and save your favorite pieces here.",
+            "CTA": "EXPLORE NEW ARRIVALS"
+        }
+    },
+    "CART": {
+        "HEADING": "YOUR SHOPPING BAG",
+        "ITEMS_COUNT": "items",
+        "LEFT_COLUMN_ARIA": "Shopping cart items detail",
+        "SUMMARY_COLUMN_ARIA": "Order financial summary",
+        "REMOVE_ITEM_ARIA": "Remove {{ productName }} from shopping bag",
+        "QUANTITY_SELECTOR": "Change item quantity",
+        "DECREASE_QUANTITY": "Decrease quantity by one",
+        "INCREASE_QUANTITY": "Increase quantity by one",
+        "CURRENT_QUANTITY": "Current quantity is {{ count }}",
+        "ORDER_SUMMARY": "ORDER SUMMARY",
+        "SUBTOTAL": "Subtotal",
+        "SHIPPING": "Estimated Shipping",
+        "FREE_SHIPPING": "Complimentary",
+        "TAX": "Estimated Tax (VAT 8%)",
+        "TOTAL": "TOTAL",
+        "PROCEED_TO_CHECKOUT": "PROCEED TO CHECKOUT",
+        "SECURE_CHECKOUT_NOTICE": "Secure and Encrypted Checkout Experience",
+        "EMPTY": {
+            "TITLE": "YOUR SHOPPING BAG IS EMPTY",
+            "DESCRIPTION": "There are currently no items in your shopping selection.",
+            "CTA_BUTTON": "CONTINUE SHOPPING"
+        }
+    },
+    "CHECKOUT": {
+        "RETURN_TO_CART": "Return to cart",
+        "CONTACT_INFO": "Contact Information",
+        "SHIPPING_ADDRESS": "Shipping Address",
+        "FIRST_NAME": "First Name",
+        "LAST_NAME": "Last Name",
+        "PHONE": "Phone Number",
+        "ADDRESS_PLACEHOLDER": "Address (Apartment, suite, street)",
+        "PAYMENT_METHOD": "Payment Method",
+        "PAYMENT": {
+            "COD_NAME": "Cash on Delivery (COD)",
+            "COD_DESC": "Pay with cash upon delivery.",
+            "VNPAY_NAME": "VNPAY Gateway",
+            "VNPAY_DESC": "Pay via QR code or local ATM cards.",
+            "MOMO_NAME": "MoMo E-Wallet",
+            "MOMO_DESC": "Pay instantly by scanning QR code with MoMo app.",
+            "STRIPE_NAME": "Credit/Debit Card (Stripe)",
+            "STRIPE_DESC": "Secure payment supporting Visa, Mastercard, and JCB."
+        },
+        "PLACE_ORDER": "Complete Order",
+        "ORDER_SUMMARY": "Order Summary",
+        "COLOR": "Color",
+        "SIZE": "Size",
+        "EMPTY_CART": "Your cart is currently empty.",
+        "SUBTOTAL": "Subtotal",
+        "SHIPPING": "Shipping",
+        "FREE_SHIPPING": "Free",
+        "TOTAL": "Total",
+        "TAX_INCLUDED": "Including VAT tax",
+        "ORDER_NOTE": "Order Note",
+        "NOTE_PLACEHOLDER": "Notes about your order (e.g. special notes for delivery...)"
     },
     "CONTACT": {
         "TITLE": "Contact",
@@ -70,23 +168,6 @@
         "SUBJECT_PLACEHOLDER": "Write your subject here",
         "MESSAGE_PLACEHOLDER": "Write your message here"
     },
-    "CART": {
-        "TITLE": "Cart",
-        "UPDATE_CART": "Update cart",
-        "CONTINUE_SHOPPING": "Continue shopping",
-        "PROCEED_CHECKOUT": "Checkout",
-        "EMPTY_TITLE": "Your cart is empty",
-        "EMPTY_DESC": "No any products in your shopping cart.",
-        "MAX_QUATITY": "Only {{stock}} items left in stock."
-    },
-    "WISHLIST": {
-        "UNIT_PRICE": "Unit price",
-        "STOCK_STATUS": "Stock status",
-        "ADD_TO_CART": "Add to cart",
-        "EMPTY_TITLE": "Your wishlist is empty",
-        "EMPTY_DESC": "No any products in your wishlist.",
-        "BUTTON": "Continue shopping"
-    },
     "FOOTER": {
         "QUICK_LINK": "Quick links",
         "HELP_INFO": "Help & Info",
@@ -96,55 +177,6 @@
         "FAQ": "Faqs",
         "QUESTION_TEXT": "Do you have any questions or suggestions?",
         "SUPPORT_TEXT": "Do you need support? Give us a call."
-    },
-    "CHECKOUT": {
-        "TITLE": "Checkout",
-        "FNAME": "First Name",
-        "LNAME": "Last Name",
-        "FULL_NAME": "Full Name",
-        "COMPANY_NAME": "Company Name",
-        "COUNTRY_REGION": "Country / Region",
-        "DISTRICT": "District",
-        "WARD": "Ward",
-        "STREET_ADDRESS": "Street Address",
-        "ADDR_PLACEHOLDER": "House number and street name",
-        "ADDR_PLACEHOLDER_2": "Appartments, suite, etc.",
-        "TOWN_CITY": "Town / City",
-        "STATE": "State",
-        "ZIP_CODE": "Zip code",
-        "ADDITIONAL_INFO": "Additional information",
-        "ORDER_NOTES": "Order notes",
-        "NOTE_PLACEHOLDER": "Notes about your order. Like special notes for delivery",
-        "METHOD": {
-            "BANK": "Direct bank transfer",
-            "BANK_DECS": "Make your payment directly into our bank account. Please use your Order ID. Your order will shipped after funds have cleared in our account",
-            "CHECK_PAYMENTS": "Check payments",
-            "CHECK_PAYMENTS_DESC": "Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.",
-            "CASH": "Cash on delivery",
-            "CASH_DESC": "Pay with cash upon delivery.",
-            "PAYPAL": "Paypal",
-            "PAYPAL_DESC": "Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account."
-        },
-        "ORDER_BUTTON": "Place an order",
-        "DELIVERY_ADDRESS": "Deliver address",
-        "SELECT_ADDRESS": "Select address",
-        "ADD_ADDRESS": "Add address",
-        "DEFAULT": "Default",
-        "CHANGE": "Change",
-        "CART_SUMMARY": "Cart summary",
-        "UPDATE": "Update",
-        "ADD_NEW_ADDRESS": "Add new address",
-        "DEFAULT_ADDRESS": "Set as default address",
-        "ADD_YOUR_ADDRESS": "Add your delivery address to continue",
-        "ADDRESS_DIALOG": {
-            "TITLE": "My addresses"
-        },
-        "UPDATE_ADDR_DIALOG": {
-            "TITLE": "Update address"
-        },
-        "CREATE_ADDR_DIALOG": {
-            "TITLE": "New address"
-        }
     },
     "ORDER": {
         "TITLE": "Thank you for your purchase",
@@ -157,37 +189,37 @@
         "FROM_TO": "{{minPrice}} - {{maxPrice}}",
         "MORE_THAN": "More than {{price}}"
     },
-    "FORM_MESSAGE": {
-        "REQUIRED": "This field is required",
-        "EMAIL": "Please enter a valid email address",
-        "PHONE": "Please enter a valid phone number",
-        "PATTERN": "Invalid format",
-        "PASSWORD_PATTERN": "At least one number, one uppercase letter and one special character",
-        "EMAIL_PATTERN": "Email is invalid format",
-        "MIN_LENGTH": "Please enter at least {{requiredLength}} characters",
-        "MAX_LENGTH": "Please enter no more than {{requiredLength}} characters",
-        "PASSWORD_MIS_MATCH": "Password does not match",
-        "ALREADY_EXIST_EMAIL": "Email aldready existed",
-        "GENERIC_ERROR": "An error occurred, please try again later"
-    },
     "USER": {
         "MY_PURCHASE": "My purchase",
         "MY_ACCOUNT": "My account"
     },
     "AUTH": {
-        "USERNAME": "Username",
-        "USERNAME_PLACEHOLDER": "Write your username here",
         "PASSWORD": "Password",
-        "PASSWORD_PLACEHOLDER": "Enter your password",
         "CONFIRM_PASSWORD": "Confirm password",
-        "CF_PASSWORD_PLACEHOLDER": "Confirm your password",
-        "HAS_ACCOUNT": "I have aldready account",
-        "REMEMBER_ME": "Remember me",
         "FORGOT_PASSWORD": "Forgot password",
         "CREATE_ACCOUNT": "Create an account",
-        "EMAIL_NOTI": "Please enter your email",
-        "VALIDATION": {
-            "EMAIL_NOT_EXIST": "We couldn’t find an account with that email"
+        "EMAIL_LABEL": "Email address",
+        "SIGN_IN": "Sign in",
+        "FULL_NAME": "Full Name",
+        "OTP_VERIFICATION": "OTP verification",
+        "LOGIN": {
+            "TITLE": "Sign in to your account",
+            "DESC": "Sign in to your account to continue shopping",
+            "GOOGLE_BTN": "Continue with Google",
+            "FOOTER": "Don't have an account"
+        },
+        "REGISTER": {
+            "TITLE": "Create an account",
+            "DESC": "Sign up to receive exclusive offers and enjoy a better shopping experience",
+            "GOOGLE_BTN": "Continue with Google",
+            "FOOTER": "Already have an account",
+            "SUBMIT_BTN": "Create account"
+        },
+        "LEGAL": {
+            "TOS_TITLE": "Term of service",
+            "PRIVACY_TITLE": "Privacy Policy",
+            "AGREEMENT_PREFIX": "I agree to the",
+            "AGREEMENT_AND": "and"
         },
         "CONFIRM_EMAIL": {
             "SUCCESS": {
@@ -253,14 +285,64 @@
             }
         }
     },
+    "VERIFY_EMAIL": {
+        "TITLE": "Verify your email",
+        "DESC": "We've sent a verification code to",
+        "VERIFICATION_ERROR_TITLE": "Invalid Verification Request",
+        "VERIFICATION_ERROR_DESC": "This verification request could not be found. Please register again",
+        "VERIFICATION_ERROR_LINK": "Back to Register",
+        "LOADING_TXT": "Loading verification information",
+        "VERIFYING_TXT": "Verifying your account",
+        "VERIFY_ERROR_TXT": "Please check the code and try again",
+        "VERIFY_SUCCESS_TXT": "Email verified successfully. Redirecting you to sign in...",
+        "DIVIDER": "Need help",
+        "SENDING_OTP": "A new verification code has been sent to your email",
+        "SENDING_OTP_SUCCESS": "Verification code sent successfully",
+        "SENDING_OTP_ERROR": "Failed to send verification code. Please try again",
+        "RESEND_TXT": "Didn't receive the code",
+        "RESEND_BTN": "Resend code",
+        "RESEND_BTN_COOLDOWN": "Resend in",
+        "FOOTER_LINK": "Back to Sign in"
+    },
+    "FORGOT_PASSWORD": {
+        "TITLE": "Forgot your password",
+        "DESC": "Enter your email and we’ll send you instructions to reset your password",
+        "ALERT": "If this email is registered, we’ve sent an verification code and a reset link to your inbox.",
+        "SUBMIT_BTN": "Send reset link",
+        "LOADING": "Validating reset request...",
+        "VERIFICATION_ERROR_TITLE": "This verification reset is no longer valid",
+        "VERIFICATION_ERROR_DESC": "This verification reset request could not be found. Please register again",
+        "VERIFICATION_ERROR_LINK": "Back to Forgot password"
+    },
+    "RESET_PASSWORD": {
+        "TITLE": "Reset your password",
+        "DESC": "Enter all the information to reset your password",
+        "SUBMIT_BTN": "Reset password"
+    },
+    "VALIDATION": {
+        "INVALID": "Invalid data",
+        "REQUIRED": "This field is required",
+        "EMAIL_INVALID": "Invalid email address",
+        "MIN_LENGTH": "Please enter at least {{requiredLength}} characters",
+        "MAX_LENGTH": "Please enter no more than {{requiredLength}} characters",
+        "PATTERN_INVALID": "Invalid input format",
+        "PASSWORD_PATTERN": "Password must include uppercase letters, lowercase letters, numbers, and special characters",
+        "PASSWORD_MISMATCH": "Passwords do not match",
+        "EMAIL_EXISTS": "An account with this email already exists",
+        "FULLNAME_PATTERN": "Full name may only contain letters, spaces, hyphens (-), and apostrophes (')."
+    },
+    "SERVER_ERROR": {
+        "INVALID_CREDENTIALS": "Invalid email or password",
+        "EMAIL_NOT_VERIFIED": "Your account is not verified. We’ve sent a verification link and verification code to: {{email}}",
+        "OTP_INCORRECT": "Invalid OTP code. You have {{remainingAttempts}} attempts remaining."
+    },
     "COMMON": {
         "WISHLIST": "Wishlist",
         "CART": "Cart",
-        "CATEGORY": "Category",
         "BEST_SELLERS": "Best Sellers",
         "NEW_ARRIVALS": "New Arrivals",
         "BEST_REVIEWED": "Best Reviewed",
-        "ADD_TO_CART": "Add to Cart",
+        "ADD_TO_CART": "Add to cart",
         "FOLLOW_US": "Follow us on Instagram",
         "COLOR": "Color",
         "SIZE": "Size",
@@ -279,7 +361,6 @@
         "TOTAL": "Total",
         "PHONE": "Phone",
         "EMAIL_ADDRESS": "Email address",
-        "SIGN_IN": "Sign in",
         "SIGN_UP": "Sign up",
         "SIGN_OUT": "Sign out",
         "EMAIL_PLACEHOLDER": "Write your email here",
@@ -289,6 +370,19 @@
         "UNAUTHORIZED": "Please log in to use this feature",
         "BLACK_COLOR": "Black",
         "PROCESSING": "Processing",
-        "CANCEL": "Cancel"
+        "CANCEL": "Cancel",
+        "LANGUAGE": "Language",
+        "OR": "Or",
+        "SHOW": "Show",
+        "HIDE": "Hide",
+        "VIEW_DETAIL": "View full details",
+        "FREE_SHIPPING": "Free shipping",
+        "SIZE_GUIDE": "Size guide",
+        "FROM": "From",
+        "TO": "To",
+        "SELECTED": "Selected",
+        "CLEAR_ALL": "Clear all",
+        "APPLY_FILTER": "Apply filters",
+        "FILTER": "Filter"
     }
 }

@@ -1,0 +1,18 @@
+<div class="inline-flex items-center border border-neutral-200 bg-white select-none" [class]="wrapperClasses()"
+    [class.shake-animation]="isShaking()">
+    <button type="button" (click)="decrement()" [disabled]="value() <= min()" aria-label="Increase"
+        class="h-full flex items-center justify-center font-light text-neutral-500 hover:text-black disabled:opacity-20 disabled:hover:text-neutral-500 transition-colors focus:outline-none"
+        [class]="btnClasses()">
+        &minus;
+    </button>
+
+    <span class="text-center text-black font-normal tracking-wide" [class]="textClasses()" aria-live="polite">
+        {{ value() }}
+    </span>
+
+    <button type="button" (click)="increment()" aria-label="Decrease"
+        class="h-full flex items-center justify-center font-light text-neutral-500 hover:text-black transition-colors focus:outline-none"
+        [class]="btnClasses()" [class.opacity-20]="value() >= max()" [class.cursor-not-allowed]="value() >= max()">
+        &#43;
+    </button>
+</div>

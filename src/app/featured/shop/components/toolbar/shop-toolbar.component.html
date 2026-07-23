@@ -1,0 +1,45 @@
+<section class="border-y border-neutral-200 bg-white/10">
+    <div class="mx-auto flex h-14 max-w-width items-center justify-between">
+        <!-- Left -->
+        <div class="flex items-center gap-6">
+            <button type="button" class="text-[11px] uppercase tracking-[0.25em]" (click)="filterClick.emit()">
+                {{'SHOP.TOOL_BAR.FILTER' | translate}}
+            </button>
+
+            <button type="button" class="text-[11px] uppercase tracking-[0.25em]">
+                {{'SHOP.TOOL_BAR.SEARCH' | translate}}
+            </button>
+
+            <span class="hidden text-[11px] uppercase tracking-[0.25em] text-neutral-500 md:block">
+                {{ totalProducts() }} {{'SHOP.TOOL_BAR.PRODUCT' | translate}}
+            </span>
+        </div>
+
+        <!-- Right -->
+        <div class="flex items-center gap-8">
+            <!-- Grid View -->
+            <div class="hidden items-center gap-4 md:flex">
+                <button type="button" (click)="gridViewChange.emit(2)"
+                    class="text-neutral-400 hover:text-black transition-colors border-b border-transparent"
+                    [class]="{'text-black!': gridView() === 2, 'border-black!' : gridView() === 2 }"
+                    aria-label="Display a 2-column grid">
+                    <i class="ti ti-columns-2 text-xl"></i>
+                </button>
+                <button type="button" (click)="gridViewChange.emit(3)"
+                    class="text-neutral-400 hover:text-black transition-colors border-b border-transparent"
+                    [class]="{'text-black!': gridView() === 3, 'border-black!' : gridView() === 3 }"
+                    aria-label="Display a 3-column grid">
+                    <i class="ti ti-columns-3 text-xl"></i>
+                </button>
+
+                <button type="button" (click)="gridViewChange.emit(4)"
+                    class="text-neutral-400 hover:text-black transition-colors border-b border-transparent"
+                    [class]="{'text-black!': gridView() === 4, 'border-black!' : gridView() === 4 }"
+                    aria-label="Display a 4-column grid">
+                    <i class="ti ti-grid-dots text-xl"></i>
+                </button>
+            </div>
+            <button type="button" class="text-[11px] uppercase tracking-[0.25em]">Sort</button>
+        </div>
+    </div>
+</section>

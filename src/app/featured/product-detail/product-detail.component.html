@@ -1,142 +1,187 @@
-@if (isLoading()) {
-<app-product-detail-skeleton></app-product-detail-skeleton>
-} @else {
-@if (product && selectedVariant) {
-<div class="py-5 mt-5">
-    <section id="product-detail">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-lg-7">
-                    <div class="row flex-column-reverse flex-md-row">
-                        <div class="col-12 col-md-3">
-                            <!-- product-thumbnail-slider -->
-                            <div class="swiper product-thumbnail-slider" #thumbSlider>
-                                <div class="swiper-wrapper">
-                                    @for (img of selectedVariant.images; track img.id) {
-                                    <div class="swiper-slide">
-                                        <img [src]="img.url" alt="thumb image" class="img-fluid">
-                                    </div>
-                                    }
-                                </div>
-                            </div>
-                            <!-- / product-thumbnail-slider -->
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <!-- product-large-slider -->
-                            <div class="swiper product-large-slider" #largeSlider>
-                                <div class="swiper-wrapper">
-                                    @for (image of selectedVariant.images; track image.id) {
-                                    <div class="swiper-slide">
-                                        <img [src]="image.url" alt="product large" class="img-fluid">
-                                    </div>
-                                    }
-                                </div>
-                                <div class="swiper-pagination" #swiperPagination></div>
-                            </div>
-                            <!-- / product-large-slider -->
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-5">
-                    <section class="product-info pt-3">
-                        <h1 class="product-name text-uppercase">{{product.name}}</h1>
-                        @if (product.description) {
-                        <p class="fs-14 mt-2">{{product.description}}</p>
-                        }
+@if (productResource.isLoading()) {
+<app-product-detail-skeleton />
+}
 
-                        <div class="product-price mt-2">
-                            <span class="fs-4 me-3">{{selectedVariant.displayPrice |
-                                currency:selectedVariant.currency:'symbol':'1.0-2'}}</span>
-                            @if (selectedVariant.displayCompareAtPrice) {
-                            <del>{{selectedVariant.displayCompareAtPrice |
-                                currency:selectedVariant.currency:'symbol':'1.0-2'}}</del>
-                            }
-                        </div>
+@if (productResource.value(); as product) {
+@if (selectedVariant(); as variant) {
+<article class="container py-6 lg:py-12 flex flex-col lg:flex-row gap-8 xl:gap-16 items-start">
+    <section class="w-full lg:w-[58%] shrink-0 flex flex-col gap-0.5 bg-white" aria-label="Product image collection">
+        <figure class="w-full aspect-square bg-white relative overflow-hidden group">
+            <img [src]="imagesByColor()[0].url" [alt]="product.name"
+                class="w-full h-full object-cover select-none transition-transform duration-700 ease-out group-hover:scale-103"
+                loading="eager" />
+        </figure>
 
-                        <div class="content mt-2" [innerHTML]="product.content | safeHtml"></div>
-                        <div class="color-product-options mt-4">
-                            <div class="color-toggle">
-                                <div class="item-title">{{"COMMON.COLOR" | translate}}:
-                                    <span>{{selectedColor?.name}}</span>
-                                </div>
-                                <div class="d-flex">
-                                    @for (color of product.availableColors; track color.id ) {
-                                    <div class="form-check mt-2">
-                                        <label class="form-check-label" [for]="'color-id-' + color.id">
-                                            <input class="form-check-input" type="radio" name="color-option"
-                                                [id]="'color-id-' + color.id" [checked]="color.id == selectedColor?.id"
-                                                (change)="selectColor(color)">
-                                            <span class="checkmark" [style]="{'background': color.value_code, 
-                                                '--checkmark-bg': (color.name | lowercase) == ('COMMON.BLACK_COLOR' | translate | lowercase) 
-                                                ? 'white' : '#444' }"></span>
-                                        </label>
-                                    </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <!-- @if (product.sizes && product.sizes.length) {
-                        <div class="swatch d-flex flex-wrap option-1 mt-4">
-                            <div class="item-title">{{"COMMON.SIZE" | translate}}:</div>
-                            @for (size of product.sizes; track size.id) {
-                            <div class="swatch-element">
-                                <input class="swatch-input hide" id="small-size" type="radio" name="option-1" value="S">
-                                <label class="swatch-label square-only" for="small-size">{{size.name}}</label>
-                            </div>
-                            }
-                        </div>
-                        } -->
-                        <div class="product-action mt-4">
-                            <div class="product-quantity d-flex align-items-center mb-3">
-                                <div class="input-group product-qty me-3" style="max-width: 150px;">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-light" (click)="decreaseQuantity()"
-                                            [disabled]="selectedVariant.stock == 0">
-                                            <svg width="16" height="16">
-                                                <use xlink:href="#minus"></use>
-                                            </svg>
-                                        </button>
-                                    </span>
-                                    <input type="text" id="quantity" name="quantity"
-                                        class="form-control input-number text-center" min="1"
-                                        [(ngModel)]="selectedQuantity" [disabled]="selectedVariant.stock == 0">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-light" (click)="increaseQuantity()"
-                                            [disabled]="selectedVariant.stock == 0">
-                                            <svg width="16" height="16">
-                                                <use xlink:href="#plus"></use>
-                                            </svg>
-                                        </button>
-                                    </span>
-                                </div>
-                                <p class="m-0">{{"SHOP.IN_STOCK" | translate:{quantity:selectedVariant.stock} }}</p>
-                            </div>
-                            <ng-container *appLoadingToggle="'cart-' + selectedVariant.id">
-                                <button class="btn btn-outline-dark btn-lg text-uppercase me-3"
-                                    (click)="addToCart(selectedVariant.id)" [disabled]="selectedVariant.stock == 0">
-                                    <span id="add-to-cart">{{"COMMON.ADD_TO_CART" | translate}}</span>
-                                </button>
-                            </ng-container>
-                            <ng-container *appLoadingToggle="'wishlist-' + selectedVariant.id">
-                                <button class="btn btn-outline-dark" (click)="toggleWishlist(selectedVariant.id)">
-                                    @if (selectedVariant.isFavorite) {
-                                    <svg width="24" height="24" viewBox="0 0 24 24" class="is-wishlisted">
-                                        <use xlink:href="#heart-filled"></use>
-                                    </svg>
-
-                                    } @else {
-                                    <svg width="24" height="24" viewBox="0 0 24 24">
-                                        <use xlink:href="#heart"></use>
-                                    </svg>
-                                    }
-                                </button>
-                            </ng-container>
-                        </div>
-                    </section>
-                </div>
-            </div>
+        <div class="grid grid-cols-2 gap-0.5">
+            @for (img of imagesByColor(); track img.url; let first = $first) {
+            @if (!first) {
+            <figure class="w-full aspect-square bg-white relative overflow-hidden group">
+                <img [src]="img.url" [alt]="product.name"
+                    class="w-full h-full object-cover select-none transition-transform duration-700 ease-out group-hover:scale-103"
+                    loading="lazy" />
+            </figure>
+            }
+            }
         </div>
     </section>
-</div>
+
+    <section class="flex-1 py-6 md:py-0 md:sticky md:top-16 flex flex-col justify-between h-fit"
+        aria-label="Order information and options">
+        <div>
+            <app-breadcrumb [items]="breadcrumbs" />
+
+            <header class="mt-4 mb-8">
+                <p class="text-sm tracking-[0.25em] text-neutral-900 uppercase font-medium mb-2">
+                    {{ product.brandName }}
+                </p>
+
+                <h1 class="text-2xl md:text-3xl font-light tracking-widest uppercase text-black leading-[1.1]">
+                    {{ product.name }}
+                </h1>
+
+                <div class="mt-4 flex flex-col gap-1">
+                    <div class="flex items-end gap-3">
+                        <strong class="text-2xl font-light text-neutral-900 tracking-tight" aria-label="Price">
+                            {{
+                            variant.price | price: product.currency
+                            }}
+                        </strong>
+                        @if (variant.salePrice) {
+                        <del class="text-sm text-neutral-400" aria-label="Sale price">
+                            {{
+                            variant.salePrice
+                            | price: product.currency
+                            }}
+                        </del>
+                        }
+                    </div>
+
+                    <span class="text-[10px] text-neutral-400 font-light italic tracking-wide">
+                        {{ "PDP.TAX" | translate }}
+                    </span>
+                </div>
+                <div class="text-[10px] tracking-[0.15em] text-neutral-400 font-light mt-6 uppercase">
+                    {{ "PDP.REFERENCE" | translate }}:
+                    <span class="text-black font-medium">{{
+                        variant.sku
+                        }}</span>
+                </div>
+            </header>
+
+            <div class="border-t border-black/10 my-6"></div>
+
+            <p class="text-[13px] leading-relaxed text-neutral-800 font-light tracking-wide mb-8 text-justify">
+                {{ product.description }}
+            </p>
+            <div class="mb-8">
+                <span class="text-[10px] tracking-[0.2em] uppercase text-neutral-400 block mb-3">
+                    {{ "COMMON.COLOR" | translate }}:
+                    <span class="text-black font-medium">{{
+                        selectedColorOption()?.label
+                        }}</span>
+                </span>
+
+                <app-color-swatch [options]="colorOptions()" [selectedOptionValue]="selectedColorOption()"
+                    (select)="selectedColorOption.set($event)" />
+            </div>
+
+            @if (product.sizes && product.sizes.length) {
+            <div class="mb-10">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-[10px] tracking-[0.2em] uppercase text-neutral-400">{{ "COMMON.SIZE" | translate
+                        }}</span>
+                    <button
+                        class="text-[11px] uppercase tracking-widest text-neutral-500 underline underline-offset-2 hover:text-black transition-colors focus:outline-none">
+                        {{ "COMMON.SIZE_GUIDE" | translate }}
+                    </button>
+                </div>
+                <app-size-selector [options]="sizeOptions()" [selectedValue]="selectedSizeOption()"
+                    (select)="selectedSizeOption.set($event)" />
+            </div>
+            }
+
+            <div class="mb-8">
+                <span class="text-[10px] tracking-[0.2em] uppercase text-neutral-400 block mb-3">{{ "COMMON.QUANTITY" |
+                    translate }}</span>
+                <app-quantity-selector [value]="quantity()" (valueChange)="quantity.set($event)" />
+            </div>
+
+            <div class="space-y-3 mb-10">
+                <button (click)="onAddToBag($event)" [attr.aria-label]="'Add product ' +  product.name + ' to bag'"
+                    class="w-full h-14 bg-black text-white text-[11px] font-medium tracking-[0.25em] uppercase hover:bg-neutral-900 active:bg-neutral-800 transition-colors duration-300 focus-visible:ring-1 focus-visible:ring-black">
+                    {{ 'PDP.CTA' | translate }}
+                </button>
+
+                <button [attr.aria-label]="'Check status of ' + product.name +' at boutique'"
+                    class="w-full h-14 bg-white border border-black/20 text-black text-[11px] font-medium tracking-[0.25em] uppercase hover:border-black transition-colors duration-300">
+                    {{ 'PDP.FIND_IN_BOUTIQUE' | translate }}
+                </button>
+            </div>
+
+            <div class="border-t border-black/10" role="tablist" aria-label="Additional information">
+                <cdk-accordion [multi]="true">
+                    <app-accordion>
+                        <span accordionTitle>{{ 'PDP.PRODUCT_DETAILS' | translate }}</span>
+                        <div accordionContent class="pt-4 text-xs font-light leading-6 tracking-wide text-neutral-600">
+                            @for (specification of variant.specifications; track specification.id) {
+                            @if (specification.hasLabel) {
+                            <h4 class="mb-2 text-[11px] font-medium uppercase tracking-[0.15em] text-black">
+                                {{ specification.title }}
+                            </h4>
+                            <ul class="space-y-1">
+                                @for (item of specification.items; track item.id) {
+                                <li class="flex">
+                                    <span class="w-24 shrink-0 text-neutral-500">
+                                        {{ item.label }}
+                                    </span>
+
+                                    <span class="mr-2 text-neutral-400">:</span>
+
+                                    <span class="text-black">
+                                        {{ item.value }}
+                                    </span>
+                                </li>
+                                }
+                            </ul>
+                            } @else {
+                            <div class="flex items-start gap-2">
+                                <span class="min-w-24 text-[11px] font-medium uppercase tracking-[0.15em] text-black">
+                                    {{ specification.title }}
+                                </span>
+
+                                <span class="text-neutral-400">:</span>
+
+                                <span class="text-neutral-700">
+                                    {{
+                                    specification.items[0].value
+                                    }}
+                                </span>
+                            </div>
+                            }
+                            }
+                        </div>
+                    </app-accordion>
+                    <app-accordion>
+                        <span accordionTitle>{{ 'PDP.SHIPPING.TITLE' | translate }}</span>
+                        <div accordionContent class="pt-4 text-xs font-light leading-6 tracking-wide text-neutral-600">
+                            <p>{{ 'PDP.SHIPPING.POLICY' | translate }}</p>
+
+                            <p class="text-[11px] italic text-neutral-400">{{ 'PDP.SHIPPING.PACKAGING' | translate }}
+                            </p>
+                        </div>
+                    </app-accordion>
+                </cdk-accordion>
+            </div>
+        </div>
+
+        <footer class="mt-16 flex flex-col items-center md:items-start gap-1">
+            <span class="text-[10px] tracking-[0.2em] text-neutral-400 uppercase">Need personal assistance?</span>
+            <a href="tel:+"
+                class="text-[11px] tracking-widest text-black font-medium uppercase underline underline-offset-4 hover:text-neutral-500 transition-colors">
+                Contact our Private Client Advisor
+            </a>
+        </footer>
+    </section>
+</article>
 }
 }

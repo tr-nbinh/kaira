@@ -1,0 +1,18 @@
+<div class="flex flex-wrap gap-3" role="radiogroup" aria-label="Select product size">
+    @for (item of options(); track item.value) {
+    <button type="button" (click)="!item.disabled && select.emit(item)" role="radio" [disabled]="item.disabled"
+        [attr.aria-checked]="selectedValue()?.value === item.value" [attr.aria-disabled]="item.disabled"
+        [attr.aria-label]="'Size ' + item.label + (item.disabled ? ' - out of stock' : '')"
+        class="h-9 min-w-11 px-3 text-xs tracking-wide uppercase border transition-all duration-300 flex items-center justify-center focus:outline-none relative
+        disabled:opacity-20 disabled:border-neutral-200 disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-neutral-400"
+        [class]="(selectedValue()?.value === item.value ? 'bg-black text-white border-black' : 'bg-white text-black border-neutral-400 enabled:hover:border-black')">
+        {{ item.label }}
+
+        @if (item.disabled) {
+        <span class="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+            <span class="w-[110%] h-0.5 bg-neutral-400 rotate-12 transform origin-center"></span>
+        </span>
+        }
+    </button>
+    }
+</div>

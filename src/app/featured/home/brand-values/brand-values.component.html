@@ -1,0 +1,29 @@
+<section aria-labelledby="brand-values-heading" class="bg-white py-section-compact">
+    <div class="container">
+        <app-section-header [title]="'BRAND_VALUE.TITLE' | translate" [subtitle]="'BRAND_VALUE.SUBTITLE' | translate" />
+
+        <div class="border-y border-neutral-200 py-12 md:py-16">
+            <ul class="grid gap-12 md:grid-cols-3 md:gap-8">
+                @for (value of values; track value.title) {
+                <li>
+                    <article class="flex flex-col items-center text-center">
+                        <!-- Icon -->
+                        <i [class]="'ti ' + value.icon" aria-hidden="true" class="text-[28px] text-black">
+                        </i>
+
+                        <!-- Title -->
+                        <h3 class="mt-2 mb-4 text-sm font-medium uppercase tracking-[0.25em] text-black">
+                            {{ value.title }}
+                        </h3>
+
+                        <!-- Description -->
+                        <p class="max-w-xs text-sm leading-7 text-neutral-600">
+                            {{ value.description }}
+                        </p>
+                    </article>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>

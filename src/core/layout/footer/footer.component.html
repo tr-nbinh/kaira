@@ -1,0 +1,102 @@
+<footer class="bg-black text-white">
+    <div class="container px-4 py-16 md:px-8 md:py-20">
+        <!-- Top -->
+
+        <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+            <!-- Brand -->
+
+            <section aria-labelledby="footer-brand-heading">
+                <div class="shrink-0">
+                    <h2 id="footer-brand-heading" class="text-xl font-medium">
+                        <a routerLink="/" class="font-serif text-2xl font-bold tracking-wider">
+                            TNB.Studio
+                        </a>
+                    </h2>
+                </div>
+
+                <p class="mt-4 max-w-xs text-sm leading-7 text-neutral-400">
+                    Modern essentials designed for everyday wear. Timeless
+                    pieces crafted with quality and comfort in mind.
+                </p>
+            </section>
+
+            <!-- Shop -->
+
+            <nav aria-labelledby="footer-shop-heading">
+                <h2 id="footer-shop-heading" class="text-sm uppercase tracking-[0.15em]">
+                    Shop
+                </h2>
+
+                <ul class="mt-5 space-y-3">
+                    @for (link of shopLinks; track link.url) {
+                    <li>
+                        <a [routerLink]="link.url" class="text-sm text-neutral-400 transition-colors hover:text-white">
+                            {{ link.label }}
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </nav>
+
+            <!-- Company -->
+
+            <nav aria-labelledby="footer-company-heading">
+                <h2 id="footer-company-heading" class="text-sm uppercase tracking-[0.15em]">
+                    Company
+                </h2>
+
+                <ul class="mt-5 space-y-3">
+                    @for (link of companyLinks; track link.url) {
+                    <li>
+                        <a [routerLink]="link.url" class="text-sm text-neutral-400 transition-colors hover:text-white">
+                            {{ link.label }}
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </nav>
+
+            <!-- Social -->
+
+            <nav aria-labelledby="footer-social-heading">
+                <h2 id="footer-social-heading" class="text-sm uppercase tracking-[0.15em]">
+                    Follow
+                </h2>
+
+                <ul class="mt-5 space-y-3">
+                    @for (social of socialLinks; track social.label) {
+                    <li>
+                        <a [href]="social.url" target="_blank" rel="noopener noreferrer"
+                            class="text-sm text-neutral-400 transition-colors hover:text-white">
+                            {{ social.label }}
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-12 border-t border-neutral-800"></div>
+
+        <!-- Bottom -->
+        <div class="flex flex-col gap-4 text-sm text-neutral-500 md:flex-row md:items-center md:justify-between">
+            <p>
+                © {{ currentYear }}
+                TNB.Studio. All rights reserved.
+            </p>
+
+            <nav aria-label="Legal links">
+                <ul class="flex flex-wrap gap-6">
+                    @for (link of legalLinks; track link.url) {
+                    <li>
+                        <a [routerLink]="link.url" class="transition-colors hover:text-white">
+                            {{ link.label }}
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</footer>
