@@ -1,3 +1,4 @@
+import { CategoryType } from '../components/size-guide/size-guide.component';
 import { AttributeValue } from './attribute.model';
 
 export type CurrencyType = 'VND' | 'USD';
@@ -20,25 +21,24 @@ export interface Product extends ProductBase {
     isWishlisted: boolean;
 }
 
-export interface ProductQuickView extends ProductBase {
+interface ProductDetailBase extends ProductBase {
     brandName: string;
     categoryName: string;
     description: string;
     isBestSeller: boolean;
     colors: AttributeValue[];
     sizes: AttributeValue[] | null;
+    images: ProductImage[];
     variants: Variant[];
-    images: VariantImage[];
 }
 
-export interface ProductDetail extends ProductBase {
-    brandName: string;
-    description: null;
-    isBestSeller: boolean;
-    colors: AttributeValue[];
-    sizes: AttributeValue[] | null;
-    variants: VariantDetail[];
-    images: VariantImage[];
+export interface ProductQuickView extends ProductDetailBase {}
+
+export interface ProductDetail extends ProductDetailBase {
+    content: string;
+    gender: string;
+    categoryType: CategoryType;
+    specifications: ProductSpecification[];
 }
 
 export interface Variant {
@@ -53,24 +53,13 @@ export interface Variant {
     isWishlisted: boolean;
 }
 
-export interface VariantDetail extends Variant {
-    specifications: VariantSpecification[];
-}
-
-export interface VariantSpecification {
-    id: string;
-    hasLabel: boolean;
+export interface ProductSpecification {
     title: string;
-    items: VariantSpecificationItem[];
+    values: string[];
+    displayValue: string;
 }
 
-export interface VariantSpecificationItem {
-    id: string;
-    label?: string;
-    value: string;
-}
-
-export interface VariantImage {
+export interface ProductImage {
     id: string;
     url: string;
     is_main: boolean;
@@ -85,6 +74,7 @@ export interface ProductFilter {
     bestSeller?: boolean;
     limit?: number;
     page?: number;
+    categorySlug?: string;
     // bestReviewed?: boolean;
     // newArrival?: boolean;
     // brands: number[];

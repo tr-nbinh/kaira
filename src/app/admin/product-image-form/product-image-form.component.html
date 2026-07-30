@@ -1,0 +1,121 @@
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-lg font-semibold text-slate-800">4. Hình ảnh sản phẩm (Product Images)</h2>
+            <p class="text-xs text-slate-500">Quản lý hình ảnh, ảnh bìa (Main), ảnh Hover và liên kết với màu sắc</p>
+        </div>
+        <button type="button" (click)="addImageRow()"
+            class="text-xs px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-all">
+            + Thêm Ảnh
+        </button>
+    </div>
+
+    <form [formGroup]="imageForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div formArrayName="images" class="space-y-3">
+            @for (img of imagesArray.controls; track $index) {
+            <div [formGroupName]="$index" class="p-4 border border-slate-200 rounded-lg bg-slate-50 space-y-3">
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
+
+                    <!-- Image Preview Box -->
+                    <div
+                        class="md:col-span-2 flex flex-col items-center justify-center bg-slate-200 rounded border border-slate-300 h-24 overflow-hidden relative group">
+                        @if (img.get('url')?.value) {
+                        <img [src]="img.get('url')?.value" alt="Preview" class="w-full h-full object-cover" />
+                        } @else {
+                        <span class="text-xs text-slate-400">Xem trước</span>
+                        }
+                    </div>
+
+                    <!-- URL, Public ID, Attribute Selection -->
+                    <div class="md:col-span-10 grid grid-cols-1 md:grid-cols-3 gap-3">
+
+                        <!-- Image URL -->
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Image URL</label>
+                            <input type="text" formControlName="url" (blur)="onUrlBlur($index)"
+                                placeholder="https://res.cloudinary.com/..."
+                                class="w-full px-3 py-1.5 border border-slate-300 rounded text-sm bg-white" />
+                        </div>
+
+                        <!-- Color / Attribute Select -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Liên kết Màu</label>
+                            <select formControlName="attributeValueId"
+                                class="w-full px-3 py-1.5 border border-slate-300 rounded text-sm bg-white">
+                                <option value="">-- Dùng chung --</option>
+                                @for (c of colorOptions(); track c.id) {
+                                <option [value]="c.id">{{ c.name }}</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Public ID -->
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Cloudinary Public ID</label>
+                            <input type="text" formControlName="publicId" placeholder="women_bag_107_ngxgwu"
+                                class="w-full px-3 py-1.5 border border-slate-300 rounded text-sm bg-white" />
+                        </div>
+
+                        <!-- Width / Height / Format -->
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Width</label>
+                                <input type="number" formControlName="width"
+                                    class="w-full px-2 py-1.5 border border-slate-300 rounded text-sm bg-white" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Height</label>
+                                <input type="number" formControlName="height"
+                                    class="w-full px-2 py-1.5 border border-slate-300 rounded text-sm bg-white" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Format</label>
+                                <input type="text" formControlName="format"
+                                    class="w-full px-2 py-1.5 border border-slate-300 rounded text-sm bg-white" />
+                            </div>
+                        </div>
+
+                        <!-- Display Order & Flags -->
+                        <div class="flex items-center gap-4 mt-4">
+
+                            <!-- Radio Main -->
+                            <label class="inline-flex items-center text-xs font-medium text-slate-700 cursor-pointer">
+                                <input type="radio" name="main_image_radio" [checked]="img.get('is_main')?.value"
+                                    (change)="setMainImage($index)" class="w-4 h-4 text-indigo-600 border-slate-300" />
+                                <span class="ml-1.5">Ảnh Chính (Main)</span>
+                            </label>
+
+                            <!-- Radio Hover -->
+                            <label class="inline-flex items-center text-xs font-medium text-slate-700 cursor-pointer">
+                                <input type="radio" name="hover_image_radio" [checked]="img.get('is_hover')?.value"
+                                    (change)="setHoverImage($index)" class="w-4 h-4 text-indigo-600 border-slate-300" />
+                                <span class="ml-1.5">Ảnh Hover</span>
+                            </label>
+
+                            <!-- Display Order -->
+                            <div class="flex items-center gap-1">
+                                <span class="text-xs font-medium text-slate-600">Thứ tự:</span>
+                                <input type="number" formControlName="displayOrder"
+                                    class="w-12 px-1.5 py-1 text-center border border-slate-300 rounded text-xs bg-white" />
+                            </div>
+
+                            <!-- Delete Button -->
+                            <button type="button" (click)="removeImageRow($index)" [disabled]="imagesArray.length === 1"
+                                class="ml-auto p-1.5 text-slate-400 hover:text-red-500 disabled:opacity-30 transition-all">
+                                ✕
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            }
+        </div>
+        <button type="submit"
+            class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg text-sm shadow-sm transition-all">
+            Tạo Danh Sách Ảnh
+        </button>
+    </form>
+</div>

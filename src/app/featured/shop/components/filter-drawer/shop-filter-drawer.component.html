@@ -5,6 +5,17 @@
                 {{'COMMON.COLOR' | translate}}
             </legend>
             <div class="flex flex-wrap gap-3">
+                @if (filterMetadataResource.isLoading()) {
+                @for (i of [1, 2, 3, 4, 5]; track i) {
+                <div
+                    class="flex items-center gap-2 pl-1.5 pr-3 py-1 border border-neutral-100 rounded-full bg-white animate-pulse select-none">
+                    <div class="h-5 w-5 rounded-full bg-neutral-200 shrink-0"></div>
+                    <div class="h-3 w-12 bg-neutral-200 rounded"></div>
+                </div>
+                }
+                }
+
+                @if (filterMetadataResource.hasValue()) {
                 @for (color of filterMetadata().colors; track color.id) {
                 <label class="cursor-pointer group">
                     <input class="peer sr-only" type="checkbox" [checked]="activeColors().has(color.id)"
@@ -15,11 +26,7 @@
                             class="relative flex h-5 w-5 items-center justify-center rounded-full border border-gray-200"
                             [style.background]="color.value_code">
                             @if (activeColors().has(color.id)) {
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5 text-white mix-blend-difference"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
+                            <i class="ti ti-check text-xs text-white mix-blend-difference"></i>
                             }
                         </span>
                         <span
@@ -29,6 +36,7 @@
                     </span>
                 </label>
                 }
+                }
             </div>
         </fieldset>
 
@@ -37,6 +45,17 @@
                 {{'COMMON.SIZE' | translate}}
             </legend>
             <div class="flex flex-wrap gap-2">
+                @if (filterMetadataResource.isLoading()) {
+                @for (i of [1, 2, 3, 4, 5]; track i) {
+                <div
+                    class="inline-flex min-w-10 h-9 items-center justify-center border border-gray-100 bg-neutral-100 animate-pulse px-3 select-none">
+                    <div class="h-3 w-4 bg-neutral-200 rounded-sm"></div>
+                </div>
+                }
+                }
+
+                @if (filterMetadataResource.hasValue()) {
+
                 @for (size of filterMetadata().sizes; track size.id) {
                 <label class="cursor-pointer">
                     <input class="peer sr-only" type="checkbox" [checked]="activeSizes().has(size.id)"
@@ -46,6 +65,7 @@
                         {{ size.name }}
                     </span>
                 </label>
+                }
                 }
             </div>
         </fieldset>

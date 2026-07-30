@@ -1,0 +1,127 @@
+@if (post(); as article) {
+<!-- SEO: Structured Data JSON-LD -->
+<!-- <script type="application/ld+json" [innerHTML]="jsonLdSchema()"></script> -->
+
+<!-- Container bao ngoài: Tối giản, tông đen trắng chủ đạo -->
+<article class="w-full bg-white text-black font-sans antialiased selection:bg-black selection:text-white">
+
+    <!-- HEADER BÀI VIẾT (Editorial Magazine Style) -->
+    <header class="max-w-4xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 text-center">
+
+        <!-- Category Tag (Caps Lock, Tracking rộng) -->
+        <div class="mb-6">
+            <a [routerLink]="['/editorial']"
+                class="inline-block text-[11px] font-mono tracking-[0.25em] uppercase text-black border-b border-black pb-0.5 hover:opacity-60 transition-opacity focus:outline-none focus:ring-1 focus:ring-black"
+                [attr.aria-label]="'Chuyên mục: ' + article.category.name">
+                {{ article.category.name }}
+            </a>
+        </div>
+
+        <!-- Heading Chính (Serif cổ điển sang trọng) -->
+        <h1 class=" text-3xl sm:text-5xl md:text-6xl font-normal leading-[1.15] tracking-tight text-black mb-8">
+            {{ article.title }}
+        </h1>
+
+        <!-- Sapo / Summary -->
+        <p class="text-base sm:text-lg text-neutral-600 font-light leading-relaxed max-w-2xl mx-auto mb-10">
+            {{ article.description }}
+        </p>
+
+        <!-- Metadata: Tác giả & Ngày đăng (Sắp xếp tối giản) -->
+        <div
+            class="flex items-center justify-center space-x-4 border-t border-b border-neutral-200 py-4 max-w-md mx-auto text-xs font-mono uppercase tracking-widest text-neutral-500">
+            <div class="flex items-center space-x-2">
+                <span>By</span>
+                <span class="text-black font-medium">{{ article.author.name }}</span>
+            </div>
+            <span aria-hidden="true" class="text-neutral-300">/</span>
+            <time [attr.dateTime]="article.publishedAt">
+                {{ article.publishedAt | date:'dd.MM.yyyy' }}
+            </time>
+            <span aria-hidden="true" class="text-neutral-300">/</span>
+            <span>{{ article.readTime }}</span>
+        </div>
+    </header>
+
+    <!-- HERO IMAGE (Hình tràn khung hoặc Tỷ lệ vàng High Fashion) -->
+    <figure class="max-w-6xl mx-auto px-4 md:px-6 mb-16 md:mb-24">
+        <div class="relative aspect-video w-full overflow-hidden bg-neutral-100">
+            <img [ngSrc]="article.coverImage" [alt]="article.coverAlt || article.title" priority fill
+                sizes="(max-width: 1280px) 100vw, 80vw"
+                class="object-cover grayscale contrast-[1.05] hover:grayscale-0 transition-all duration-700 ease-out" />
+        </div>
+        @if (article.coverAlt) {
+        <figcaption class="sr-only">{{ article.coverAlt }}</figcaption>
+        }
+    </figure>
+
+    <!-- THÂN BÀI VIẾT (Typography Serif cho cảm giác đọc tạp chí cao cấp) -->
+    <div class="max-w-3xl mx-auto px-6 mb-20 md:mb-28">
+        <div class="prose prose-lg max-w-none  text-neutral-800 leading-relaxed
+               prose-headings: prose-headings:font-normal prose-headings:text-black prose-headings:tracking-tight
+               prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-b prose-h2:border-black prose-h2:pb-3
+               prose-p:text-base sm:prose-p:text-lg prose-p:leading-8 prose-p:font-light
+               prose-a:text-black prose-a:underline prose-a:underline-offset-4 hover:prose-a:opacity-60
+               prose-blockquote:border-l-2 prose-blockquote:border-black prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:
+               prose-img:w-full prose-img:my-10" [innerHTML]="article.contentHtml">
+        </div>
+    </div>
+
+    <!-- SECTION GỢI Ý TRANG PHỤC TRONG BÀI VIẾT (Lookbook / Shop The Look) -->
+    @if (article.relatedProducts && article.relatedProducts.length > 0) {
+    <aside class="border-t border-black bg-white py-16 md:py-24" aria-labelledby="shop-the-look-heading">
+        <div class="max-w-6xl mx-auto px-6">
+
+            <div class="flex items-center justify-between mb-12 border-b border-neutral-200 pb-4">
+                <h2 id="shop-the-look-heading"
+                    class="font-mono text-xs uppercase tracking-[0.3em] font-semibold text-black">
+                    Featured Items / Shop The Look
+                </h2>
+                <span class="font-mono text-xs text-neutral-400">({{ article.relatedProducts.length }})</span>
+            </div>
+
+            <!-- Grid Sản phẩm phong cách Minimalist Zara/Fendi -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                @for (product of article.relatedProducts; track product.id) {
+                <div
+                    class="group relative flex flex-col justify-between border border-neutral-200 p-6 hover:border-black transition-colors duration-300">
+                    <div>
+                        <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-400 block mb-2">
+                            Ref. {{ product.productCode }}
+                        </span>
+                        <h3 class=" text-lg font-normal text-black mb-2 group-hover:opacity-70 transition-opacity">
+                            <a [routerLink]="['/product', product.id]" class="focus:outline-none">
+                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                {{ product.name }}
+                            </a>
+                        </h3>
+                        <p class="text-xs text-neutral-500 font-light line-clamp-2 mb-6">
+                            {{ product.description }}
+                        </p>
+                    </div>
+
+                    <div class="pt-2">
+                        <span
+                            class="font-mono text-xs uppercase tracking-[0.2em] text-black border-b border-black pb-0.5 group-hover:pr-2 transition-all">
+                            View Product &rarr;
+                        </span>
+                    </div>
+                </div>
+                }
+            </div>
+
+        </div>
+    </aside>
+    }
+
+    <!-- FOOTER BÀI VIẾT -->
+    <footer class="border-t border-neutral-200 py-8 bg-black text-white">
+        <div
+            class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-xs font-mono tracking-widest uppercase text-neutral-400 gap-4">
+            <p>Editorial Archive &copy; 2026 KAIRA</p>
+            <p>Published: {{ article.publishedAt | date:'dd.MM.yyyy' }}</p>
+        </div>
+    </footer>
+
+</article>
+}

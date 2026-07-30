@@ -31,6 +31,8 @@ export class FilterFacade {
             sizes,
             minPrice,
             maxPrice,
+            page: 1,
+            limit: 25,
         });
     }
 
@@ -90,6 +92,8 @@ export class FilterFacade {
         this.draftFilter.set({
             colors: [],
             sizes: [],
+            limit: 25,
+            page: 1,
         });
     }
 

@@ -35,14 +35,8 @@
                             }
                         ],
                         "styles": [
-                            "node_modules/aos/dist/aos.css",
-                            "node_modules/@splidejs/splide/dist/css/splide.min.css",
-                            "node_modules/leaflet/dist/leaflet.css",
                             "./node_modules/@tabler/icons-webfont/dist/tabler-icons.min.css",
                             "src/styles.css"
-                        ],
-                        "scripts": [
-                            "node_modules/aos/dist/aos.js"
                         ],
                         "allowedCommonJsDependencies": [
                             "leaflet"
@@ -104,10 +98,7 @@
                             "buildTarget": "kaira:build:development"
                         }
                     },
-                    "defaultConfiguration": "development",
-                    "options": {
-                        "proxyConfig": "proxy.conf.json"
-                    }
+                    "defaultConfiguration": "development"
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n"

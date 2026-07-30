@@ -12,8 +12,8 @@ import { emailExistsValidator } from './validators/email-exists.validator';
 import { passwordMatchValidator } from '../validators/password-match.validator';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { finalize } from 'rxjs';
-import { ApiError } from '../../../models/api-response.interface';
 import { ERROR_CODE_MAP } from '../../../../shared/forms/constants/error-message';
+import { ApiError } from '../../../../shared/models/api-response.model';
 
 @Component({
     selector: 'app-register',

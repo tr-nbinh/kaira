@@ -5,6 +5,7 @@ import {
     transition,
     trigger,
 } from '@angular/animations';
+import { A11yModule } from '@angular/cdk/a11y';
 import {
     ComponentPortal,
     Portal,
@@ -23,13 +24,15 @@ import {
 import { Subscription } from 'rxjs';
 import { DrawerRef } from './drawer-ref';
 import { DRAWER_DATA, DrawerConfig } from './models/drawer.model';
-import { A11yModule } from '@angular/cdk/a11y';
 
 @Component({
     selector: 'app-drawer',
     templateUrl: './drawer.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [PortalModule, A11yModule],
+    host: {
+        class: 'block h-full w-full',
+    },
     animations: [
         trigger('slideInOut', [
             state('void', style({ transform: '{{transformStart}}' }), {
@@ -56,37 +59,9 @@ export class DrawerComponent {
     private readonly viewContainerRef = inject(ViewContainerRef);
 
     readonly position = signal(this.config.position || 'right');
-    readonly size = signal(this.config.size || 'md');
     readonly animationState = signal<'void' | 'open' | 'close'>('void');
 
     private sub = new Subscription();
-
-    readonly panelClasses = computed(() => {
-        const pos = this.position();
-        const size = this.size();
-
-        const sizeMap = {
-            sm: 'max-w-xs',
-            md: 'max-w-sm',
-            lg: 'max-w-lg',
-            xl: 'max-w-xl',
-            full: 'max-w-full',
-        };
-
-        // Bỏ class `fixed` vì CDK overlay đã lo vị trí cha rồi, đổi thành h-full w-full tương đối bên trong panel
-        switch (pos) {
-            case 'left':
-                return `left-0 top-0 h-full w-full ${sizeMap[size]}`;
-            case 'right':
-                return `right-0 top-0 h-full w-full ${sizeMap[size]}`;
-            case 'top':
-                return `top-0 left-0 w-full h-auto`;
-            case 'bottom':
-                return `bottom-0 left-0 w-full h-auto`;
-            default:
-                return '';
-        }
-    });
 
     readonly animationParams = computed(() => {
         const pos = this.position();

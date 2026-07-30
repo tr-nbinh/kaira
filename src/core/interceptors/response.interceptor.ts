@@ -4,22 +4,21 @@ import {
     HttpResponse,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { ToastService } from '../../app/services/toast.service';
 import { SHOW_TOAST } from '../token';
 import { map } from 'rxjs';
-import { ApiResponse } from '../../app/models/api-response.interface';
+import { ApiSuccess } from '../../shared/models/api-response.model';
 
 export const responseInterceptor: HttpInterceptorFn = (req, next) => {
-    const toast = inject(ToastService);
+    // const toast = inject(ToastService);
     const showToast = req.context.get(SHOW_TOAST);
 
     return next(req).pipe(
         map((event) => {
             if (event instanceof HttpResponse) {
-                const body = event.body as ApiResponse;
+                const body = event.body as ApiSuccess;
                 if (body && body.success) {
                     if (body.message && showToast) {
-                        toast.success(body.message);
+                        // toast.success(body.message);
                     }
 
                     if (body.data !== undefined) {
@@ -27,7 +26,7 @@ export const responseInterceptor: HttpInterceptorFn = (req, next) => {
                     }
                 }
                 if (body && !body.success && body.message && showToast) {
-                    toast.error(body.message);
+                    // toast.error(body.message);
                 }
             }
             return event;

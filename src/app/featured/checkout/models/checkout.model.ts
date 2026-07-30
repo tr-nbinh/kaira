@@ -7,3 +7,8 @@ export interface CheckoutInput {
     shippingAddress: UserAddress;
     paymentMethod: PaymentMethodType;
 }
+
+export interface CheckoutResponse {
+    orderId: string;
+    cartCount: number;
+}

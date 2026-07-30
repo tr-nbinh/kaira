@@ -1,111 +1,133 @@
-<div class="max-w-6xl mx-auto px-4 py-16">
-    <!-- Tiêu đề trang chính giữa -->
-    <div class="text-center max-w-xl mx-auto mb-16">
-        <h1 class="text-2xl font-medium tracking-tight uppercase mb-3">Liên hệ với chúng tôi</h1>
-        <p class="text-xs text-neutral-400 leading-relaxed">
-            Bạn có câu hỏi, đóng góp ý kiến hoặc cần hỗ trợ về đơn hàng? Hãy gửi lời nhắn cho chúng tôi, đội ngũ chăm
-            sóc khách hàng sẽ phản hồi trong vòng 24 giờ làm việc.
-        </p>
-    </div>
+<div class="w-full min-h-[calc(100vh-var(--spacing-header))] bg-white">
+    <div class="container py-section-compact">
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
-        <!-- CỘT TRÁI: THÔNG TIN CỬA HÀNG (Chiếm 1 phần) -->
-        <div class="lg:col-span-1 space-y-8">
-            <div>
-                <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">Địa chỉ văn phòng
+        <section aria-labelledby="contact-heading" class="mb-12 border-b border-neutral-100 pb-6">
+            <h1 id="contact-heading" class="text-lg font-light uppercase tracking-[0.2em] md:text-xl">
+                {{ 'CONTACT.TITLE' | translate }}
+            </h1>
+
+            <p role="status" aria-live="polite" class="mt-1 text-[10px] uppercase tracking-widest text-neutral-400">
+                {{ 'CONTACT.SUBTITLE' | translate }}
+            </p>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
+            <!-- CỘT TRÁI: THÔNG TIN CỬA HÀNG -->
+            <div class="lg:col-span-1 space-y-8">
+                <div>
+                    <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">
+                        {{ 'CONTACT.INFO.ADDRESS_TITLE' | translate }}
+                    </h2>
+                    <p class="text-xs text-neutral-800 font-medium leading-relaxed mb-1">
+                        {{ 'CONTACT.INFO.STORE_NAME' | translate }}
+                    </p>
+                    <p class="text-xs text-neutral-500 leading-relaxed">
+                        {{ 'CONTACT.INFO.ADDRESS_LINE1' | translate }}<br />
+                        {{ 'CONTACT.INFO.ADDRESS_LINE2' | translate }}
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">
+                        {{ 'CONTACT.INFO.SUPPORT_TITLE' | translate }}
+                    </h2>
+                    <div class="space-y-1.5 text-xs text-neutral-600 font-mono">
+                        <p>
+                            <span class="text-neutral-400 uppercase tracking-wider text-[10px] inline-block w-16">
+                                {{ 'CONTACT.INFO.HOTLINE' | translate }}:
+                            </span>
+                            1900 6789
+                        </p>
+                        <p>
+                            <span class="text-neutral-400 uppercase tracking-wider text-[10px] inline-block w-16">
+                                {{ 'CONTACT.INFO.EMAIL' | translate }}:
+                            </span>
+                            support&#64;minimalist.vn
+                        </p>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">
+                        {{ 'CONTACT.INFO.HOURS_TITLE' | translate }}
+                    </h2>
+                    <div class="space-y-1.5 text-xs text-neutral-500 max-w-xs">
+                        <p class="flex justify-between">
+                            <span>{{ 'CONTACT.INFO.MON_FRI' | translate }}</span>
+                            <span class="font-mono text-neutral-700">09:00 - 18:00</span>
+                        </p>
+                        <p class="flex justify-between">
+                            <span>{{ 'CONTACT.INFO.SAT' | translate }}</span>
+                            <span class="font-mono text-neutral-700">09:00 - 12:00</span>
+                        </p>
+                        <p class="flex justify-between text-neutral-400">
+                            <span>{{ 'CONTACT.INFO.SUN' | translate }}</span>
+                            <span>{{ 'CONTACT.INFO.CLOSED' | translate }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI: FORM GỬI LỜI NHẮN -->
+            <div class="lg:col-span-2 border border-neutral-200 p-8 md:p-10 bg-white">
+                <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-900 mb-6">
+                    {{ 'CONTACT.FORM.TITLE' | translate }}
                 </h2>
-                <p class="text-xs text-neutral-800 font-medium leading-relaxed mb-1">Cửa hàng Thời trang Minimalist
-                    Studio</p>
-                <p class="text-xs text-neutral-500 leading-relaxed">
-                    Tòa nhà TTC, Tầng 5, Số 123 Phố Hàng Bạc,<br />
-                    Phường Hàng Bạc, Quận Hoàn Kiếm, Hà Nội
-                </p>
-            </div>
 
-            <div>
-                <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">Hỗ trợ & Trực
-                    tuyến</h2>
-                <div class="space-y-1.5 text-xs text-neutral-600 font-mono">
-                    <p><span
-                            class="text-neutral-400 uppercase tracking-wider text-[10px] inline-block w-16">Hotline:</span>
-                        1900 6789</p>
-                    <p><span
-                            class="text-neutral-400 uppercase tracking-wider text-[10px] inline-block w-16">Email:</span>
-                        support&#64;minimalist.vn</p>
-                </div>
-            </div>
+                <form (ngSubmit)="onSubmitContact()" class="space-y-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">
+                                {{ 'CONTACT.FORM.FULL_NAME' | translate }} *
+                            </label>
+                            <input type="text" name="fullName"
+                                [placeholder]="'CONTACT.FORM.PLACEHOLDER.FULL_NAME' | translate"
+                                class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                        </div>
 
-            <div>
-                <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">Giờ làm việc</h2>
-                <div class="space-y-1.5 text-xs text-neutral-500">
-                    <p class="flex justify-between"><span>Thứ 2 — Thứ 6</span> <span
-                            class="font-mono text-neutral-700">09:00 - 18:00</span></p>
-                    <p class="flex justify-between"><span>Thứ 7</span> <span class="font-mono text-neutral-700">09:00 -
-                            12:00</span></p>
-                    <p class="flex justify-between text-neutral-400"><span>Chủ nhật</span> <span>Nghỉ</span></p>
-                </div>
-            </div>
-        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">
+                                {{ 'CONTACT.FORM.EMAIL' | translate }} *
+                            </label>
+                            <input type="email" name="email"
+                                [placeholder]="'CONTACT.FORM.PLACEHOLDER.EMAIL' | translate"
+                                class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                        </div>
+                    </div>
 
-        <!-- CỘT PHẢI: FORM GỬI LỜI NHẮN (Chiếm 2 phần) -->
-        <div class="lg:col-span-2 border border-neutral-200 p-8 md:p-10 bg-white">
-            <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-900 mb-6">Gửi lời nhắn của bạn
-            </h2>
-
-            <form (ngSubmit)="onSubmitContact()" class="space-y-5">
-                <!-- Họ và tên & Email nằm chung một hàng trên màn hình lớn -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div class="space-y-1.5">
-                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">Họ và Tên
-                            *</label>
-                        <input type="text" [(ngModel)]="contactData.fullName" name="fullName" placeholder="Nguyễn Văn A"
+                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">
+                            {{ 'CONTACT.FORM.PHONE' | translate }}
+                        </label>
+                        <input type="tel" name="phone" [placeholder]="'CONTACT.FORM.PLACEHOLDER.PHONE' | translate"
                             class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">Địa chỉ
-                            Email *</label>
-                        <input type="email" [(ngModel)]="contactData.email" name="email"
-                            placeholder="example&#64;gmail.com"
-                            class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">
+                            {{ 'CONTACT.FORM.MESSAGE' | translate }} *
+                        </label>
+                        <textarea name="message" rows="5" [placeholder]="'CONTACT.FORM.PLACEHOLDER.MESSAGE' | translate"
+                            class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors resize-none"></textarea>
                     </div>
-                </div>
 
-                <!-- Số điện thoại -->
-                <div class="space-y-1.5">
-                    <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">Số điện
-                        thoại</label>
-                    <input type="tel" [(ngModel)]="contactData.phone" name="phone" placeholder="0901234567"
-                        class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
-                </div>
+                    @if (formError) {
+                    <p class="text-[11px] text-red-600 font-medium">{{ formError }}</p>
+                    }
+                    @if (formSuccess) {
+                    <div class="p-4 bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs">
+                        {{ 'CONTACT.FORM.SUCCESS' | translate }}
+                    </div>
+                    }
 
-                <!-- Nội dung lời nhắn -->
-                <div class="space-y-1.5">
-                    <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">Lời nhắn của
-                        bạn *</label>
-                    <textarea [(ngModel)]="contactData.message" name="message" rows="5"
-                        placeholder="Nhập nội dung cần hỗ trợ tại đây..."
-                        class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors resize-none"></textarea>
-                </div>
-
-                <!-- Vùng hiển thị trạng thái Validate / Thông báo gửi bài -->
-                @if (formError) {
-                <p class="text-[11px] text-red-600 font-medium">{{ formError }}</p>
-                }
-                @if (formSuccess) {
-                <div class="p-4 bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs">
-                    Cảm ơn bạn! Lời nhắn đã được gửi đi thành công. Chúng tôi sẽ liên hệ lại sớm nhất.
-                </div>
-                }
-
-                <!-- Nút Submit -->
-                <div class="pt-2">
-                    <button type="submit" [disabled]="isSending"
-                        class="w-full md:w-auto bg-black text-white px-8 py-3 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-800 disabled:bg-neutral-200 transition-colors">
-                        {{ isSending ? 'Đang gửi lời nhắn...' : 'Gửi thông tin' }}
-                    </button>
-                </div>
-            </form>
+                    <div class="pt-2">
+                        <button type="submit" [disabled]="isSending"
+                            class="w-full md:w-auto bg-black text-white px-8 py-3 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-800 disabled:bg-neutral-200 transition-colors">
+                            {{ (isSending ? 'CONTACT.FORM.SENDING' : 'CONTACT.FORM.SUBMIT') | translate }}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

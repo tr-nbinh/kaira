@@ -1,4 +1,23 @@
 {
+    "BRAND_NAME": "TNB.Studio",
+    "PAGES": {
+        "HOME_TITLE": "Minimalist Fashion & Design",
+        "SHOP": "Shop All",
+        "COLLECTIONS": "Collections",
+        "EDITORIAL": "Style Stories",
+        "CONTACT": "Contact Us",
+        "CART": "Shopping Cart",
+        "WISHLIST": "My Wishlist",
+        "CHECKOUT": "Checkout",
+        "REGISTER": "Create Account",
+        "LOGIN": "Sign In",
+        "VERIFY_EMAIL": "Verify Email",
+        "FORGOT_PASSWORD": "Forgot Password",
+        "RESET_PASSWORD": "Reset Password",
+        "ORDER_HISTORY": "Order History",
+        "PROFILE": "My Profile",
+        "NOT_FOUND": "Page Not Found (404)"
+    },
     "NAV": {
         "HOME": "Home",
         "SHOP": "Shop",
@@ -49,7 +68,9 @@
         "SUBTITLE": "Be the first to discover new arrivals, exclusive releases and seasonal collections.",
         "EMAIL_ERROR": "Please enter a valid email address",
         "SUBMIT_BTN": "Subscribe",
-        "TERMS": "By subscribing, you agree to receive marketing communications. You can unsubscribe at any time."
+        "TERMS": "By subscribing, you agree to receive marketing communications. You can unsubscribe at any time.",
+        "EMAIL_ADDRESS": "Email address",
+        "EMAIL_PLACEHOLDER": "Write your email here"
     },
     "SHOP": {
         "HERO": {
@@ -87,6 +108,41 @@
             "POLICY": "Every order from the TNB.Studio includes complimentary secure shipping and is eligible for returns within 14 days of receipt.",
             "PACKAGING": "Your items will be beautifully presented in our signature original box, elegantly tied with premium Italian satin ribbon."
         }
+    },
+    "SIZE_GUIDE": {
+        "SELECT_UNIT": "SELECT UNIT:",
+        "TABLE": {
+            "SIZE": "SIZE",
+            "US_SIZE": "US Size",
+            "UK_SIZE": "UK Size",
+            "FOOT_LENGTH": "Foot Length",
+            "CHEST": "CHEST",
+            "COLLAR": "COLLAR",
+            "SHOULDER": "SHOULDER",
+            "WAIST": "WAIST",
+            "HIPS": "HIPS",
+            "INSEAM": "INSEAM"
+        },
+        "HOW_TO_MEASURE": "HOW TO MEASURE",
+        "STEPS": {
+            "FOOT_LENGTH_TITLE": "Measure Foot Length",
+            "FOOT_LENGTH_DESC": "Place your foot flat on a piece of paper, mark the tip of your longest toe and the back of your heel, then measure the distance between the two points.",
+            "FOOT_TIPS_TITLE": "Fit Tip",
+            "FOOT_TIPS_DESC": "If your measurement falls between two sizes or you have wider feet, we recommend choosing 0.5 - 1 size larger for a more comfortable fit.",
+            "COLLAR_TITLE": "SHIRT COLLAR",
+            "COLLAR_DESC": "Measure around the base of your neck, inserting one finger between the tape and neck for comfort.",
+            "CHEST_TITLE": "CHEST / BUST",
+            "CHEST_DESC": "Measure around the fullest part of your chest/bust, keeping the tape horizontal.",
+            "SHOULDER_TITLE": "SHOULDER",
+            "SHOULDER_DESC": "Measure from the edge of one shoulder across the back to the other shoulder edge.",
+            "WAIST_TITLE": "WAIST",
+            "WAIST_DESC": "Measure around the narrowest part of your waist (just above the navel), keeping the tape comfortably loose.",
+            "HIPS_TITLE": "HIPS",
+            "HIPS_DESC": "Stand with feet together and measure around the fullest part of your hips and seat.",
+            "INSEAM_TITLE": "INSEAM",
+            "INSEAM_DESC": "Measure along the inner seam of pants, extending from the crotch down to the ankle."
+        },
+        "FOOTNOTE": "* IF YOU ARE BETWEEN SIZES, WE RECOMMEND ORDERING THE LARGER SIZE."
     },
     "WISHLIST": {
         "HEADING": "YOUR WISHLIST",
@@ -152,21 +208,92 @@
         "TOTAL": "Total",
         "TAX_INCLUDED": "Including VAT tax",
         "ORDER_NOTE": "Order Note",
-        "NOTE_PLACEHOLDER": "Notes about your order (e.g. special notes for delivery...)"
+        "NOTE_PLACEHOLDER": "Notes about your order (e.g. special notes for delivery...)",
+        "PROCESSING": "Processing"
+    },
+    "ORDER_SUCCESS": {
+        "TAG": "ORDER CONFIRMATION",
+        "TITLE": "THANK YOU",
+        "SUBTITLE": "YOUR TRANSACTION IS COMPLETE",
+        "ORDER_CODE": "ORDER NUMBER",
+        "EMAIL": "EMAIL",
+        "STATUS": "STATUS",
+        "STATUS_RECEIVED": "RECEIVED",
+        "NOTE": "Order details and shipping information have been sent to your email address.",
+        "BTN_CONTINUE": "CONTINUE SHOPPING",
+        "BTN_VIEW_ORDER": "VIEW ORDERS",
+        "LOADING": "LOADING..."
     },
     "CONTACT": {
-        "TITLE": "Contact",
-        "CONTACT_INFORMATION": "Contact information",
-        "CONTACT_DESC": "Tortor dignissim convallis aenean et tortor at risus viverra adipiscing.",
-        "HEAD_OFFICE": "Head office",
-        "BRAND_OFFICE": "Branch Office",
-        "SOCIAL_INFO": "Social info",
-        "ANY_QUESTION": "Got any questions?",
-        "FORM_DESC": "Use the form below to get in touch with us.",
-        "NAME_PLACEHOLDER": "Write your name here",
-        "PHONE_PLACEHOLDER": "Phone number",
-        "SUBJECT_PLACEHOLDER": "Write your subject here",
-        "MESSAGE_PLACEHOLDER": "Write your message here"
+        "TITLE": "Contact Us",
+        "SUBTITLE": "Have a question, feedback, or need assistance with your order? Send us a message and our customer care team will respond within 24 business hours.",
+        "INFO": {
+            "ADDRESS_TITLE": "Office Address",
+            "STORE_NAME": "TNB.Studio Studio Store",
+            "ADDRESS_LINE1": "TTC Building, 5th Floor, 123 Hang Bac Street,",
+            "ADDRESS_LINE2": "Hang Bac Ward, Hoan Kiem District, Hanoi",
+            "SUPPORT_TITLE": "Support & Online",
+            "HOTLINE": "Hotline",
+            "EMAIL": "Email",
+            "HOURS_TITLE": "Opening Hours",
+            "MON_FRI": "Mon — Fri",
+            "SAT": "Saturday",
+            "SUN": "Sunday",
+            "CLOSED": "Closed"
+        },
+        "FORM": {
+            "TITLE": "Send Us A Message",
+            "FULL_NAME": "Full Name",
+            "EMAIL": "Email Address",
+            "PHONE": "Phone Number",
+            "MESSAGE": "Your Message",
+            "PLACEHOLDER": {
+                "FULL_NAME": "John Doe",
+                "EMAIL": "example@gmail.com",
+                "PHONE": "+84 901 234 567",
+                "MESSAGE": "Type your message here..."
+            },
+            "SUCCESS": "Thank you! Your message has been sent successfully. We will get back to you shortly.",
+            "SENDING": "Sending Message...",
+            "SUBMIT": "Submit Message"
+        }
+    },
+    "EDITORIAL": {
+        "SUBTITLE": "KAIRA Journal & Magazine",
+        "TITLE": "Editorial",
+        "READ_STORY": "Read Story",
+        "READ_ARTICLE": "Read Article",
+        "NO_STORIES": "No editorial stories found in this category.",
+        "CATEGORIES": {
+            "ALL": "All Stories",
+            "EDITORIAL": "Editorial",
+            "STYLING_GUIDE": "Styling Guide",
+            "TRENDS": "Trends",
+            "CRAFTSMANSHIP": "Craftsmanship"
+        }
+    },
+    "ACCOUNT_SETTINGS": {
+        "PAGE_TITLE": "Account Information",
+        "PAGE_SUBTITLE": "Update your personal profile details and password.",
+        "SIDEBAR_TITLE": "Your Profile",
+        "SIDEBAR_NOTE": "Your login email address is fixed and cannot be changed for account security reasons.",
+        "BASIC_INFO": {
+            "SECTION_TITLE": "Basic Information",
+            "EMAIL": "Email Address",
+            "FULL_NAME": "Full Name",
+            "PHONE": "Phone Number",
+            "SAVING": "Saving...",
+            "SUBMIT": "Update Profile"
+        },
+        "PASSWORD": {
+            "SECTION_TITLE": "Change Password",
+            "CURRENT_PASSWORD": "Current Password",
+            "NEW_PASSWORD": "New Password",
+            "CONFIRM_PASSWORD": "Confirm New Password",
+            "SUCCESS": "Password changed successfully.",
+            "PROCESSING": "Processing...",
+            "SUBMIT": "Change Password"
+        }
     },
     "FOOTER": {
         "QUICK_LINK": "Quick links",
@@ -178,16 +305,62 @@
         "QUESTION_TEXT": "Do you have any questions or suggestions?",
         "SUPPORT_TEXT": "Do you need support? Give us a call."
     },
-    "ORDER": {
-        "TITLE": "Thank you for your purchase",
-        "NOTIFY": "We've received your order will ship 5-7 business days.",
-        "ORDER_NUMBER": "Your order number is",
-        "BUTTON": "Back to shop"
+    "ORDER_LIST": {
+        "PAGE_TITLE": "Order History",
+        "PAGE_SUBTITLE": "Manage and track the status of your placed orders.",
+        "TABS": {
+            "ALL": "All",
+            "PENDING": "Pending",
+            "SHIPPING": "Shipping",
+            "DELIVERED": "Delivered",
+            "CANCELLED": "Cancelled"
+        },
+        "STATUS": {
+            "PENDING": "Pending",
+            "SHIPPING": "Shipping",
+            "DELIVERED": "Delivered",
+            "CANCEL": "Cancelled"
+        },
+        "PER_ITEM": "/ item",
+        "MORE_ITEMS": "and {{ count }} other product(s) in this order...",
+        "TOTAL_PAYMENT": "Total payment:",
+        "VIEW_DETAILS": "View details",
+        "CANCEL_ORDER": "Cancel order",
+        "EMPTY_TITLE": "No orders found in this category.",
+        "SHOP_NOW": "Shop now"
     },
-    "PRICE": {
-        "LESS_THAN": "Less than {{price}}",
-        "FROM_TO": "{{minPrice}} - {{maxPrice}}",
-        "MORE_THAN": "More than {{price}}"
+    "ORDER_DETAIL": {
+        "PAGE_TITLE": "Order Details",
+        "ORDER_NUMBER": "Order ID: {{ orderNumber }}",
+        "STATUS_LABEL": "Status:",
+        "PAYMENT_STATUS_LABEL": "Payment:",
+        "PRODUCTS_TITLE": "Purchased Products",
+        "PER_ITEM": "/ item",
+        "SKU": "SKU:",
+        "SHIPPING_INFO_TITLE": "Shipping Information",
+        "RECIPIENT": "Recipient",
+        "PHONE": "Phone",
+        "ADDRESS": "Address",
+        "AREA": "Region",
+        "NOTE": "Note:",
+        "COST_SUMMARY_TITLE": "Cost Summary",
+        "SUBTOTAL": "Subtotal",
+        "SHIPPING_FEE": "Shipping Fee",
+        "FREE_SHIPPING": "Free",
+        "DISCOUNT": "Discount",
+        "PAYMENT_METHOD": "Payment Method",
+        "TOTAL_PAYMENT": "Total Payment",
+        "BACK_TO_HISTORY": "Back to Order History",
+        "CONTINUE_SHOPPING": "Continue Shopping",
+        "NOT_FOUND_TITLE": "Order Not Found",
+        "NOT_FOUND_DESC": "The order you are looking for does not exist or you do not have permission to view it.",
+        "STATUS": {
+            "PENDING": "Pending",
+            "PROCESSING": "Processing",
+            "SHIPPING": "Shipping",
+            "DELIVERED": "Delivered",
+            "CANCELLED": "Cancelled"
+        }
     },
     "USER": {
         "MY_PURCHASE": "My purchase",
@@ -338,38 +511,12 @@
     },
     "COMMON": {
         "WISHLIST": "Wishlist",
-        "CART": "Cart",
-        "BEST_SELLERS": "Best Sellers",
-        "NEW_ARRIVALS": "New Arrivals",
-        "BEST_REVIEWED": "Best Reviewed",
         "ADD_TO_CART": "Add to cart",
-        "FOLLOW_US": "Follow us on Instagram",
         "COLOR": "Color",
         "SIZE": "Size",
         "PRICE": "Price",
-        "BRAND": "Brand",
-        "SHARE": "Share",
-        "COMING_SOON": "Coming soon",
-        "BACK_HOME": "Go back to home",
-        "ERROR_404": "Error 404",
-        "ERROR_PAGE_DESC": "Sorry, the page that you’re looking for doesn’t exist.",
-        "SUBMIT": "Submit",
-        "PRODUCT": "Product",
-        "CART_TOTAL": "Cart total",
         "QUANTITY": "Quantity",
-        "SUBTOTAL": "Subtotal",
-        "TOTAL": "Total",
-        "PHONE": "Phone",
-        "EMAIL_ADDRESS": "Email address",
-        "SIGN_UP": "Sign up",
         "SIGN_OUT": "Sign out",
-        "EMAIL_PLACEHOLDER": "Write your email here",
-        "CONFIRM": "Confirm",
-        "REMOVE": "Remove",
-        "CONTACT_US": "Contact us",
-        "UNAUTHORIZED": "Please log in to use this feature",
-        "BLACK_COLOR": "Black",
-        "PROCESSING": "Processing",
         "CANCEL": "Cancel",
         "LANGUAGE": "Language",
         "OR": "Or",

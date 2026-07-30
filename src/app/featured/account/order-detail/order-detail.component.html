@@ -1,173 +1,336 @@
-<div class="max-w-6xl mx-auto px-4 py-12">
-    <!-- Trường hợp đang tải dữ liệu -->
-    @if (loading) {
-    <div class="text-center py-20">
-        <p class="text-sm text-neutral-400 animate-pulse tracking-widest uppercase">Đang tải thông tin đơn hàng...</p>
-    </div>
-    }
-
-    <!-- Trường hợp xảy ra lỗi -->
-    @if (!loading && error) {
-    <div class="text-center py-16 border border-dashed border-neutral-200 bg-neutral-50 max-w-md mx-auto">
-        <p class="text-sm text-neutral-500 mb-6">{{ error }}</p>
-        <button [routerLink]="['/account/order-history']"
-            class="px-4 py-2 text-xs font-medium bg-black text-white hover:bg-neutral-800 transition-colors uppercase tracking-wider">
-            Quay lại danh sách
-        </button>
-    </div>
-    }
-
-    <!-- Giao diện chính khi dữ liệu đã sẵn sàng -->
-    @if (!loading && !error && order) {
-    <!-- Tiêu đề & Trạng thái tổng quan -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-neutral-200 pb-6 mb-8 gap-4">
-        <div>
-            <h1 class="text-xl font-medium tracking-tight mb-1.5">Chi tiết đơn hàng</h1>
-            <p class="text-xs text-neutral-400 font-mono uppercase tracking-wider">Mã đơn: {{ order.id }}</p>
-        </div>
-        <div class="flex items-center gap-2.5 text-[10px] font-medium tracking-wider uppercase">
-            <span class="px-3 py-1.5 border border-neutral-200 bg-neutral-50 text-neutral-800">
-                Trạng thái: {{ getStatusLabel(order.status) }}
-            </span>
-            <span class="px-3 py-1.5 text-white bg-neutral-950">
-                Thanh toán: {{ order.paymentStatus }}
-            </span>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <!-- CỘT TRÁI: Sản phẩm & Địa chỉ nhận hàng -->
-        <div class="lg:col-span-2 space-y-10">
-
-            <!-- Khối danh sách sản phẩm (Bê nguyên template checkout sang) -->
+<div class="w-full min-h-[calc(100vh-var(--spacing-header))] bg-white">
+    <div class="container py-section-compact">
+        <section aria-labelledby="order-detail-heading"
+            class="mb-12 border-b border-neutral-100 pb-6 flex items-end justify-between">
             <div>
-                <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">Sản phẩm đã mua
-                </h2>
-                <div class="divide-y divide-neutral-100 border-t border-b border-neutral-100">
-                    @for (item of order.items; track item.id) {
-                    <div class="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
-                        <!-- Khối ảnh đính kèm Badge số lượng ở góc -->
-                        <div class="w-16 h-20 bg-white border border-neutral-100 shrink-0 relative">
-                            <img [src]="item.imageUrl" [alt]="item.productName" class="w-full h-full object-cover" />
-                            <span
-                                class="absolute -top-2 -right-2 w-5 h-5 bg-neutral-800 text-white text-[10px] rounded-full flex items-center justify-center font-normal z-10 shadow-sm">
-                                {{ item.totalPrice / item.price }}
-                            </span>
-                        </div>
+                <h1 id="order-detail-heading" class="text-lg font-light uppercase tracking-[0.2em] md:text-xl">
+                    {{ 'ORDER_DETAIL.PAGE_TITLE' | translate }}
+                </h1>
 
-                        <!-- Khối thông tin tên & phân loại -->
-                        <div class="flex-1 min-w-0">
-                            <h3 class="text-xs uppercase tracking-wide font-medium truncate mb-0.5">
-                                {{ item.productName }}
-                            </h3>
-                            <p class="text-[11px] text-neutral-400 uppercase tracking-wider">
-                                {{ item.variantName }}
-                            </p>
-                            <p class="text-[10px] font-mono text-neutral-400 mt-1">SKU: {{ item.sku }}</p>
-                        </div>
+                @if (orderResouce.isLoading()) {
+                <div class="h-3 bg-neutral-200 w-36"></div>
+                }
+                @if (order(); as order) {
+                <p role="status" aria-live="polite" class="mt-1 text-[10px] uppercase tracking-widest text-neutral-400">
+                    {{ 'ORDER_DETAIL.ORDER_NUMBER' | translate:{ orderNumber: order.orderNumber } }}
+                </p>
+                }
 
-                        <!-- Khối hiển thị tiền -->
-                        <div class="text-right shrink-0">
-                            @if ((item.totalPrice / item.price) > 1) {
-                            <p class="text-[10px] text-neutral-400 mb-0.5 font-normal">
-                                {{ item.price | currency:'VND':'symbol':'1.0-0' }} / cái
-                            </p>
-                            }
-                            <p class="text-xs font-medium text-neutral-900">
-                                {{ item.totalPrice | currency:'VND':'symbol':'1.0-0' }}
-                            </p>
-                        </div>
-                    </div>
-                    }
-                </div>
             </div>
 
-            <!-- Địa chỉ nhận hàng snapshot -->
-            @if (order.address) {
-            <div>
-                <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">Thông tin giao
-                    hàng</h2>
-                <div
-                    class="p-6 border border-neutral-200 bg-neutral-50/50 space-y-2.5 text-xs text-neutral-700 leading-relaxed">
-                    <p><span
-                            class="font-medium text-neutral-400 w-24 inline-block uppercase tracking-wider text-[10px]">Người
-                            nhận</span> {{ order.address.fullName }}</p>
-                    <p><span
-                            class="font-medium text-neutral-400 w-24 inline-block uppercase tracking-wider text-[10px]">Điện
-                            thoại</span> {{ order.address.phone }}</p>
-                    <p>
-                        <span
-                            class="font-medium text-neutral-400 w-24 inline-block uppercase tracking-wider text-[10px]">Địa
-                            chỉ chi tiết</span>
-                        {{ order.address.addressLine }}
-                        @if (order.address.addressExtra) { <span class="text-neutral-400">({{ order.address.addressExtra
-                            }})</span> }
-                    </p>
-                    <p><span
-                            class="font-medium text-neutral-400 w-24 inline-block uppercase tracking-wider text-[10px]">Khu
-                            vực</span> {{ order.address.wardName }}, {{ order.address.provinceName }}</p>
-
-                    @if (order.note) {
-                    <div class="pt-3 border-t border-neutral-200 mt-3 text-neutral-500 italic">
-                        Ghi chú: "{{ order.note }}"
-                    </div>
-                    }
-                </div>
+            @if (orderResouce.isLoading()) {
+            <div class="flex items-center gap-2.5">
+                <div class="h-7 bg-neutral-200 w-28"></div>
+                <div class="h-7 bg-neutral-200 w-32"></div>
             </div>
             }
-        </div>
+            @if (order(); as order) {
+            <div class="flex items-center gap-2.5 text-[10px] font-medium tracking-wider uppercase">
+                <span class="px-3 py-1.5 border border-neutral-200 bg-neutral-50 text-neutral-800">
+                    {{ 'ORDER_DETAIL.STATUS_LABEL' | translate }} {{ 'ORDER_DETAIL.STATUS.' + (order.status | uppercase)
+                    |
+                    translate }}
+                </span>
+                <span class="px-3 py-1.5 text-white bg-neutral-950">
+                    {{ 'ORDER_DETAIL.PAYMENT_STATUS_LABEL' | translate }} {{ order.paymentStatus }}
+                </span>
+            </div>
+            }
+        </section>
 
-        <!-- CỘT PHẢI: Tóm tắt chi phí & Tổng toán -->
-        <div class="lg:col-span-1">
-            <div class="border border-neutral-200 p-6 sticky top-6 bg-white">
-                <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-6">Tóm tắt chi phí
-                </h2>
+        @if (orderResouce.isLoading()) {
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <!-- CỘT TRÁI: Sản phẩm & Địa chỉ nhận hàng -->
+            <div class="lg:col-span-2 space-y-10">
 
-                <div class="space-y-4 text-xs border-b border-neutral-100 pb-4 mb-4 text-neutral-600">
-                    <div class="flex justify-between">
-                        <span>Tạm tính</span>
-                        <span class="font-medium text-neutral-900">{{ order.subtotal | currency:'VND':'symbol':'1.0-0'
-                            }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Phí vận chuyển</span>
-                        <span class="font-medium text-neutral-900">
-                            {{ order.shippingFee === 0 ? 'Miễn phí' : (order.shippingFee |
-                            currency:'VND':'symbol':'1.0-0') }}
-                        </span>
-                    </div>
-                    @if (order.discount > 0) {
-                    <div class="flex justify-between text-neutral-500">
-                        <span>Giảm giá chiết khấu</span>
-                        <span class="font-medium">-{{ order.discount | currency:'VND':'symbol':'1.0-0' }}</span>
-                    </div>
-                    }
-                    <div class="flex justify-between pt-1">
-                        <span>Phương thức thanh toán</span>
-                        <span class="uppercase font-medium text-neutral-900 font-mono">{{ order.paymentMethod }}</span>
+                <!-- Khối danh sách sản phẩm -->
+                <div>
+                    <!-- Section Title -->
+                    <div class="h-3 bg-neutral-200 w-32 mb-4"></div>
+
+                    <div class="divide-y divide-neutral-100 border-t border-b border-neutral-100">
+                        <!-- Loop Skeleton Item x2 -->
+                        @for (i of [1, 2]; track i) {
+                        <div class="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
+                            <!-- Product Thumbnail Image -->
+                            <div class="w-16 h-20 bg-neutral-200 shrink-0"></div>
+
+                            <!-- Product Title & SKU -->
+                            <div class="flex-1 min-w-0 space-y-2">
+                                <div class="h-4 bg-neutral-200 w-3/4 sm:w-1/2"></div>
+                                <div class="h-3 bg-neutral-200 w-24"></div>
+                            </div>
+
+                            <!-- Price Info -->
+                            <div class="text-right shrink-0 space-y-1">
+                                <div class="h-3 bg-neutral-200 w-16 ml-auto"></div>
+                                <div class="h-4 bg-neutral-200 w-20 ml-auto"></div>
+                            </div>
+                        </div>
+                        }
                     </div>
                 </div>
 
-                <div class="flex justify-between items-baseline mb-8">
-                    <span class="text-xs font-medium uppercase tracking-wider">Tổng thanh toán</span>
-                    <span class="text-lg font-semibold font-mono text-neutral-950">
-                        {{ order.totalAmount | currency:'VND':'symbol':'1.0-0' }}
-                    </span>
-                </div>
+                <!-- Địa chỉ nhận hàng snapshot -->
+                <div>
+                    <!-- Section Title -->
+                    <div class="h-3 bg-neutral-200 w-40 mb-4"></div>
 
-                <!-- Các nút điều hướng nhanh hành động -->
-                <div class="space-y-2">
-                    <button [routerLink]="['/account/order-history']"
-                        class="w-full border border-neutral-200 bg-white py-3 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-50 transition-colors">
-                        Quay lại lịch sử đơn
-                    </button>
-                    <button
-                        class="w-full bg-black text-white py-3 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-800 transition-colors">
-                        Tiếp tục mua sắm
-                    </button>
+                    <div class="p-6 border border-neutral-200 bg-neutral-50/50 space-y-3">
+                        <div class="flex items-center gap-4">
+                            <div class="h-3 bg-neutral-200 w-24 shrink-0"></div>
+                            <div class="h-3 bg-neutral-200 w-36"></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="h-3 bg-neutral-200 w-24 shrink-0"></div>
+                            <div class="h-3 bg-neutral-200 w-28"></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="h-3 bg-neutral-200 w-24 shrink-0"></div>
+                            <div class="h-3 bg-neutral-200 w-3/4"></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="h-3 bg-neutral-200 w-24 shrink-0"></div>
+                            <div class="h-3 bg-neutral-200 w-48"></div>
+                        </div>
+                        <!-- Note Section -->
+                        <div class="pt-3 border-t border-neutral-200 mt-3">
+                            <div class="h-3 bg-neutral-200 w-2/3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI: Tóm tắt chi phí & Tổng toán -->
+            <div class="lg:col-span-1">
+                <div class="border border-neutral-200 p-6 sticky top-6 bg-white">
+                    <!-- Section Title -->
+                    <div class="h-3 bg-neutral-200 w-36 mb-6"></div>
+
+                    <!-- Cost Breakdown Lines -->
+                    <div class="space-y-4 border-b border-neutral-100 pb-4 mb-4">
+                        <div class="flex justify-between items-center">
+                            <div class="h-3 bg-neutral-200 w-16"></div>
+                            <div class="h-3.5 bg-neutral-200 w-20"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="h-3 bg-neutral-200 w-24"></div>
+                            <div class="h-3.5 bg-neutral-200 w-16"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="h-3 bg-neutral-200 w-16"></div>
+                            <div class="h-3.5 bg-neutral-200 w-16"></div>
+                        </div>
+                        <div class="flex justify-between items-center pt-1">
+                            <div class="h-3 bg-neutral-200 w-28"></div>
+                            <div class="h-3.5 bg-neutral-200 w-12"></div>
+                        </div>
+                    </div>
+
+                    <!-- Total Amount Line -->
+                    <div class="flex justify-between items-center mb-8">
+                        <div class="h-3 bg-neutral-200 w-24"></div>
+                        <div class="h-6 bg-neutral-200 w-28"></div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-2">
+                        <div class="h-10 bg-neutral-200 w-full"></div>
+                        <div class="h-10 bg-neutral-200 w-full"></div>
+                    </div>
                 </div>
             </div>
         </div>
+        }
+
+        @if (order(); as order) {
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <!-- CỘT TRÁI: Sản phẩm & Địa chỉ nhận hàng -->
+            <div class="lg:col-span-2 space-y-10">
+
+                <!-- Khối danh sách sản phẩm -->
+                <div>
+                    <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">
+                        {{ 'ORDER_DETAIL.PRODUCTS_TITLE' | translate }}
+                    </h2>
+                    <div class="divide-y divide-neutral-100 border-t border-b border-neutral-100">
+                        @for (item of order.items; track item.id) {
+                        <div class="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
+                            <!-- Khối ảnh đính kèm Badge số lượng ở góc -->
+                            <div class="w-16 h-20 bg-white border border-neutral-100 shrink-0 relative">
+                                <img [src]="item.imageUrl" [alt]="item.productName"
+                                    class="w-full h-full object-cover" />
+                                <span
+                                    class="absolute -top-2 -right-2 w-5 h-5 bg-neutral-800 text-white text-[10px] rounded-full flex items-center justify-center font-normal z-10 shadow-sm">
+                                    {{ item.quantity }}
+                                </span>
+                            </div>
+
+                            <!-- Khối thông tin tên & phân loại -->
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-xs uppercase tracking-wide font-medium truncate mb-0.5">
+                                    {{ item.productName }}
+                                </h3>
+                                <p class="text-[10px] font-mono text-neutral-400 mt-1">
+                                    {{ 'ORDER_DETAIL.SKU' | translate }} {{ item.sku }}
+                                </p>
+                            </div>
+
+                            <!-- Khối hiển thị tiền -->
+                            <div class="text-right shrink-0">
+                                @if ((item.quantity) > 1) {
+                                <p class="text-[10px] text-neutral-400 mb-0.5 font-normal">
+                                    {{ item.price | price:'VND' }} {{ 'ORDER_DETAIL.PER_ITEM' | translate }}
+                                </p>
+                                }
+                                <p class="text-xs font-medium text-neutral-900">
+                                    {{ item.totalPrice | price:'VND' }}
+                                </p>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Địa chỉ nhận hàng snapshot -->
+                @if (order.orderAddress) {
+                <div>
+                    <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-4">
+                        {{ 'ORDER_DETAIL.SHIPPING_INFO_TITLE' | translate }}
+                    </h2>
+                    <div
+                        class="p-6 border border-neutral-200 bg-neutral-50/50 space-y-2.5 text-xs text-neutral-700 leading-relaxed">
+                        <p>
+                            <span
+                                class="font-medium text-neutral-400 w-24 inline-block uppercase tracking-wider text-[10px]">
+                                {{ 'ORDER_DETAIL.RECIPIENT' | translate }}
+                            </span>
+                            {{ order.orderAddress.fullName }}
+                        </p>
+                        <p>
+                            <span
+                                class="font-medium text-neutral-400 w-24 inline-block uppercase tracking-wider text-[10px]">
+                                {{ 'ORDER_DETAIL.PHONE' | translate }}
+                            </span>
+                            {{ order.orderAddress.phone }}
+                        </p>
+                        <p>
+                            <span
+                                class="font-medium text-neutral-400 w-24 inline-block uppercase tracking-wider text-[10px]">
+                                {{ 'ORDER_DETAIL.ADDRESS' | translate }}
+                            </span>
+                            {{ order.orderAddress.addressLine }}
+                            @if (order.orderAddress.addressExtra) {
+                            <span class="text-neutral-400">({{ order.orderAddress.addressExtra }})</span>
+                            }
+                        </p>
+                        <p>
+                            <span
+                                class="font-medium text-neutral-400 w-24 inline-block uppercase tracking-wider text-[10px]">
+                                {{ 'ORDER_DETAIL.AREA' | translate }}
+                            </span>
+                            {{ order.orderAddress.wardName }}, {{ order.orderAddress.provinceName }}
+                        </p>
+
+                        @if (order.note) {
+                        <div class="pt-3 border-t border-neutral-200 mt-3 text-neutral-500 italic">
+                            {{ 'ORDER_DETAIL.NOTE' | translate }} "{{ order.note }}"
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+
+            <!-- CỘT PHẢI: Tóm tắt chi phí & Tổng toán -->
+            <div class="lg:col-span-1">
+                <div class="border border-neutral-200 p-6 sticky top-6 bg-white">
+                    <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 mb-6">
+                        {{ 'ORDER_DETAIL.COST_SUMMARY_TITLE' | translate }}
+                    </h2>
+
+                    <div class="space-y-4 text-xs border-b border-neutral-100 pb-4 mb-4 text-neutral-600">
+                        <div class="flex justify-between">
+                            <span>{{ 'ORDER_DETAIL.SUBTOTAL' | translate }}</span>
+                            <span class="font-medium text-neutral-900">
+                                {{ order.subtotal | price:'VND' }}
+                            </span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>{{ 'ORDER_DETAIL.SHIPPING_FEE' | translate }}</span>
+                            <span class="font-medium text-neutral-900">
+                                {{ order.shippingFee === 0 ? ('ORDER_DETAIL.FREE_SHIPPING' | translate) :
+                                (order.shippingFee
+                                | price:'VND') }}
+                            </span>
+                        </div>
+                        @if (order.discount > 0) {
+                        <div class="flex justify-between text-neutral-500">
+                            <span>{{ 'ORDER_DETAIL.DISCOUNT' | translate }}</span>
+                            <span class="font-medium">-{{ order.discount | price:'VND' }}</span>
+                        </div>
+                        }
+                        <div class="flex justify-between pt-1">
+                            <span>{{ 'ORDER_DETAIL.PAYMENT_METHOD' | translate }}</span>
+                            <span class="uppercase font-medium text-neutral-900 font-mono">{{ order.paymentMethod
+                                }}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-baseline mb-8">
+                        <span class="text-xs font-medium uppercase tracking-wider">
+                            {{ 'ORDER_DETAIL.TOTAL_PAYMENT' | translate }}
+                        </span>
+                        <span class="text-lg font-semibold font-mono text-neutral-950">
+                            {{ order.totalAmount | price:'VND' }}
+                        </span>
+                    </div>
+
+                    <!-- Các nút điều hướng nhanh hành động -->
+                    <div class="space-y-2 text-center">
+                        <a [routerLink]="['/account/order-history']"
+                            class="block w-full border border-neutral-200 bg-white py-3 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-50 transition-colors">
+                            {{ 'ORDER_DETAIL.BACK_TO_HISTORY' | translate }}
+                        </a>
+                        <a routerLink="/shop"
+                            class="block w-full bg-black text-white py-3 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-800 transition-colors">
+                            {{ 'ORDER_DETAIL.CONTINUE_SHOPPING' | translate }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        } @else if (!orderResouce.isLoading()) {
+        <div class="text-center py-20 border border-dashed border-neutral-200 bg-neutral-50/50 my-8">
+            <!-- Icon Đơn hàng trống -->
+            <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-neutral-100 text-neutral-400 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </div>
+
+            <h2 class="text-base font-medium uppercase tracking-wider text-neutral-900 mb-1">
+                {{ 'ORDER_DETAIL.NOT_FOUND_TITLE' | translate }}
+            </h2>
+            <p class="text-xs text-neutral-500 mb-6 max-w-sm mx-auto">
+                {{ 'ORDER_DETAIL.NOT_FOUND_DESC' | translate }}
+            </p>
+
+            <div class="flex items-center justify-center gap-3">
+                <a [routerLink]="['/account/order-history']"
+                    class="px-5 py-2.5 text-xs font-medium border border-neutral-200 bg-white hover:bg-neutral-50 transition-colors uppercase tracking-wider">
+                    {{ 'ORDER_DETAIL.BACK_TO_HISTORY' | translate }}
+                </a>
+                <a routerLink="/shop"
+                    class="px-5 py-2.5 text-xs font-medium bg-black text-white hover:bg-neutral-800 transition-colors uppercase tracking-wider">
+                    {{ 'ORDER_DETAIL.CONTINUE_SHOPPING' | translate }}
+                </a>
+            </div>
+        </div>
+        }
     </div>
-    }
+
 </div>

@@ -15,14 +15,14 @@ export const PAYMENT_METHODS = [
         nameKey: 'CHECKOUT.PAYMENT.VNPAY_NAME',
         descKey: 'CHECKOUT.PAYMENT.VNPAY_DESC',
         icon: 'assets/icons/payment/vnpay.svg',
-        disabled: false,
+        disabled: true,
     },
     {
         code: 'momo' as PaymentMethodType,
         nameKey: 'CHECKOUT.PAYMENT.MOMO_NAME',
         descKey: 'CHECKOUT.PAYMENT.MOMO_DESC',
         icon: 'assets/icons/payment/momo.svg',
-        disabled: false,
+        disabled: true,
     },
     {
         code: 'stripe' as PaymentMethodType,

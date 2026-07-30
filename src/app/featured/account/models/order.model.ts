@@ -2,6 +2,7 @@ import {
     PaymentMethodType,
     PaymentStatusType,
 } from '../../../../shared/constants/payment.constant';
+import { PaginatedRequest } from '../../../../shared/models/pagination.model';
 
 export type OrderStatusType =
     | 'pending'
@@ -16,6 +17,7 @@ export interface Order {
     status: OrderStatusType;
     paymentStatus: PaymentStatusType;
     paymentMethod: PaymentMethodType;
+    totalItems: number;
     totalAmount: number;
     createdAt: Date;
     firstItem: OrderItem;
@@ -28,10 +30,14 @@ export interface Order {
 }
 
 export interface OrderItem {
-    name: string;
+    productName: string;
+    variantName?: string;
     imageUrl: string;
+    quantity: number;
+    price: number;
+    totalPrice: number;
 }
 
-export interface OrderRequest {
+export interface OrderRequest extends PaginatedRequest {
     status?: OrderStatusType;
 }

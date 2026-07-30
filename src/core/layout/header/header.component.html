@@ -76,14 +76,13 @@
             <!-- Account -->
             <div class="hidden sm:block relative group">
                 <button class="flex items-center">
-                    @if (currentUser()) {
-                    @if (currentUser()?.avatar_url) {
-                    <img [src]="currentUser()?.avatar_url" [alt]="currentUser()?.username"
-                        class="size-8 rounded-full object-cover" />
+                    @if (currentUser(); as user) {
+                    @if (user.avatar_url) {
+                    <img [src]="user.avatar_url" [alt]="user.fullName" class="size-8 rounded-full object-cover" />
                     } @else {
                     <div
                         class="flex size-8 items-center justify-center rounded-full bg-neutral-200 text-sm font-medium text-neutral-700">
-                        B
+                        {{ user.fullName | initials }}
                     </div>
                     }
                     } @else {

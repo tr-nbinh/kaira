@@ -1,0 +1,209 @@
+<div class="h-full w-full bg-white shadow-2xl overflow-y-auto p-4 md:p-8 selection:bg-black selection:text-white"
+    role="dialog" aria-label="Size Guide">
+
+    <!-- Controls Bar (Tabs đổi Giới tính & Đơn vị) -->
+    <div class="my-8 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+        <!-- Unit Switcher -->
+        <div class="flex items-center justify-between w-full sm:w-auto space-x-3">
+            <span class="text-[10px] tracking-[0.25em] uppercase text-black/40">
+                {{ 'SIZE_GUIDE.SELECT_UNIT' | translate }}
+            </span>
+            <div class="inline-flex border border-black/20 p-0.5">
+                <button type="button" (click)="unit.set('cm')"
+                    class="px-4 py-1.5 text-[10px] tracking-[0.2em] font-medium uppercase transition-all duration-200"
+                    [class.bg-black]="unit() === 'cm'" [class.text-white]="unit() === 'cm'">
+                    CM
+                </button>
+                <button type="button" (click)="unit.set('inch')"
+                    class="px-4 py-1.5 text-[10px] tracking-[0.2em] font-medium uppercase transition-all duration-200"
+                    [class.bg-black]="unit() === 'inch'" [class.text-white]="unit() === 'inch'">
+                    INCH
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Size Table (Động theo Category) -->
+    <div class="w-full overflow-x-auto mb-12 scrollbar-thin">
+        <table class="w-full text-left border-collapse min-w-150">
+            <thead>
+                <tr class="border-b border-black text-[10px] tracking-[0.2em] uppercase text-black/60 font-semibold">
+                    <th class="py-3 pr-4">{{ 'SIZE_GUIDE.TABLE.SIZE' | translate }}</th>
+
+                    <!-- TOPS HEADER -->
+                    @if (category === 'tops' && gender === 'men') {
+                    <th class="py-3 px-4">{{ 'SIZE_GUIDE.TABLE.COLLAR' | translate }}</th>
+                    }
+                    @if (category === 'tops') {
+                    <th class="py-3 px-4">{{ 'SIZE_GUIDE.TABLE.SHOULDER' | translate }}</th>
+                    <th class="py-3 px-4">{{ 'SIZE_GUIDE.TABLE.CHEST' | translate }}</th>
+                    }
+
+                    <!-- TOPS & BOTTOMS HEADER -->
+                    @if (category === 'tops' || category === 'bottoms') {
+                    <th class="py-3 px-4">{{ 'SIZE_GUIDE.TABLE.WAIST' | translate }}</th>
+                    <th class="py-3 px-4">{{ 'SIZE_GUIDE.TABLE.HIPS' | translate }}</th>
+                    }
+
+                    <!-- BOTTOMS HEADER -->
+                    @if (category === 'bottoms') {
+                    <th class="py-3 pl-4">{{ 'SIZE_GUIDE.TABLE.INSEAM' | translate }}</th>
+                    }
+
+                    <!-- SHOES HEADER -->
+                    @if (category === 'shoes') {
+                    <th class="py-3 px-4">{{ 'SIZE_GUIDE.TABLE.US_SIZE' | translate }}</th>
+                    <th class="py-3 px-4">{{ 'SIZE_GUIDE.TABLE.UK_SIZE' | translate }}</th>
+                    <th class="py-3 pl-4">{{ 'SIZE_GUIDE.TABLE.FOOT_LENGTH' | translate }}</th>
+                    }
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-black/10 text-xs tracking-[0.15em] uppercase font-normal">
+                @for (item of activeChart; track item.size) {
+                <tr class="hover:bg-black/2 transition-colors">
+                    <td class="py-4 pr-4 font-bold text-black">{{ item.size }}</td>
+
+                    <!-- TOPS ROW DATA -->
+                    @if (category === 'tops' && gender === 'men') {
+                    <td class="py-4 px-4 text-black/80">
+                        {{ unit() === 'cm' ? item.collarCm : item.collarInch }} {{ unit() }}
+                    </td>
+                    }
+                    @if (category === 'tops') {
+                    <td class="py-4 px-4 text-black/80">
+                        {{ unit() === 'cm' ? item.shoulderCm : item.shoulderInch }} {{ unit() }}
+                    </td>
+                    <td class="py-4 px-4 text-black/80">
+                        {{ unit() === 'cm' ? item.chestCm : item.chestInch }} {{ unit() }}
+                    </td>
+                    }
+
+                    <!-- TOPS & BOTTOMS ROW DATA -->
+                    @if (category === 'tops' || category === 'bottoms') {
+                    <td class="py-4 px-4 text-black/80">
+                        {{ unit() === 'cm' ? item.waistCm : item.waistInch }} {{ unit() }}
+                    </td>
+                    <td class="py-4 px-4 text-black/80">
+                        {{ unit() === 'cm' ? item.hipCm : item.hipInch }} {{ unit() }}
+                    </td>
+                    }
+
+                    <!-- BOTTOMS ROW DATA -->
+                    @if (category === 'bottoms') {
+                    <td class="py-4 pl-4 text-black/80">
+                        {{ unit() === 'cm' ? item.inseamCm : item.inseamInch }} {{ unit() }}
+                    </td>
+                    }
+
+                    <!-- SHOES ROW DATA -->
+                    @if (category === 'shoes') {
+                    <td class="py-4 px-4 text-black/80">{{ item.usSize || '-' }}</td>
+                    <td class="py-4 px-4 text-black/80">{{ item.ukSize || '-' }}</td>
+                    <td class="py-4 pl-4 font-medium text-black">
+                        {{ unit() === 'cm' ? item.footLengthCm : item.footLengthInch }} {{ unit() }}
+                    </td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- How to Measure Section -->
+    <div class="pt-8 border-t border-black/10">
+        <h3 class="text-[11px] tracking-[0.25em] font-bold uppercase mb-6">
+            {{ 'SIZE_GUIDE.HOW_TO_MEASURE' | translate }}
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+
+            <!-- Steps Text -->
+            <ol
+                class="md:col-span-7 space-y-5 text-xs tracking-[0.12em] list-decimal list-outside text-black/70 font-light leading-relaxed pl-4">
+
+                <!-- STEPS FOR TOPS -->
+                @if (category === 'tops' && gender === 'men') {
+                <li>
+                    <strong class="font-semibold text-black uppercase tracking-[0.15em] block mb-1">
+                        {{ 'SIZE_GUIDE.STEPS.COLLAR_TITLE' | translate }}
+                    </strong>
+                    <p>{{ 'SIZE_GUIDE.STEPS.COLLAR_DESC' | translate }}</p>
+                </li>
+                }
+
+                @if (category === 'tops') {
+                <li>
+                    <strong class="font-semibold text-black uppercase tracking-[0.15em] block mb-1">
+                        {{ 'SIZE_GUIDE.STEPS.SHOULDER_TITLE' | translate }}
+                    </strong>
+                    <p>{{ 'SIZE_GUIDE.STEPS.SHOULDER_DESC' | translate }}</p>
+                </li>
+
+                <li>
+                    <strong class="font-semibold text-black uppercase tracking-[0.15em] block mb-1">
+                        {{ 'SIZE_GUIDE.STEPS.CHEST_TITLE' | translate }}
+                    </strong>
+                    <p>{{ 'SIZE_GUIDE.STEPS.CHEST_DESC' | translate }}</p>
+                </li>
+                }
+
+                <!-- STEPS FOR TOPS & BOTTOMS -->
+                @if (category === 'tops' || category === 'bottoms') {
+                <li>
+                    <strong class="font-semibold text-black uppercase tracking-[0.15em] block mb-1">
+                        {{ 'SIZE_GUIDE.STEPS.WAIST_TITLE' | translate }}
+                    </strong>
+                    <p>{{ 'SIZE_GUIDE.STEPS.WAIST_DESC' | translate }}</p>
+                </li>
+
+                <li>
+                    <strong class="font-semibold text-black uppercase tracking-[0.15em] block mb-1">
+                        {{ 'SIZE_GUIDE.STEPS.HIPS_TITLE' | translate }}
+                    </strong>
+                    <p>{{ 'SIZE_GUIDE.STEPS.HIPS_DESC' | translate }}</p>
+                </li>
+                }
+
+                <!-- STEPS FOR BOTTOMS -->
+                @if (category === 'bottoms') {
+                <li>
+                    <strong class="font-semibold text-black uppercase tracking-[0.15em] block mb-1">
+                        {{ 'SIZE_GUIDE.STEPS.INSEAM_TITLE' | translate }}
+                    </strong>
+                    <p>{{ 'SIZE_GUIDE.STEPS.INSEAM_DESC' | translate }}</p>
+                </li>
+                }
+
+                <!-- STEPS FOR SHOES -->
+                @if (category === 'shoes') {
+                <li>
+                    <strong class="font-semibold text-black uppercase tracking-[0.15em] block mb-1">
+                        {{ 'SIZE_GUIDE.STEPS.FOOT_LENGTH_TITLE' | translate }}
+                    </strong>
+                    <p>{{ 'SIZE_GUIDE.STEPS.FOOT_LENGTH_DESC' | translate }}</p>
+                </li>
+                <li>
+                    <strong class="font-semibold text-black uppercase tracking-[0.15em] block mb-1">
+                        {{ 'SIZE_GUIDE.STEPS.FOOT_TIPS_TITLE' | translate }}
+                    </strong>
+                    <p>{{ 'SIZE_GUIDE.STEPS.FOOT_TIPS_DESC' | translate }}</p>
+                </li>
+                }
+            </ol>
+
+            <!-- Dynamic Diagram Image -->
+            @if (category !== 'shoes') {
+            <div class="md:col-span-5 flex justify-center">
+                <img [src]="currentMeasureImage" [alt]="category + ' measurement guide'"
+                    class="w-full h-auto object-cover" />
+            </div>
+            }
+
+        </div>
+    </div>
+
+    <!-- Footnote -->
+    <div class="mt-12 pt-6 border-t border-black/10 text-[9px] tracking-[0.25em] uppercase text-black/40">
+        {{ 'SIZE_GUIDE.FOOTNOTE' | translate }}
+    </div>
+</div>

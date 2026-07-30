@@ -4,6 +4,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { DrawerComponent } from './drawer.component';
 import { DRAWER_DATA, DrawerConfig } from './models/drawer.model';
 import { DrawerRef } from './drawer-ref';
+import { DRAWER_HEIGHT_MAP, DRAWER_WIDTH_MAP } from './drawer.constant';
 
 @Injectable({
     providedIn: 'root',
@@ -15,6 +16,7 @@ export class DrawerService {
     open<TData = any, TResult = any>(
         config: DrawerConfig<TData>,
     ): DrawerRef<TResult> {
+        const size = config.size || 'full';
         const position = config.position || 'left';
         const positionStrategy = this.overlay.position().global();
 
@@ -27,16 +29,24 @@ export class DrawerService {
         if (position === 'bottom')
             positionStrategy.bottom('0').left('0').right('0');
 
+        // Kích thước cho panel
+        let height = '100%';
+        let width = '100%';
+        const isHorizontal = position === 'left' || position === 'right';
+        if (isHorizontal) {
+            width = DRAWER_WIDTH_MAP[size];
+        } else {
+            height = DRAWER_HEIGHT_MAP[size];
+        }
+
         // 2. Tạo cấu hình cho CDK Overlay
         const overlayConfig = new OverlayConfig({
             hasBackdrop: config.hasBackdrop ?? true,
             scrollStrategy: this.overlay.scrollStrategies.block(),
             backdropClass: 'cdk-overlay-dark-backdrop', // Class nền đen mờ mặc định của CDK
             positionStrategy,
-            height:
-                position === 'top' || position === 'bottom' ? 'auto' : '100%',
-            width:
-                position === 'left' || position === 'right' ? 'auto' : '100%',
+            height,
+            width,
         });
 
         const overlayRef = this.overlay.create(overlayConfig);

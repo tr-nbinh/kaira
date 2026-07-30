@@ -9,8 +9,8 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { createHttpParamsFromObject } from '../../utils/http-params.helper';
-import { ApiError } from '../../app/models/api-response.interface';
 import { HttpCacheService } from '../cache/http-cache.service';
+import { ApiError } from '../../shared/models/api-response.model';
 export interface HttpOptions {
     headers?: HttpHeaders | { [header: string]: string | string[] };
     params?: HttpParams | { [param: string]: string | number | string[] };

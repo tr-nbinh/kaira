@@ -1,0 +1,52 @@
+<div class="mx-auto max-w-lg border border-black bg-white p-8 text-center sm:my-20 sm:p-12">
+
+    <!-- Sub-header dạng nhãn mác (Label/Badge) siêu mảnh -->
+    <div class="mb-4 inline-block border border-black/20 px-3 py-1">
+        <span class="text-[10px] font-medium uppercase tracking-[0.25em] text-black">
+            {{ 'ORDER_SUCCESS.TAG' | translate }}
+        </span>
+    </div>
+
+    <!-- Header Text: Typography in hoa khổng lồ, thanh lịch -->
+    <h1 class="text-3xl font-light uppercase tracking-[0.2em] text-black sm:text-4xl">
+        {{ 'ORDER_SUCCESS.TITLE' | translate }}
+    </h1>
+    <p class="mt-3 text-xs uppercase tracking-[0.15em] text-neutral-500">
+        {{ 'ORDER_SUCCESS.SUBTITLE' | translate }}
+    </p>
+
+    <!-- Line phân cách siêu mảnh -->
+    <div class="my-8 h-px w-full bg-black/10"></div>
+
+    <!-- Thông tin đơn hàng dạng Bảng tối giản -->
+    <div class="my-6 space-y-4 text-xs tracking-wider">
+        <div class="flex items-center justify-between border-b border-black/10 pb-3 uppercase">
+            <span class="text-neutral-500">{{ 'ORDER_SUCCESS.ORDER_CODE' | translate }}</span>
+            <span class="font-medium text-black">#{{ orderCode() || ('ORDER_SUCCESS.LOADING' | translate) }}</span>
+        </div>
+
+        <div class="flex items-center justify-between border-b border-black/10 pb-3 uppercase">
+            <span class="text-neutral-500">{{ 'ORDER_SUCCESS.STATUS' | translate }}</span>
+            <span class="font-medium text-black">{{ 'ORDER_SUCCESS.STATUS_RECEIVED' | translate }}</span>
+        </div>
+    </div>
+
+    <!-- Thông báo nhẹ nhàng -->
+    <p class="mb-10 text-[11px] leading-relaxed tracking-wide text-neutral-500">
+        {{ 'ORDER_SUCCESS.NOTE' | translate }}
+    </p>
+
+    <!-- Action Buttons: Góc cạnh tuyệt đối, tối giản -->
+    <div class="flex flex-col gap-3">
+        <a routerLink="/shop"
+            class="w-full border border-black bg-black py-4 text-xs font-medium uppercase tracking-[0.2em] text-white transition-all hover:bg-neutral-800">
+            {{ 'ORDER_SUCCESS.BTN_CONTINUE' | translate }}
+        </a>
+
+        <a routerLink="/account/order-history"
+            class="w-full border border-black bg-white py-4 text-xs font-medium uppercase tracking-[0.2em] text-black transition-all hover:bg-black hover:text-white">
+            {{ 'ORDER_SUCCESS.BTN_VIEW_ORDER' | translate }}
+        </a>
+    </div>
+
+</div>

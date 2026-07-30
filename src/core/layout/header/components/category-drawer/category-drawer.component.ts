@@ -5,18 +5,23 @@ import { Category } from '../../models/category.model';
 import { CategorySkeletonComponent } from './category-skeleton/category-skeleton.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'app-category-drawer',
     templateUrl: './category-drawer.component.html',
-    imports: [TranslatePipe, RouterLink, CategorySkeletonComponent],
+    imports: [
+        TranslatePipe,
+        RouterLink,
+        CategorySkeletonComponent,
+        NgTemplateOutlet,
+    ],
 })
 export class CategoryDrawerComponent {
     private categoryService = inject(CategoryService);
 
     categoriesResource = rxResource({
         loader: () => this.categoryService.getCategories(),
-        defaultValue: [],
     });
 
     selectedCategoryId = null;

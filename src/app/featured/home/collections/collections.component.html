@@ -4,11 +4,72 @@
         <app-section-header [title]="'COLLECTIONS.TITLE' | translate" [subtitle]="'COLLECTIONS.SUBTITLE' | translate" />
 
         <!-- Layout -->
+        @if (collections.isLoading()) {
+        <div class="grid gap-6 lg:h-212.5 lg:grid-cols-12 animate-pulse" aria-hidden="true">
+            <!-- FEATURED SKELETON -->
+            <div class="relative min-h-125 overflow-hidden bg-neutral-200 lg:col-span-7 lg:h-full">
+                <!-- Content Skeleton Overlay -->
+                <div class="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
+                    <!-- Title Skeleton (Heading 4xl/5xl) -->
+                    <div class="h-10 w-3/4 bg-neutral-300 md:h-12"></div>
+
+                    <!-- Description Skeleton (2 lines) -->
+                    <div class="mt-4 space-y-2 max-w-md">
+                        <div class="h-4 w-full bg-neutral-300"></div>
+                        <div class="h-4 w-2/3 bg-neutral-300"></div>
+                    </div>
+
+                    <!-- Explore Button Skeleton -->
+                    <div class="mt-6 h-4 w-36 bg-neutral-300"></div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE SKELETON (2 Secondary Cards) -->
+            <div class="flex flex-col gap-6 lg:col-span-5 lg:h-full">
+                <!-- Card 1 -->
+                <div class="relative flex-1 min-h-65 overflow-hidden bg-neutral-200">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <!-- Title Skeleton -->
+                        <div class="h-6 w-1/2 bg-neutral-300"></div>
+
+                        <!-- Description Skeleton -->
+                        <div class="mt-2 space-y-1.5 max-w-xs">
+                            <div class="h-3 w-full bg-neutral-300"></div>
+                            <div class="h-3 w-4/5 bg-neutral-300"></div>
+                        </div>
+
+                        <!-- Explore Link Skeleton -->
+                        <div class="mt-4 h-3 w-24 bg-neutral-300"></div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="relative flex-1 min-h-65 overflow-hidden bg-neutral-200">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <!-- Title Skeleton -->
+                        <div class="h-6 w-1/2 bg-neutral-300"></div>
+
+                        <!-- Description Skeleton -->
+                        <div class="mt-2 space-y-1.5 max-w-xs">
+                            <div class="h-3 w-full bg-neutral-300"></div>
+                            <div class="h-3 w-3/5 bg-neutral-300"></div>
+                        </div>
+
+                        <!-- Explore Link Skeleton -->
+                        <div class="mt-4 h-3 w-24 bg-neutral-300"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+
+        @if (collections.hasValue()) {
         <div class="grid gap-6 lg:h-212.5 lg:grid-cols-12">
             <!-- FEATURED -->
+            @if (featuredCollection(); as featuredCollection) {
             <article class="group min-h-125 lg:col-span-7 lg:h-full"
                 aria-labelledby="'collection-title-' + featuredCollection.id">
-                <a [routerLink]="['/collections', featuredCollection.slug]"
+                <a [routerLink]="['/', featuredCollection.slug]"
                     class="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4">
                     <div class="relative h-full overflow-hidden">
                         <!-- Image -->
@@ -21,8 +82,8 @@
                         <!-- Content -->
                         <div class="absolute inset-0 flex flex-col justify-end p-8 text-white md:p-12">
                             <h3 [id]="
-                                    'collection-title-' + featuredCollection.id
-                                " class="text-4xl font-medium uppercase tracking-[0.15em] md:text-5xl">
+                                        'collection-title-' + featuredCollection.id
+                                    " class="text-4xl leading-16 font-medium uppercase tracking-[0.15em] md:text-5xl">
                                 {{ featuredCollection.name }}
                             </h3>
 
@@ -38,14 +99,15 @@
                     </div>
                 </a>
             </article>
+            }
 
             <!-- RIGHT SIDE -->
             <div class="flex flex-col gap-6 lg:col-span-5 lg:h-full">
-                @for (collection of secondaryCollections; track collection.id) {
+                @for (collection of secondaryCollections(); track collection.id) {
                 <article class="group flex-1" [attr.aria-labelledby]="
-                            'collection-title-' + collection.id
-                        ">
-                    <a [routerLink]="['/collections', collection.slug]"
+                                'collection-title-' + collection.id
+                            ">
+                    <a [routerLink]="['/', collection.slug]"
                         class="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4">
                         <div class="relative h-full min-h-65 overflow-hidden">
                             <!-- Image -->
@@ -58,8 +120,8 @@
                             <!-- Content -->
                             <div class="absolute inset-0 flex flex-col justify-end p-6 text-white">
                                 <h3 [id]="
-                                            'collection-title-' + collection.id
-                                        " class="text-xl font-medium uppercase tracking-[0.15em]">
+                                                'collection-title-' + collection.id
+                                            " class="text-xl font-medium uppercase tracking-[0.15em]">
                                     {{ collection.name }}
                                 </h3>
 
@@ -78,5 +140,6 @@
                 }
             </div>
         </div>
+        }
     </div>
 </section>

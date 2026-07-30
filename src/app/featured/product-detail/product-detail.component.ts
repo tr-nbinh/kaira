@@ -19,6 +19,9 @@ import { AddCartItem } from '../../../core/models/cart.model';
 import { CartStore } from '../../../core/stores/cart.store';
 import { RequireAuthService } from '../../../core/auth/require-auth.service';
 import { FlyAnimationService } from '../../../shared/services/fly-animation.service';
+import { DrawerService } from '../../../shared/components/drawer/drawer.service';
+import { SizeGuideComponent } from '../../../shared/components/size-guide/size-guide.component';
+import { SafeHtmlPipe } from '../../../shared/pipes/safe-html.pipe';
 
 @Component({
     selector: 'app-product-detail',
@@ -33,6 +36,7 @@ import { FlyAnimationService } from '../../../shared/services/fly-animation.serv
         AccordionComponent,
         CdkAccordion,
         ProductDetailSkeletonComponent,
+        SafeHtmlPipe,
     ],
 })
 export class ProductDetailComponent {
@@ -40,6 +44,7 @@ export class ProductDetailComponent {
     private productService = inject(ProductService);
     private cartStore = inject(CartStore);
     private requireAuth = inject(RequireAuthService);
+    private drawerService = inject(DrawerService);
     private flyService = inject(FlyAnimationService);
 
     productId = toSignal(
@@ -77,40 +82,48 @@ export class ProductDetailComponent {
         const prod = this.productResource.value();
         if (!prod) return [];
 
-        return prod.colors.map((c) => {
-            const availableColorIds = prod.variants
-                .filter((v) => v.stock > 0)
-                .map((v) => v.color.id);
-            const availableColorValues = new Set<string>(availableColorIds);
+        const availableColorIds = new Set(
+            prod.variants
+                .filter((variant) => variant.stock > 0)
+                .map((variant) => variant.color.id),
+        );
 
-            const result: ColorOption = {
-                label: c.name,
-                value: c.id,
-                hex: c.value_code,
-                disabled: !availableColorValues.has(c.id),
-            };
-            return result;
-        });
+        return prod.colors.map((color) => ({
+            label: color.name,
+            value: color.id,
+            hex: color.value_code,
+            disabled: !availableColorIds.has(color.id),
+        }));
     });
 
     readonly sizeOptions = computed(() => {
         const prod = this.productResource.value();
+        const selectedColor = this.selectedColorOption();
+
         if (!prod || !prod.sizes) return [];
 
-        return prod.sizes.map((s) => {
-            const availableSizeIds = prod.variants
-                .filter((v) => v.stock > 0)
-                .map((v) => v.size!.id);
-            const availableSizeValues = new Set<string>(availableSizeIds);
+        const availableSizeIds = new Set(
+            prod.variants
+                .filter((variant) => {
+                    if (variant.stock <= 0) return false;
 
-            const result: ColorOption = {
-                label: s.name,
-                value: s.id,
-                hex: s.value_code,
-                disabled: !availableSizeValues.has(s.id),
-            };
-            return result;
-        });
+                    // Nếu đã chọn màu,
+                    // chỉ lấy size thuộc màu đó
+                    if (selectedColor) {
+                        return variant.color.id === selectedColor.value;
+                    }
+
+                    return true;
+                })
+                .filter((variant) => variant.size)
+                .map((variant) => variant.size!.id),
+        );
+
+        return prod.sizes.map((size) => ({
+            label: size.name,
+            value: size.id,
+            disabled: !availableSizeIds.has(size.id),
+        }));
     });
 
     selectedVariant = computed(() => {
@@ -161,6 +174,43 @@ export class ProductDetailComponent {
         });
     }
 
+    changeColor(colorOption: ColorOption) {
+        const product = this.productResource.value();
+
+        if (!product) return;
+
+        const availableVariants = product.variants.filter(
+            (variant) =>
+                variant.stock > 0 && variant.color.id === colorOption.value,
+        );
+
+        if (!availableVariants.length) return;
+
+        const currentSize = this.selectedSizeOption();
+
+        // Tìm variant cùng màu + size hiện tại
+        const currentVariant = availableVariants.find(
+            (variant) => variant.size?.id === currentSize?.value,
+        );
+
+        // Nếu size hiện tại vẫn hợp lệ thì giữ nguyên size
+        // Nếu không thì lấy variant đầu tiên còn hàng
+        const nextVariant = currentVariant ?? availableVariants[0];
+
+        this.selectedColorOption.set(colorOption);
+
+        if (nextVariant.size) {
+            this.selectedSizeOption.set({
+                label: nextVariant.size.name,
+                value: nextVariant.size.id,
+            });
+        } else {
+            this.selectedSizeOption.set(null);
+        }
+
+        this.quantity.set(1);
+    }
+
     async onAddToBag(event: MouseEvent) {
         const variant = this.selectedVariant();
         if (!variant) return;
@@ -181,5 +231,16 @@ export class ProductDetailComponent {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    openSizeGuide() {
+        const prod = this.productResource.value();
+        this.drawerService.open({
+            content: SizeGuideComponent,
+            title: 'Size guide',
+            position: 'right',
+            size: 'xl',
+            data: { categoryType: prod?.categoryType, gender: prod?.gender },
+        });
     }
 }

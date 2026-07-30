@@ -23,6 +23,7 @@ import {
 import { AddressDrawerComponent } from './components/address-drawer/address-drawer.component';
 import { CheckoutInput } from './models/checkout.model';
 import { CheckoutService } from './checkout.service';
+import { CartStore } from '../../../core/stores/cart.store';
 @Component({
     selector: 'app-checkout',
     standalone: true,
@@ -39,6 +40,7 @@ export class CheckoutComponent implements OnInit {
     private fb = inject(FormBuilder);
     private router = inject(Router);
     private cartService = inject(CartService);
+    private cartStore = inject(CartStore);
     private drawerService = inject(DrawerService);
     private addressService = inject(AddressService);
     private shippingService = inject(ShippingService);
@@ -115,9 +117,12 @@ export class CheckoutComponent implements OnInit {
             shippingAddress: this.selectedAddress()!,
         };
 
-        console.log('Đang gửi đơn hàng lên hệ thống:', orderPayload);
-
-        this.checkoutService.placeOrder(orderPayload).subscribe(console.log);
+        this.checkoutService.placeOrder(orderPayload).subscribe((res) => {
+            this.router.navigate(['/order-success'], {
+                queryParams: { code: res.orderId },
+            });
+            this.cartStore.setCount(res.cartCount);
+        });
     }
 
     openAddressModal() {

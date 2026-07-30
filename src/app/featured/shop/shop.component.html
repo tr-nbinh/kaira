@@ -4,7 +4,7 @@
 
         <!-- Hero -->
         <header class="mb-20">
-            <app-breadcrumb [items]="breadcrumbItems" />
+            <!-- <app-breadcrumb [items]="breadcrumbItems" /> -->
 
             <div class="mt-8">
                 <app-shop-hero />
@@ -22,13 +22,13 @@
             [loading]="productResource.isLoading()" />
 
         <!-- Load More -->
-        @if(products().length) {
+        <!-- @if(products().length) {
         <section class="mt-24 text-center">
             <button type="button" (click)="loadMore()"
                 class="border border-black px-12 py-5 text-[11px] uppercase tracking-[0.25em] transition duration-300 hover:bg-black hover:text-white">
                 Load More
             </button>
         </section>
-        }
+        } -->
     </div>
 </section>

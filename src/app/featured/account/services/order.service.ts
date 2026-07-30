@@ -9,7 +9,11 @@ import { Order, OrderRequest } from '../models/order.model';
 export class OrderService extends BaseService {
     private readonly _endpoint = 'orders';
 
-    getOrders(params: OrderRequest): Observable<Order> {
+    getOrders(params: OrderRequest): Observable<Order[]> {
         return this.get(this._endpoint, params);
+    }
+
+    getOrderDetail(orderId: string): Observable<any> {
+        return this.get(`${this._endpoint}/${orderId}`);
     }
 }

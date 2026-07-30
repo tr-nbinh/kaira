@@ -25,10 +25,10 @@
         </div>
     </section>
 
-    <section class="flex-1 py-6 md:py-0 md:sticky md:top-16 flex flex-col justify-between h-fit"
+    <section class="flex-1 py-6 md:py-0 md:sticky md:top-16 flex flex-col justify-between h-fit w-full"
         aria-label="Order information and options">
-        <div>
-            <app-breadcrumb [items]="breadcrumbs" />
+        <div class="w-full">
+            <!-- <app-breadcrumb [items]="breadcrumbs" /> -->
 
             <header class="mt-4 mb-8">
                 <p class="text-sm tracking-[0.25em] text-neutral-900 uppercase font-medium mb-2">
@@ -82,7 +82,7 @@
                 </span>
 
                 <app-color-swatch [options]="colorOptions()" [selectedOptionValue]="selectedColorOption()"
-                    (select)="selectedColorOption.set($event)" />
+                    (select)="changeColor($event)" />
             </div>
 
             @if (product.sizes && product.sizes.length) {
@@ -90,7 +90,7 @@
                 <div class="flex justify-between items-center mb-3">
                     <span class="text-[10px] tracking-[0.2em] uppercase text-neutral-400">{{ "COMMON.SIZE" | translate
                         }}</span>
-                    <button
+                    <button type="button" (click)="openSizeGuide()"
                         class="text-[11px] uppercase tracking-widest text-neutral-500 underline underline-offset-2 hover:text-black transition-colors focus:outline-none">
                         {{ "COMMON.SIZE_GUIDE" | translate }}
                     </button>
@@ -122,42 +122,21 @@
                 <cdk-accordion [multi]="true">
                     <app-accordion>
                         <span accordionTitle>{{ 'PDP.PRODUCT_DETAILS' | translate }}</span>
-                        <div accordionContent class="pt-4 text-xs font-light leading-6 tracking-wide text-neutral-600">
-                            @for (specification of variant.specifications; track specification.id) {
-                            @if (specification.hasLabel) {
+                        <div accordionContent
+                            class="pt-4 text-xs font-light leading-6 tracking-wide text-neutral-600 space-y-4">
+                            <p class="mb-3 text-[13px] text-neutral-500 leading-6"
+                                [innerHTML]="product.content | safeHtml"></p>
+                            @for (specification of product.specifications; track specification.title) {
                             <h4 class="mb-2 text-[11px] font-medium uppercase tracking-[0.15em] text-black">
                                 {{ specification.title }}
                             </h4>
-                            <ul class="space-y-1">
-                                @for (item of specification.items; track item.id) {
-                                <li class="flex">
-                                    <span class="w-24 shrink-0 text-neutral-500">
-                                        {{ item.label }}
-                                    </span>
-
-                                    <span class="mr-2 text-neutral-400">:</span>
-
-                                    <span class="text-black">
-                                        {{ item.value }}
-                                    </span>
+                            <ul class="space-y-1 text-neutral-500 pl-2">
+                                @for (value of specification.values; track value) {
+                                <li>
+                                    {{value}}
                                 </li>
                                 }
                             </ul>
-                            } @else {
-                            <div class="flex items-start gap-2">
-                                <span class="min-w-24 text-[11px] font-medium uppercase tracking-[0.15em] text-black">
-                                    {{ specification.title }}
-                                </span>
-
-                                <span class="text-neutral-400">:</span>
-
-                                <span class="text-neutral-700">
-                                    {{
-                                    specification.items[0].value
-                                    }}
-                                </span>
-                            </div>
-                            }
                             }
                         </div>
                     </app-accordion>

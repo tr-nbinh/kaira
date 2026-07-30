@@ -62,7 +62,6 @@ export class AddressDrawerComponent implements OnInit {
         loader: () => {
             return this.addressService.getAddressesForCurrentUser();
         },
-        defaultValue: [],
     });
 
     selectedAddress = signal<UserAddress | null>(this.config.data || null);

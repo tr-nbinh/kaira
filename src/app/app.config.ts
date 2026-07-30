@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+    provideRouter,
+    withComponentInputBinding,
+    withInMemoryScrolling,
+} from '@angular/router';
 import { coreProviders } from '../core/core.provider';
 import { routes } from './app.routes';
-import { HttpLoaderFactory } from './translate-loader';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -16,15 +16,8 @@ export const appConfig: ApplicationConfig = {
                 scrollPositionRestoration: 'enabled',
                 anchorScrolling: 'enabled',
             }),
+            withComponentInputBinding(),
         ),
-        provideAnimations(),
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient],
-            },
-        }).providers!,
         ...coreProviders,
     ],
 };

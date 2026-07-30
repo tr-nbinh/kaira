@@ -63,40 +63,78 @@ export class ProductQuickViewComponent {
         const prod = this.productResource.value();
         if (!prod) return [];
 
-        return prod.colors.map((c) => {
-            const availableColorIds = prod.variants
-                .filter((v) => v.stock > 0)
-                .map((v) => v.color.id);
-            const availableColorValues = new Set<string>(availableColorIds);
+        const availableColorIds = new Set(
+            prod.variants
+                .filter((variant) => variant.stock > 0)
+                .map((variant) => variant.color.id),
+        );
 
-            const result: ColorOption = {
-                label: c.name,
-                value: c.id,
-                hex: c.value_code,
-                disabled: !availableColorValues.has(c.id),
-            };
-            return result;
-        });
+        return prod.colors.map((color) => ({
+            label: color.name,
+            value: color.id,
+            hex: color.value_code,
+            disabled: !availableColorIds.has(color.id),
+        }));
+
+        // return prod.colors.map((c) => {
+        //     const availableColorIds = prod.variants
+        //         .filter((v) => v.stock > 0)
+        //         .map((v) => v.color.id);
+        //     const availableColorValues = new Set<string>(availableColorIds);
+
+        //     const result: ColorOption = {
+        //         label: c.name,
+        //         value: c.id,
+        //         hex: c.value_code,
+        //         disabled: !availableColorValues.has(c.id),
+        //     };
+        //     return result;
+        // });
     });
 
     readonly sizeOptions = computed(() => {
         const prod = this.productResource.value();
+        const selectedColor = this.selectedColorOption();
+
         if (!prod || !prod.sizes) return [];
 
-        return prod.sizes.map((s) => {
-            const availableSizeIds = prod.variants
-                .filter((v) => v.stock > 0)
-                .map((v) => v.size!.id);
-            const availableSizeValues = new Set<string>(availableSizeIds);
+        const availableSizeIds = new Set(
+            prod.variants
+                .filter((variant) => {
+                    if (variant.stock <= 0) return false;
 
-            const result: ColorOption = {
-                label: s.name,
-                value: s.id,
-                hex: s.value_code,
-                disabled: !availableSizeValues.has(s.id),
-            };
-            return result;
-        });
+                    // Nếu đã chọn màu,
+                    // chỉ lấy size thuộc màu đó
+                    if (selectedColor) {
+                        return variant.color.id === selectedColor.value;
+                    }
+
+                    return true;
+                })
+                .filter((variant) => variant.size)
+                .map((variant) => variant.size!.id),
+        );
+
+        return prod.sizes.map((size) => ({
+            label: size.name,
+            value: size.id,
+            disabled: !availableSizeIds.has(size.id),
+        }));
+
+        // return prod.sizes.map((s) => {
+        //     const availableSizeIds = prod.variants
+        //         .filter((v) => v.stock > 0)
+        //         .map((v) => v.size!.id);
+        //     const availableSizeValues = new Set<string>(availableSizeIds);
+
+        //     const result: ColorOption = {
+        //         label: s.name,
+        //         value: s.id,
+        //         hex: s.value_code,
+        //         disabled: !availableSizeValues.has(s.id),
+        //     };
+        //     return result;
+        // });
     });
 
     readonly selectedVariant = computed(() => {
@@ -148,7 +186,39 @@ export class ProductQuickViewComponent {
     }
 
     changeColor(colorOption: ColorOption): void {
+        const product = this.productResource.value();
+
+        if (!product) return;
+
+        const availableVariants = product.variants.filter(
+            (variant) =>
+                variant.stock > 0 && variant.color.id === colorOption.value,
+        );
+
+        if (!availableVariants.length) return;
+
+        const currentSize = this.selectedSizeOption();
+
+        // Tìm variant cùng màu + size hiện tại
+        const currentVariant = availableVariants.find(
+            (variant) => variant.size?.id === currentSize?.value,
+        );
+
+        // Nếu size hiện tại vẫn hợp lệ thì giữ nguyên size
+        // Nếu không thì lấy variant đầu tiên còn hàng
+        const nextVariant = currentVariant ?? availableVariants[0];
+
         this.selectedColorOption.set(colorOption);
+
+        if (nextVariant.size) {
+            this.selectedSizeOption.set({
+                label: nextVariant.size.name,
+                value: nextVariant.size.id,
+            });
+        } else {
+            this.selectedSizeOption.set(null);
+        }
+
         this.selectedImageIndex.set(0);
         this.quantity.set(1);
     }

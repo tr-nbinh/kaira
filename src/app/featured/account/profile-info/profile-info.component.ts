@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Bắt buộc để sài ngModel
+import { AuthService } from '../../../../core/auth/auth.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-profile-info',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [TranslatePipe, FormsModule],
     templateUrl: './profile-info.component.html',
 })
-export class ProfileInfoComponent implements OnInit {
-    // Dữ liệu Mock thông tin User hiện tại đổ từ hệ thống lên
-    profileData = {
-        email: 'nguyenvanA@gmail.com', // Giữ cố định làm định danh
-        fullName: 'Nguyễn Văn A',
-        phone: '0901234567',
-    };
+export class ProfileInfoComponent {
+    private authService = inject(AuthService);
+
+    user = this.authService.currentUser;
 
     // Dữ liệu rỗng chuẩn bị cho form đổi mật khẩu
     passwordData = {
@@ -29,12 +28,6 @@ export class ProfileInfoComponent implements OnInit {
 
     passwordError: string | null = null;
     passwordSuccess: boolean = false;
-
-    constructor() {}
-
-    ngOnInit(): void {
-        console.log('Khởi tạo trang thông tin tài khoản cá nhân');
-    }
 
     // Hành động xử lý khi bấm cập nhật Hồ sơ cơ bản
     onUpdateProfile(): void {

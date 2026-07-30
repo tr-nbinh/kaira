@@ -1,4 +1,23 @@
 {
+    "BRAND_NAME": "TNB.Studio",
+    "PAGES": {
+        "HOME_TITLE": "Thời Trang Thiết Kế Tối Giản",
+        "SHOP": "Cửa Hàng",
+        "COLLECTIONS": "Bộ Sưu Tập",
+        "EDITORIAL": "Góc Cảm Hứng",
+        "CONTACT": "Liên Hệ Chúng Tôi",
+        "CART": "Giỏ Hàng",
+        "WISHLIST": "Danh Sách Yêu Thích",
+        "CHECKOUT": "Thanh Toán Đơn Hàng",
+        "REGISTER": "Đăng Ký Tài Khoản",
+        "LOGIN": "Đăng Nhập",
+        "VERIFY_EMAIL": "Xác Thực Email",
+        "FORGOT_PASSWORD": "Quên Mật Khẩu",
+        "RESET_PASSWORD": "Đặt Lại Mật Khẩu",
+        "ORDER_HISTORY": "Lịch Sử Đơn Hàng",
+        "PROFILE": "Thông Tin Tài Khoản",
+        "NOT_FOUND": "Trang Không Tồn Tại (404)"
+    },
     "NAV": {
         "HOME": "Trang chủ",
         "SHOP": "Sản phẩm",
@@ -49,7 +68,9 @@
         "SUBTITLE": "Trở thành người đầu tiên khám phá các sản phẩm mới, bộ sưu tập giới hạn và xu hướng theo mùa.",
         "EMAIL_ERROR": "Vui lòng nhập đúng định dạng email",
         "SUBMIT_BTN": "Đăng ký",
-        "TERMS": "Bằng cách đăng ký, bạn đồng ý nhận các thông tin từ chúng tôi. Bạn có thể hủy đăng ký bất kỳ lúc nào."
+        "TERMS": "Bằng cách đăng ký, bạn đồng ý nhận các thông tin từ chúng tôi. Bạn có thể hủy đăng ký bất kỳ lúc nào.",
+        "EMAIL_ADDRESS": "Địa chỉ email",
+        "EMAIL_PLACEHOLDER": "Nhập email"
     },
     "SHOP": {
         "HERO": {
@@ -87,6 +108,41 @@
             "POLICY": "Mỗi đơn hàng từ TNB.Studio đều được áp dụng chính sách giao hàng bảo mật miễn phí và có thể hoàn trả trong vòng 14 ngày kể từ ngày nhận.",
             "PACKAGING": "Sản phẩm sẽ được đóng gói trong hộp nguyên bản thắt nơ lụa satin cao cấp từ Ý."
         }
+    },
+    "SIZE_GUIDE": {
+        "SELECT_UNIT": "ĐƠN VỊ ĐO:",
+        "TABLE": {
+            "SIZE": "SIZE",
+            "US_SIZE": "US Size",
+            "UK_SIZE": "UK Size",
+            "FOOT_LENGTH": "Chiều dài chân",
+            "COLLAR": "VÒNG CỔ",
+            "CHEST": "VÒNG NGỰC",
+            "SHOULDER": "RỘNG VAI",
+            "WAIST": "VÒNG EO",
+            "HIPS": "VÒNG HÔNG",
+            "INSEAM": "DÀI CHÂN"
+        },
+        "HOW_TO_MEASURE": "CÁCH ĐO CHUẨN",
+        "STEPS": {
+            "FOOT_LENGTH_TITLE": "Đo chiều dài bàn chân",
+            "FOOT_LENGTH_DESC": "Đặt bàn chân phẳng trên mảnh giấy, dùng bút đánh dấu từ điểm sau cùng của gót chân đến ngón chân dài nhất, sau đó dùng thước đo khoảng cách.",
+            "FOOT_TIPS_TITLE": "Mẹo chọn kích cỡ",
+            "FOOT_TIPS_DESC": "Nếu bàn chân của bạn nằm ở khoảng giữa hai size hoặc có chiều ngang rộng (bè), khuyến nghị nên chọn lớn hơn 0.5 - 1 size để thoải mái hơn.",
+            "COLLAR_TITLE": "VÒNG CỔ (SHIRT COLLAR)",
+            "COLLAR_DESC": "Đo quanh gốc cổ, đặt thước dây tại điểm nối giữa cổ và vai, giữ khoảng hở vừa 1 ngón tay.",
+            "CHEST_TITLE": "VÒNG NGỰC (CHEST / BUST)",
+            "CHEST_DESC": "Đo vòng quanh phần nở nhất của ngực, giữ thước dây nằm ngang song song với mặt đất.",
+            "SHOULDER_TITLE": "RỘNG VAI (SHOULDER)",
+            "SHOULDER_DESC": "Đo từ điểm nối vai bên này sang điểm nối vai bên kia đi qua phần cao nhất của gáy.",
+            "WAIST_TITLE": "VÒNG EO (WAIST)",
+            "WAIST_DESC": "Đo quanh phần hẹp nhất của thắt lưng (ngay trên rốn), giữ thước dây vừa vặn không quá chặt.",
+            "HIPS_TITLE": "VÒNG HÔNG (HIPS)",
+            "HIPS_DESC": "Đứng thẳng hai chân chụm lại, đo quanh phần nở nhất của mông và hông.",
+            "INSEAM_TITLE": " ĐỘ DÀI ĐÁY CHÂN (INSEAM)",
+            "INSEAM_DESC": "Đo theo đường chỉ trong của ống quần, kéo dài từ phần đáy quần xuống sát mắt cá chân."
+        },
+        "FOOTNOTE": "* NẾU SỐ ĐO CỦA BẠN NẰM GIỮA 2 SIZE, NÊN CHỌN SIZE LỚN HƠN."
     },
     "WISHLIST": {
         "HEADING": "SẢN PHẨM YÊU THÍCH",
@@ -152,21 +208,92 @@
         "TOTAL": "Tổng cộng",
         "TAX_INCLUDED": "Đã bao gồm thuế VAT",
         "ORDER_NOTE": "Ghi chú đơn hàng",
-        "NOTE_PLACEHOLDER": "Ghi chú cho đơn hàng (Ví dụ: Giao giờ hành chính, gọi trước khi giao 30 phút...)"
+        "NOTE_PLACEHOLDER": "Ghi chú cho đơn hàng (Ví dụ: Giao giờ hành chính, gọi trước khi giao 30 phút...)",
+        "PROCESSING": "Đang xử lý"
+    },
+    "ORDER_SUCCESS": {
+        "TAG": "XÁC NHẬN ĐƠN HÀNG",
+        "TITLE": "CẢM ƠN BẠN",
+        "SUBTITLE": "GIAO DỊCH CỦA BẠN ĐÃ HOÀN TẤT",
+        "ORDER_CODE": "MÃ ĐƠN HÀNG",
+        "EMAIL": "EMAIL",
+        "STATUS": "TRẠNG THÁI",
+        "STATUS_RECEIVED": "ĐÃ TIẾP NHẬN",
+        "NOTE": "Chi tiết đơn hàng và thông tin vận chuyển đã được gửi tới địa chỉ email của bạn.",
+        "BTN_CONTINUE": "TIẾP TỤC MUA SẮM",
+        "BTN_VIEW_ORDER": "XEM ĐƠN HÀNG",
+        "LOADING": "ĐANG TẢI..."
+    },
+    "EDITORIAL": {
+        "SUBTITLE": "Nhật ký & Tạp chí TNB.Studio",
+        "TITLE": "Tòa soạn",
+        "READ_STORY": "Đọc bài viết",
+        "READ_ARTICLE": "Xem chi tiết",
+        "NO_STORIES": "Không tìm thấy bài viết nào trong danh mục này.",
+        "CATEGORIES": {
+            "ALL": "Tất cả",
+            "EDITORIAL": "Tòa soạn",
+            "STYLING_GUIDE": "Gợi ý phối đồ",
+            "TRENDS": "Xu hướng",
+            "CRAFTSMANSHIP": "Nghệ thuật chế tác"
+        }
     },
     "CONTACT": {
-        "TITLE": "Liên hệ",
-        "CONTACT_INFORMATION": "Thông tin liên hệ",
-        "CONTACT_DESC": "Tortor dignissim convallis aenean et tortor at risus viverra adipiscing.",
-        "HEAD_OFFICE": "Trụ sở chính",
-        "BRAND_OFFICE": "Chi nhánh",
-        "SOCIAL_INFO": "Mạng xã hội",
-        "ANY_QUESTION": "Đặt câu hỏi bất kỳ?",
-        "FORM_DESC": "Sử dụng mẫu dưới đây để liên hệ với chúng tôi.",
-        "NAME_PLACEHOLDER": "Tên",
-        "PHONE_PLACEHOLDER": "Số điện thoại",
-        "SUBJECT_PLACEHOLDER": "Chủ đề",
-        "MESSAGE_PLACEHOLDER": "Tin nhắn"
+        "TITLE": "Liên hệ với chúng tôi",
+        "SUBTITLE": "Bạn có thắc mắc, phản hồi hoặc cần tư vấn về đơn hàng? Hãy gửi thông tin cho chúng tôi, đội ngũ hỗ trợ sẽ phản hồi trong vòng 24 giờ làm việc.",
+        "INFO": {
+            "ADDRESS_TITLE": "Địa chỉ văn phòng",
+            "STORE_NAME": "Cửa hàng Thời trang TNB.Studio",
+            "ADDRESS_LINE1": "Tòa nhà TTC, Tầng 5, Số 123 Phố Hàng Bạc,",
+            "ADDRESS_LINE2": "Phường Hàng Bạc, Quận Hoàn Kiếm, Hà Nội",
+            "SUPPORT_TITLE": "Hỗ trợ & Trực tuyến",
+            "HOTLINE": "Hotline",
+            "EMAIL": "Email",
+            "HOURS_TITLE": "Thời gian mở cửa",
+            "MON_FRI": "Thứ 2 — Thứ 6",
+            "SAT": "Thứ 7",
+            "SUN": "Chủ nhật",
+            "CLOSED": "Đóng cửa"
+        },
+        "FORM": {
+            "TITLE": "Gửi lời nhắn của bạn",
+            "FULL_NAME": "Họ và Tên",
+            "EMAIL": "Địa chỉ Email",
+            "PHONE": "Số điện thoại",
+            "MESSAGE": "Lời nhắn của bạn",
+            "PLACEHOLDER": {
+                "FULL_NAME": "Nguyễn Văn A",
+                "EMAIL": "example@gmail.com",
+                "PHONE": "0901234567",
+                "MESSAGE": "Nhập nội dung cần hỗ trợ tại đây..."
+            },
+            "SUCCESS": "Cảm ơn bạn! Lời nhắn đã được gửi thành công. Chúng tôi sẽ phản hồi lại trong thời gian sớm nhất.",
+            "SENDING": "Đang gửi...",
+            "SUBMIT": "Gửi lời nhắn"
+        }
+    },
+    "ACCOUNT_SETTINGS": {
+        "PAGE_TITLE": "Thông tin tài khoản",
+        "PAGE_SUBTITLE": "Cập nhật thông tin hồ sơ cá nhân và mật khẩu của bạn.",
+        "SIDEBAR_TITLE": "Hồ sơ của bạn",
+        "SIDEBAR_NOTE": "Địa chỉ email đăng nhập của bạn là cố định và không thể thay đổi vì lý do bảo mật tài khoản.",
+        "BASIC_INFO": {
+            "SECTION_TITLE": "Thông tin cơ bản",
+            "EMAIL": "Địa chỉ Email",
+            "FULL_NAME": "Họ và Tên",
+            "PHONE": "Số điện thoại",
+            "SAVING": "Đang lưu...",
+            "SUBMIT": "Cập nhật hồ sơ"
+        },
+        "PASSWORD": {
+            "SECTION_TITLE": "Đổi mật khẩu",
+            "CURRENT_PASSWORD": "Mật khẩu hiện tại",
+            "NEW_PASSWORD": "Mật khẩu mới",
+            "CONFIRM_PASSWORD": "Xác nhận mật khẩu mới",
+            "SUCCESS": "Thay đổi mật khẩu thành công.",
+            "PROCESSING": "Đang xử lý...",
+            "SUBMIT": "Thay đổi mật khẩu"
+        }
     },
     "FOOTER": {
         "QUICK_LINK": "Truy cập nhanh",
@@ -178,11 +305,62 @@
         "QUESTION_TEXT": "Bạn có bất kỳ câu hỏi nào?",
         "SUPPORT_TEXT": "Bạn cần giúp đỡ? Liên hệ chúng tôi."
     },
-    "ORDER": {
-        "TITLE": "Cảm ơn bạn đã mua hàng",
-        "NOTIFY": "Chúng tôi đã nhận được đơn hàng của bạn và sẽ giao hàng trong vòng 5-7 ngày làm việc.",
-        "ORDER_NUMBER": "Mã đơn hàng của bạn là",
-        "BUTTON": "Tiếp tục"
+    "ORDER_LIST": {
+        "PAGE_TITLE": "Lịch sử đơn hàng",
+        "PAGE_SUBTITLE": "Quản lý và theo dõi trạng thái các đơn hàng bạn đã đặt.",
+        "TABS": {
+            "ALL": "Tất cả",
+            "PENDING": "Chờ xử lý",
+            "SHIPPING": "Đang giao",
+            "DELIVERED": "Đã giao",
+            "CANCELLED": "Đã hủy"
+        },
+        "STATUS": {
+            "PENDING": "Chờ xử lý",
+            "SHIPPING": "Đang giao",
+            "DELIVERED": "Đã giao",
+            "CANCEL": "Đã hủy"
+        },
+        "PER_ITEM": "/ cái",
+        "MORE_ITEMS": "và {{ count }} sản phẩm khác trong đơn hàng này...",
+        "TOTAL_PAYMENT": "Tổng thanh toán:",
+        "VIEW_DETAILS": "Xem chi tiết",
+        "CANCEL_ORDER": "Hủy đơn",
+        "EMPTY_TITLE": "Không tìm thấy đơn hàng nào trong mục này.",
+        "SHOP_NOW": "Mua sắm ngay"
+    },
+    "ORDER_DETAIL": {
+        "PAGE_TITLE": "Chi tiết đơn hàng",
+        "ORDER_NUMBER": "Mã đơn: {{ orderNumber }}",
+        "STATUS_LABEL": "Trạng thái:",
+        "PAYMENT_STATUS_LABEL": "Thanh toán:",
+        "PRODUCTS_TITLE": "Sản phẩm đã mua",
+        "PER_ITEM": "/ cái",
+        "SKU": "SKU:",
+        "SHIPPING_INFO_TITLE": "Thông tin giao hàng",
+        "RECIPIENT": "Người nhận",
+        "PHONE": "Điện thoại",
+        "ADDRESS": "Địa chỉ chi tiết",
+        "AREA": "Khu vực",
+        "NOTE": "Ghi chú:",
+        "COST_SUMMARY_TITLE": "Tóm tắt chi phí",
+        "SUBTOTAL": "Tạm tính",
+        "SHIPPING_FEE": "Phí vận chuyển",
+        "FREE_SHIPPING": "Miễn phí",
+        "DISCOUNT": "Giảm giá chiết khấu",
+        "PAYMENT_METHOD": "Phương thức thanh toán",
+        "TOTAL_PAYMENT": "Tổng thanh toán",
+        "BACK_TO_HISTORY": "Quay lại lịch sử đơn hàng",
+        "CONTINUE_SHOPPING": "Tiếp tục mua sắm",
+        "NOT_FOUND_TITLE": "Không tìm thấy đơn hàng",
+        "NOT_FOUND_DESC": "Đơn hàng bạn đang tìm kiếm không tồn tại hoặc bạn không có quyền truy cập.",
+        "STATUS": {
+            "PENDING": "Chờ xử lý",
+            "PROCESSING": "Đang xử lý",
+            "SHIPPING": "Đang giao",
+            "DELIVERED": "Đã giao",
+            "CANCELLED": "Đã hủy"
+        }
     },
     "PRICE": {
         "LESS_THAN": "Dưới {{price}}",
@@ -339,38 +517,13 @@
     },
     "COMMON": {
         "WISHLIST": "Yêu thích",
-        "CART": "Giỏ hàng",
-        "BEST_SELLERS": "Bán chạy nhất",
-        "NEW_ARRIVALS": "Sản phẩm mới",
-        "BEST_REVIEWED": "Đánh giá tốt nhất",
         "ADD_TO_CART": "Thêm vào giỏ hàng",
         "FOLLOW_US": "Theo dõi chúng tôi trên Instagram",
         "COLOR": "Màu sắc",
         "SIZE": "Kích thước",
         "PRICE": "Giá",
-        "BRAND": "Thương hiệu",
-        "SHARE": "Chia sẻ",
-        "COMING_SOON": "Sắp ra mắt",
-        "BACK_HOME": "Về trang chủ",
-        "ERROR_404": "Lỗi 404",
-        "ERROR_PAGE_DESC": "Xin lỗi, trang bạn tìm không tồn tại",
-        "SUBMIT": "Gửi",
-        "PRODUCT": "Sản phẩm",
-        "CART_TOTAL": "Tổng giỏ hàng",
         "QUANTITY": "Số lượng",
-        "SUBTOTAL": "Tạm tính",
-        "TOTAL": "Tổng cộng",
-        "PHONE": "Điện thoại",
-        "EMAIL_ADDRESS": "Địa chỉ email",
-        "SIGN_UP": "Đăng ký",
         "SIGN_OUT": "Đăng xuất",
-        "EMAIL_PLACEHOLDER": "Nhập email",
-        "CONFIRM": "Xác nhận",
-        "REMOVE": "Xóa",
-        "CONTACT_US": "Liên hệ chúng tôi",
-        "UNAUTHORIZED": "Đăng nhập để sử dụng tính năng này",
-        "BLACK_COLOR": "Đen",
-        "PROCESSING": "Đang xử lý",
         "CANCEL": "Hủy",
         "LANGUAGE": "Ngôn ngữ",
         "OR": "Hoặc",

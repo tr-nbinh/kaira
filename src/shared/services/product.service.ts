@@ -24,6 +24,13 @@ export class ProductService extends BaseService {
         return this.get(`${this._endpoint}/${id}`);
     }
 
+    getProductByCategory(
+        categoryPath: string,
+        filter?: ProductFilter,
+    ): Observable<ListResponse<Product>> {
+        return this.get(`${this._endpoint}/category/${categoryPath}`, filter);
+    }
+
     getProductQuickView(id: string): Observable<ProductQuickView> {
         return this.get(`${this._endpoint}/${id}/quick-view`);
     }
@@ -34,5 +41,13 @@ export class ProductService extends BaseService {
             {},
             { cacheKey: 'products:filter-metadata' },
         );
+    }
+
+    addProduct(body: any): Observable<any> {
+        return this.post(this._endpoint, body);
+    }
+
+    createProductImages(body: any): Observable<any> {
+        return this.post(`${this._endpoint}/images`, body);
     }
 }

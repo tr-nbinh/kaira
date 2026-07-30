@@ -24,10 +24,11 @@ import { GUEST_ACCOUNT_MENU, USER_ACCOUNT_MENU } from './header.constant';
 import { MobileMenuData } from './models/mobile-menu.model';
 import { WishlistStore } from '../../stores/wishlist.store';
 import { CategoryDrawerComponent } from './components/category-drawer/category-drawer.component';
+import { InitialsPipe } from '../../../shared/pipes/initials.pipe';
 
 @Component({
     selector: 'app-header',
-    imports: [RouterLink, RouterLinkActive, TranslatePipe],
+    imports: [RouterLink, RouterLinkActive, TranslatePipe, InitialsPipe],
     templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
@@ -86,18 +87,31 @@ export class HeaderComponent implements OnInit {
     }
 
     openMobileMenu() {
-        this.drawerService.open<MobileMenuData>({
+        const ref = this.drawerService.open<MobileMenuData>({
             content: MobileMenuComponent,
             title: 'Menu',
             position: 'right',
             size: 'md',
             data: {
                 menus: this.menus(),
-                accountMenu: this.accountMenu(),
+                accountMenu: this.accountMenu,
                 activeLang: this.activeCurrentLanguage,
                 languages: this.languages,
-                user: this.currentUser(),
+                user: this.currentUser,
             },
+        });
+
+        ref.events().subscribe((data) => {
+            switch (data.type) {
+                case 'logout':
+                    this.onLogout();
+                    break;
+                case 'changeLang':
+                    this.switchLanguage(data.value);
+                    break;
+                default:
+                    break;
+            }
         });
     }
 

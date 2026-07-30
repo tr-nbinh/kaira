@@ -3,6 +3,7 @@ import {
     Component,
     computed,
     inject,
+    input,
     signal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -42,10 +43,25 @@ export class ShopComponent {
     private readonly filterFacade = inject(FilterFacade);
     private readonly translate = inject(TranslateService);
 
+    // 1. Nhận cờ isCategoryPage từ route data
+    isCategoryPage = input<boolean>(false);
+    // 2. Nhận categoryPath từ posParams của matcher (VD: "women/top/shirt")
+    categoryPath = input<string>('');
+
     readonly productResource = rxResource({
-        request: () => this.filterFacade.filters(),
+        request: () => ({
+            filters: this.filterFacade.filters(),
+            isCategoryPage: this.isCategoryPage(),
+            categoryPath: this.categoryPath(),
+        }),
         loader: ({ request, previous }) => {
-            return this.productService.getProducts(request);
+            if (request.isCategoryPage) {
+                return this.productService.getProductByCategory(
+                    request.categoryPath,
+                    request.filters,
+                );
+            }
+            return this.productService.getProducts(request.filters);
         },
         defaultValue: { data: [], meta: { totalCount: 0 } as PaginationMeta },
     });

@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Cần thiết để liên kết form ngModel
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-contact',
-    standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [TranslatePipe],
     templateUrl: './contact.component.html',
 })
 export class ContactComponent {

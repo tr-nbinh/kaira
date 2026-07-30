@@ -4,7 +4,7 @@ import {
     computed,
     inject,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { DrawerRef } from '../../../../../shared/components/drawer/drawer-ref';
 import { ProductService } from '../../../../../shared/services/product.service';
 import { FilterFacade } from '../../services/filter-facade.service';
@@ -22,15 +22,17 @@ export class ShopFilterDrawerComponent {
     private readonly drawerRef = inject(DrawerRef);
     private readonly productService = inject(ProductService);
 
-    readonly filterMetadata = toSignal(
-        this.productService.getProductFilterMetadata(),
-        {
-            initialValue: {
+    readonly filterMetadataResource = rxResource({
+        loader: () => this.productService.getProductFilterMetadata(),
+    });
+
+    readonly filterMetadata = computed(
+        () =>
+            this.filterMetadataResource.value() || {
                 priceRange: { min: 0, max: 10000000 },
                 colors: [],
                 sizes: [],
             },
-        },
     );
 
     readonly activeColors = computed(
