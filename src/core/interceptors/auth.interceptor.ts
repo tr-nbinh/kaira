@@ -15,32 +15,39 @@ import {
 } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
-// Biến cờ để kiểm tra xem hệ thống có đang trong quá trình gọi API refresh hay không
+// Đánh dấu đang trong quá trình refresh token
 let isRefreshing = false;
-// Cổng trung gian để giữ chân các request bị 401 sau đó chạy lại khi có token mới
-const refreshTokenSubject = new BehaviorSubject<boolean>(false);
-const skipRefreshPaths = ['/auth/login'];
-const logoutPaths = ['/auth/refresh-token'];
+
+// Hàng đợi các request gặp 401 trong lúc đang refresh
+const refreshTokenSubject = new BehaviorSubject<boolean | null>(null);
+
+// Không refresh khi các API này trả về 401
+const skipRefreshPaths = ['/auth/login', '/auth/logout'];
+
+// Nếu chính API refresh trả về 401 => logout
+const refreshPaths = ['/auth/refresh-token'];
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
 
     return next(req).pipe(
         catchError((error) => {
-            if (error instanceof HttpErrorResponse && error.status === 401) {
-                if (skipRefreshPaths.some((p) => req.url.includes(p))) {
-                    return throwError(() => error);
-                }
-
-                if (logoutPaths.some((p) => req.url.includes(p))) {
-                    authService.logout().subscribe();
-                    return throwError(() => error);
-                }
-
-                return handle401Error(req, next, authService);
+            if (!(error instanceof HttpErrorResponse) || error.status !== 401) {
+                return throwError(() => error);
             }
 
-            return throwError(() => error);
+            // Login sai mật khẩu thì trả lỗi luôn
+            if (skipRefreshPaths.some((path) => req.url.includes(path))) {
+                return throwError(() => error);
+            }
+
+            // Refresh token cũng hết hạn -> logout
+            if (refreshPaths.some((path) => req.url.includes(path))) {
+                authService.logout().subscribe();
+                return throwError(() => error);
+            }
+
+            return handle401Error(req, next, authService);
         }),
     );
 };
@@ -50,23 +57,28 @@ function handle401Error(
     next: HttpHandlerFn,
     authService: AuthService,
 ) {
+    // Nếu chưa có request nào refresh
     if (!isRefreshing) {
         isRefreshing = true;
-        refreshTokenSubject.next(false); // Khóa cổng, bắt các request sau phải chờ
 
-        // Gọi API Refresh Token lên Server (Server tự đọc Refresh Cookie để cấp Access Cookie mới)
+        // Khóa hàng đợi
+        refreshTokenSubject.next(null);
+
         return authService.refreshToken().pipe(
             switchMap(() => {
                 isRefreshing = false;
-                refreshTokenSubject.next(true); // Mở cổng, báo hiệu cho các request đang xếp hàng chạy tiếp
+
+                // Báo cho toàn bộ request đang chờ tiếp tục
+                refreshTokenSubject.next(true);
 
                 // Clone lại request ban đầu (lúc bị 401) và thực thi lại
                 return next(req);
             }),
             catchError((refreshError) => {
                 isRefreshing = false;
-                // Nếu API Refresh cũng lỗi (hết hạn hoàn toàn), đăng xuất người dùng ngay lập tức
-                // authService.logout().subscribe();
+
+                // Giải phóng toàn bộ request đang chờ
+                refreshTokenSubject.error(refreshError);
                 return throwError(() => refreshError);
             }),
         );
