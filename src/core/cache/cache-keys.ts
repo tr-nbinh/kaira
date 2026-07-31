@@ -8,6 +8,10 @@ export const CACHE_KEYS = {
         LIST: 'category:list',
     },
 
+    collection: {
+        LIST: 'collection:lit',
+    },
+
     homepageCategory: {
         LIST: 'homepage-category:list',
     },
