@@ -1,55 +1,55 @@
-<section
-    class="min-h-[85vh] flex flex-col justify-between px-6 py-12 md:px-16 lg:px-24 bg-[#FAF9F6] text-neutral-900 selection:bg-black selection:text-white">
+<section class="bg-white selection:bg-black selection:text-white">
+    <div class="container py-section-compact">
+        <!-- Top Header / Meta Brand -->
+        <div
+            class="flex items-center justify-between border-b border-neutral-300 pb-4 text-xs tracking-[0.25em] uppercase font-light">
+            <span>KAIRA — LUXURY FASHION</span>
+            <span>ERR_404</span>
+        </div>
 
-    <!-- Top Header / Meta Brand -->
-    <div
-        class="flex items-center justify-between border-b border-neutral-300 pb-4 text-xs tracking-[0.25em] uppercase font-light">
-        <span>KAIRA — LUXURY FASHION</span>
-        <span>ERR_404</span>
-    </div>
+        <!-- Main Content Center -->
+        <div class="my-auto py-16 max-w-4xl">
+            <!-- Large Number Display -->
+            <h1
+                class="text-8xl sm:text-[12rem] lg:text-[16rem] font-extralight tracking-tighter leading-none select-none text-neutral-200">
+                404
+            </h1>
 
-    <!-- Main Content Center -->
-    <div class="my-auto py-16 max-w-4xl">
-        <!-- Large Number Display -->
-        <h1
-            class="text-8xl sm:text-[12rem] lg:text-[16rem] font-extralight tracking-tighter leading-none select-none text-neutral-200">
-            404
-        </h1>
+            <div class="-mt-8 sm:-mt-16 lg:-mt-24 space-y-6 relative z-10">
+                <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light uppercase tracking-[0.15em] leading-tight">
+                    {{ 'NOT_FOUND.HEADER' | translate }}
+                </h2>
 
-        <div class="-mt-8 sm:-mt-16 lg:-mt-24 space-y-6 relative z-10">
-            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light uppercase tracking-[0.15em] leading-tight">
-                {{ 'PAGES.NOT_FOUND_HEADER' | translate : { defaultValue: 'TRANG KHÔNG TỒN TẠI' } }}
-            </h2>
+                <p class="max-w-xl text-sm sm:text-base text-neutral-600 font-light leading-relaxed">
+                    {{ 'NOT_FOUND.DESC' | translate }}
+                </p>
 
-            <p class="max-w-xl text-sm sm:text-base text-neutral-600 font-light leading-relaxed">
-                {{ 'PAGES.NOT_FOUND_DESC' | translate : { defaultValue: 'Đường dẫn bạn truy cập có thể đã thay đổi, bị
-                xóa hoặc không còn hoạt động trong bộ sưu tập của chúng tôi.' } }}
-            </p>
-
-            <!-- Action Button -->
-            <div class="pt-4">
-                <a routerLink="/"
-                    class="inline-block bg-black text-white text-xs uppercase tracking-[0.25em] px-8 py-4 transition-transform duration-300 hover:bg-neutral-800 hover:scale-[1.02] active:scale-[0.98]">
-                    {{ 'PAGES.GO_HOME' | translate : { defaultValue: 'QUAY VỀ TRANG CHỦ' } }}
-                </a>
+                <!-- Action Button -->
+                <div class="pt-4">
+                    <a routerLink="/"
+                        class="inline-block bg-black text-white text-xs uppercase tracking-[0.25em] px-8 py-4 transition-transform duration-300 hover:bg-neutral-800 hover:scale-[1.02] active:scale-[0.98]">
+                        {{ 'NOT_FOUND.GO_HOME' | translate }}
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bottom Navigation Suggestions (Zara/Fendi Style) -->
-    <div class="pt-8 border-t border-neutral-300">
-        <p class="text-[10px] uppercase tracking-[0.2em] text-neutral-400 mb-4 font-mono">
-            {{ 'PAGES.EXPLORE_MORE' | translate : { defaultValue: 'GỢI Ý KHÁM PHÁ' } }}
-        </p>
+        <!-- Bottom Navigation Suggestions (Zara/Fendi Style) -->
+        <div class="pt-8 border-t border-neutral-300">
+            <p class="text-[10px] uppercase tracking-[0.2em] text-neutral-400 mb-4 font-mono">
+                {{ 'NOT_FOUND.EXPLORE_MORE' | translate}}
+            </p>
 
-        <nav class="flex flex-wrap gap-x-8 gap-y-3">
-            @for (link of quickLinks; track link.routerLink) {
-            <a [routerLink]="link.routerLink"
-                class="group text-xs uppercase tracking-[0.2em] font-medium text-neutral-800 hover:text-black flex items-center gap-1">
-                <span>{{ link.label | translate }}</span>
-                <span class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
-            </a>
-            }
-        </nav>
+            <nav class="flex flex-wrap gap-x-8 gap-y-3">
+                @for (link of quickLinks; track link.routerLink) {
+                <a [routerLink]="link.routerLink"
+                    class="group text-xs uppercase tracking-[0.2em] font-medium text-neutral-800 hover:text-black flex items-center gap-1">
+                    <span>{{ link.label | translate }}</span>
+                    <span class="transition-transform duration-300 group-hover:translate-x-1"
+                        aria-hidden="true">→</span>
+                </a>
+                }
+            </nav>
+        </div>
     </div>
 </section>

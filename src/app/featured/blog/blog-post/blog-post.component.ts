@@ -6,17 +6,17 @@ import {
     effect,
     inject,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { BlogService } from '../blog.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-blog-post',
     templateUrl: './blog-post.component.html',
-    imports: [CommonModule, NgOptimizedImage, RouterLink],
+    imports: [CommonModule, NgOptimizedImage, RouterLink, TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogPostComponent {
@@ -29,7 +29,13 @@ export class BlogPostComponent {
         this.route.paramMap.pipe(map((params) => params.get('slug'))),
         { initialValue: null },
     );
-    post = toSignal(this.blogService.getBlogBySlug(this.slug()!));
+
+    postResource = rxResource({
+        request: () => this.slug(),
+        loader: ({ request }) => this.blogService.getBlogBySlug(request!),
+    });
+
+    post = computed(() => this.postResource.value());
 
     constructor() {
         effect(() => {

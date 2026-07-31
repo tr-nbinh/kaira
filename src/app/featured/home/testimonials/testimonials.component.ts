@@ -16,12 +16,6 @@ import Autoplay from 'embla-carousel-autoplay';
 import { SectionHeaderComponent } from '../../../../shared/components/section-header/section-header.component';
 import { TestimonialItem } from '../models/testimonial.interface';
 
-interface Testimonial {
-    id: number;
-    quote: string;
-    author: string;
-}
-
 @Component({
     selector: 'app-testimonials',
     templateUrl: './testimonials.component.html',

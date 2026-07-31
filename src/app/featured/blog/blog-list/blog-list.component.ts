@@ -18,15 +18,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogListComponent {
-    private translate = inject(TranslateService);
     private blogService = inject(BlogService);
-
-    // allPosts = toSignal(this.blogService.getBlogs(), {
-    //     initialValue: {
-    //         data: [],
-    //         meta: { totalCount: 0, totalPages: 0, limit: 10, page: 1 },
-    //     },
-    // });
 
     allPostsResouce = rxResource({
         loader: () => this.blogService.getBlogs(),
@@ -53,7 +45,6 @@ export class BlogListComponent {
         const category = this.selectedCategory();
         const featuredId = this.featuredPost()?.id;
 
-        console.log(category, featuredId);
         // Loại bỏ bài featured ở danh sách thường nếu đang ở tab 'All Stories'
         if (category === 'all') {
             return this.posts().filter((p) => p.id !== featuredId);

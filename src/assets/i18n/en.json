@@ -30,6 +30,12 @@
         "ENGLISH": "English (EN)",
         "VIETNAMESE": "Vietnamese (VI)"
     },
+    "NOT_FOUND": {
+        "HEADER": "Page Not Found",
+        "DESC": "The link you followed may be broken, removed, or no longer exists in our current collections.",
+        "GO_HOME": "Return To Home",
+        "EXPLORE_MORE": "Suggested Links"
+    },
     "HERO": {
         "EYE_BROW": "New season 2026",
         "TITLE": "Timeless Pieces For Modern Living",
@@ -107,7 +113,11 @@
             "TITLE": "Shipping & Returns",
             "POLICY": "Every order from the TNB.Studio includes complimentary secure shipping and is eligible for returns within 14 days of receipt.",
             "PACKAGING": "Your items will be beautifully presented in our signature original box, elegantly tied with premium Italian satin ribbon."
-        }
+        },
+        "NOT_FOUND_ERR": "ERR // PRODUCT_NOT_FOUND",
+        "NOT_FOUND_TITLE": "Product Not Found",
+        "NOT_FOUND_DESC": "The product you are looking for may have been moved, deleted, or does not exist in TNB.Studio.",
+        "BTN_GO_SHOP": "Go to Shop"
     },
     "SIZE_GUIDE": {
         "SELECT_UNIT": "SELECT UNIT:",
@@ -270,7 +280,12 @@
             "STYLING_GUIDE": "Styling Guide",
             "TRENDS": "Trends",
             "CRAFTSMANSHIP": "Craftsmanship"
-        }
+        },
+        "NOT_FOUND_ERR": "ERR // ARTICLE_NOT_FOUND",
+        "NOT_FOUND_TITLE": "Article Not Found",
+        "NOT_FOUND_DESC": "The article you are looking for may have been moved, deleted, or does not exist in TNB.Studio Editorial.",
+        "BTN_GO_HOME": "Home Page",
+        "BTN_ALL_EDITORIAL": "All Articles"
     },
     "ACCOUNT_SETTINGS": {
         "PAGE_TITLE": "Account Information",

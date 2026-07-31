@@ -9,10 +9,8 @@ import { TranslateModule } from '@ngx-translate/core';
     templateUrl: './not-found.component.html',
 })
 export class NotFoundComponent {
-    // Gợi ý danh mục nhanh để giữ chân khách hàng
     readonly quickLinks = [
         { label: 'PAGES.SHOP', routerLink: '/shop' },
-        { label: 'PAGES.COLLECTIONS', routerLink: '/collections' },
         { label: 'PAGES.EDITORIAL', routerLink: '/editorial' },
     ];
 }

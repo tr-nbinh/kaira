@@ -20,7 +20,6 @@ import { FlyAnimationService } from '../../services/fly-animation.service';
 
 @Component({
     selector: 'app-product-quick-view',
-    standalone: true,
     templateUrl: './product-quick-view.component.html',
     imports: [
         ProductQuickViewSkeletonComponent,
@@ -75,21 +74,6 @@ export class ProductQuickViewComponent {
             hex: color.value_code,
             disabled: !availableColorIds.has(color.id),
         }));
-
-        // return prod.colors.map((c) => {
-        //     const availableColorIds = prod.variants
-        //         .filter((v) => v.stock > 0)
-        //         .map((v) => v.color.id);
-        //     const availableColorValues = new Set<string>(availableColorIds);
-
-        //     const result: ColorOption = {
-        //         label: c.name,
-        //         value: c.id,
-        //         hex: c.value_code,
-        //         disabled: !availableColorValues.has(c.id),
-        //     };
-        //     return result;
-        // });
     });
 
     readonly sizeOptions = computed(() => {
@@ -120,21 +104,6 @@ export class ProductQuickViewComponent {
             value: size.id,
             disabled: !availableSizeIds.has(size.id),
         }));
-
-        // return prod.sizes.map((s) => {
-        //     const availableSizeIds = prod.variants
-        //         .filter((v) => v.stock > 0)
-        //         .map((v) => v.size!.id);
-        //     const availableSizeValues = new Set<string>(availableSizeIds);
-
-        //     const result: ColorOption = {
-        //         label: s.name,
-        //         value: s.id,
-        //         hex: s.value_code,
-        //         disabled: !availableSizeValues.has(s.id),
-        //     };
-        //     return result;
-        // });
     });
 
     readonly selectedVariant = computed(() => {

@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.componet';
 import { BreadcrumbItem } from '../../../shared/components/breadcrumb/breadcrumb.model';
@@ -11,7 +11,7 @@ import { ColorOption, Option } from '../../../shared/models/option.model';
 import { PricePipe } from '../../../shared/pipes/price.pipe';
 import { ProductService } from '../../../shared/services/product.service';
 import { parseProductUrl } from '../../../shared/utils/product-url.helper';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AccordionComponent } from '../../../shared/components/accordion/accordion.component';
 import { CdkAccordion } from '@angular/cdk/accordion';
 import { ProductDetailSkeletonComponent } from './product-detail-skeleton/product-detail-skeleton.component';
@@ -22,12 +22,12 @@ import { FlyAnimationService } from '../../../shared/services/fly-animation.serv
 import { DrawerService } from '../../../shared/components/drawer/drawer.service';
 import { SizeGuideComponent } from '../../../shared/components/size-guide/size-guide.component';
 import { SafeHtmlPipe } from '../../../shared/pipes/safe-html.pipe';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-product-detail',
     templateUrl: './product-detail.component.html',
     imports: [
-        BreadcrumbComponent,
         ColorSwatchComponent,
         QuantitySelectorComponent,
         SizeSelectorComponent,
@@ -37,6 +37,7 @@ import { SafeHtmlPipe } from '../../../shared/pipes/safe-html.pipe';
         CdkAccordion,
         ProductDetailSkeletonComponent,
         SafeHtmlPipe,
+        RouterLink,
     ],
 })
 export class ProductDetailComponent {
@@ -46,6 +47,8 @@ export class ProductDetailComponent {
     private requireAuth = inject(RequireAuthService);
     private drawerService = inject(DrawerService);
     private flyService = inject(FlyAnimationService);
+    private titleService = inject(Title);
+    private translate = inject(TranslateService);
 
     productId = toSignal(
         this.route.paramMap.pipe(
@@ -152,7 +155,17 @@ export class ProductDetailComponent {
     constructor() {
         effect(() => {
             const product = this.productResource.value();
-            if (!product) return;
+            const brandName =
+                this.translate.instant('BRAND_NAME') || 'TNB.Studio';
+
+            if (!product) {
+                this.titleService.setTitle(
+                    `${this.translate.instant('PDP.NOT_FOUND_TITLE')} - ${brandName}`,
+                );
+                return;
+            }
+
+            this.titleService.setTitle(`${product.name} - ${brandName}`);
 
             const defaultVariant =
                 product.variants.find((v) => v.isDefault && v.stock > 0) ??

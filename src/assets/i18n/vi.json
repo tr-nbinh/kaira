@@ -30,6 +30,12 @@
         "ENGLISH": "Tiếng Anh (EN)",
         "VIETNAMESE": "Tiếng Việt (VI)"
     },
+    "NOT_FOUND": {
+        "HEADER": "Trang Không Tồn Tại",
+        "DESC": "Đường dẫn bạn truy cập có thể đã thay đổi, bị xóa hoặc không còn tồn tại trong bộ sưu tập của chúng tôi.",
+        "GO_HOME": "Quay Về Trang Chủ",
+        "EXPLORE_MORE": "Gợi Ý Khám Phá"
+    },
     "HERO": {
         "EYE_BROW": "Mùa mới 2026",
         "TITLE": "Những mảnh ghép vượt thời gian cho cuộc sống hiện đại",
@@ -107,7 +113,11 @@
             "TITLE": "Giao hàng & Hoàn trả",
             "POLICY": "Mỗi đơn hàng từ TNB.Studio đều được áp dụng chính sách giao hàng bảo mật miễn phí và có thể hoàn trả trong vòng 14 ngày kể từ ngày nhận.",
             "PACKAGING": "Sản phẩm sẽ được đóng gói trong hộp nguyên bản thắt nơ lụa satin cao cấp từ Ý."
-        }
+        },
+        "NOT_FOUND_ERR": "LỖI // KHÔNG_TÌM_THẤY_SẢN_PHẨM",
+        "NOT_FOUND_TITLE": "Sản Phẩm Không Tồn Tại",
+        "NOT_FOUND_DESC": "Đường dẫn sản phẩm có thể đã thay đổi, bị gỡ bỏ hoặc không còn tồn tại trong TNB.Studio.",
+        "BTN_GO_SHOP": "Trang sản phẩm"
     },
     "SIZE_GUIDE": {
         "SELECT_UNIT": "ĐƠN VỊ ĐO:",
@@ -236,7 +246,12 @@
             "STYLING_GUIDE": "Gợi ý phối đồ",
             "TRENDS": "Xu hướng",
             "CRAFTSMANSHIP": "Nghệ thuật chế tác"
-        }
+        },
+        "NOT_FOUND_ERR": "LỖI // KHÔNG_TÌM_THẤY_BÀI_VIẾT",
+        "NOT_FOUND_TITLE": "Tác Phẩm Không Tồn Tại",
+        "NOT_FOUND_DESC": "Đường dẫn bài viết có thể đã thay đổi, bị gỡ bỏ hoặc không còn tồn tại trong bộ sưu tập Tạp chí của TNB.Studio.",
+        "BTN_GO_HOME": "Trang Chủ",
+        "BTN_ALL_EDITORIAL": "Tất Cả Bài Viết"
     },
     "CONTACT": {
         "TITLE": "Liên hệ với chúng tôi",

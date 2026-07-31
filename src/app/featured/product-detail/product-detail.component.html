@@ -164,3 +164,40 @@
 </article>
 }
 }
+
+@if(productResource.error()) {
+<div class="min-h-[calc(100vh-var(--spacing-header))] flex flex-col justify-center items-center text-center">
+
+    <!-- Number 404 Ẩn Chìm (Đã thu nhỏ) -->
+    <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none">
+        <span class="font-serif text-[12rem] sm:text-[18rem] font-extralight tracking-tighter">404</span>
+    </div>
+
+    <div class="relative z-10 max-w-lg mx-auto">
+        <!-- Status Tag (Rất nhỏ, font Mono) -->
+        <div class="mb-4">
+            <span class="inline-block text-[10px] font-mono tracking-[0.25em] uppercase text-neutral-400">
+                {{ 'PDP.NOT_FOUND_ERR' | translate }}
+            </span>
+        </div>
+
+        <!-- Title (Đã hạ từ text-6xl xuống text-2xl/3xl thanh lịch) -->
+        <h1 class=" text-2xl sm:text-3xl font-normal leading-snug tracking-tight text-black mb-4">
+            {{ 'PDP.NOT_FOUND_TITLE' | translate }}
+        </h1>
+
+        <!-- Description (Thu nhỏ text-xs/sm, màu xám dịu) -->
+        <p class="text-xs sm:text-sm text-neutral-500 font-light leading-relaxed max-w-sm mx-auto mb-8">
+            {{ 'PDP.NOT_FOUND_DESC' | translate }}
+        </p>
+
+        <!-- Navigation Buttons (Thiết kế thanh mỏng) -->
+        <div class="pt-2">
+            <a [routerLink]="['/shop']"
+                class="inline-block w-full sm:w-auto bg-black text-white text-[10px] font-mono uppercase tracking-[0.25em] px-6 py-3.5 transition-all duration-300 hover:bg-neutral-800">
+                {{ 'PDP.BTN_GO_SHOP' | translate }}
+            </a>
+        </div>
+    </div>
+</div>
+}
