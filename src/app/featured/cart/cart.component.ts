@@ -1,149 +1,171 @@
-import { CurrencyPipe } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import {
+    CartItem,
+    UpdateCartItemQuantity,
+} from '../../../core/models/cart.model';
+import { CartService } from '../../../core/sevices/cart.service';
+import { QuantitySelectorComponent } from '../../../shared/components/quantity-selector/quantity-selector.component';
+import { PaginatedRequest } from '../../../shared/models/pagination.model';
+import { PricePipe } from '../../../shared/pipes/price.pipe';
+import { ProductUrlPipe } from '../../../shared/pipes/product-url.pipe';
+import { CartSkeletonComponent } from './components/cart-skeleton/cart-skeleton.component';
 import {
     debounceTime,
     distinctUntilChanged,
     finalize,
     Subject,
     switchMap,
-    takeUntil,
-    tap,
 } from 'rxjs';
-import { BaseComponent } from '../../base/base.component';
-import { CheckoutService } from '../../services/checkout.service';
-import { LoadingService } from '../../services/loading.service';
-import { ToastService } from '../../services/toast.service';
-import { LoadingToggleDirective } from '../../shared/directives/loading-toggle.directive';
-import { ProductUrlPipe } from '../../shared/pipes/product-url.pipe';
-import { CartEmptyComponent } from './components/cart-empty/cart-empty.component';
-import { CartSkeletonComponent } from './components/cart-skeleton/cart-skeleton.component';
-import { CartItem } from './models/cart.model';
-import { CartService } from './services/cart.service';
+import { CartStore } from '../../../core/stores/cart.store';
 
 @Component({
     selector: 'app-cart',
+    standalone: true,
     imports: [
-        TranslatePipe,
-        CurrencyPipe,
-        LoadingToggleDirective,
-        FormsModule,
         RouterLink,
-        CartEmptyComponent,
+        TranslatePipe,
+        PricePipe,
         CartSkeletonComponent,
+        QuantitySelectorComponent,
         ProductUrlPipe,
     ],
     templateUrl: './cart.component.html',
-    styleUrl: './cart.component.scss',
 })
-export class CartComponent extends BaseComponent {
-    cartItems: CartItem[] = [];
-    subTotal: number = 0;
-    private _quantityMap = new Map<string, Subject<number>>();
+export class CartComponent {
+    private cartService = inject(CartService);
+    private cartStore = inject(CartStore);
 
-    isLoading = true;
-    currency: string = 'VND';
+    paginatedRequest = signal<PaginatedRequest>({ limit: 10, page: 1 });
+    isUpdating = signal<boolean>(false);
+    private localOverride = signal<CartItem[] | null>(null);
 
-    constructor(
-        private cartService: CartService,
-        private toast: ToastService,
-        private loading: LoadingService,
-        private router: Router,
-        private checkoutService: CheckoutService,
-        private translate: TranslateService,
-    ) {
-        super();
-    }
+    cartResource = rxResource({
+        request: () => this.paginatedRequest(),
+        loader: ({ request }) => this.cartService.getCartItems(request),
+    });
 
-    ngOnInit() {
-        this.currency = this.translate.currentLang == 'en' ? 'USD' : 'VND';
-        this.getCartItems();
-    }
+    readonly cartItems = computed(() => {
+        const override = this.localOverride();
+        if (override !== null) return override;
+        return this.cartResource.value()?.data || [];
+    });
 
-    getCartItems() {
-        this.cartService
-            .getCartItems()
-            .pipe(
-                tap(() => (this.isLoading = true)),
-                finalize(() => (this.isLoading = false)),
-                takeUntil(this.ngUnsubscribe),
-            )
-            .subscribe((res) => {
-                this.cartItems = res.cartItems;
-                this.subTotal = res.subTotal;
-            });
-    }
+    readonly meta = computed(
+        () =>
+            this.cartResource.value()?.meta ?? {
+                limit: 10,
+                page: 1,
+                totalCount: 0,
+                totalPages: 0,
+            },
+    );
 
-    removeFromCart(variantId: string) {
-        const key = `cart-remove-${variantId}`;
-        this.loading.show(key);
-        this.cartService
-            .removeFromCart(variantId)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                finalize(() => this.loading.hide(key)),
-            )
-            .subscribe({
-                next: (res) => {
-                    this.subTotal = res.subTotal;
-                    this.cartItems = this.cartItems.filter(
-                        (item) => item.variantId !== variantId,
-                    );
+    // Tự động tính toán tổng số tiền (Subtotal, Tax, Final Total) độc lập ngay tại client
+    readonly orderSummary = computed(() => {
+        const items = this.cartItems();
+        const subtotal = items.reduce(
+            (acc, item) => acc + item.price * item.quantity,
+            0,
+        );
+        const currency = items[0]?.currency || 'VND';
+        const shipping = subtotal > 2000000 || subtotal === 0 ? 0 : 35000; // Freeship cho đơn hàng > 2M
 
-                    const subject = this._quantityMap.get(variantId);
-                    if (subject) {
-                        subject.complete();
-                        this._quantityMap.delete(variantId);
-                    }
-                },
-            });
-    }
+        return {
+            subtotal,
+            shipping,
+            total: subtotal + shipping,
+            currency,
+        };
+    });
 
-    increaseQuantity(cartItem: CartItem) {
-        if (cartItem.quantity >= cartItem.stock) {
-            return this.toast.warning(
-                this.translate.instant('CART.MAX_QUATITY', {
-                    stock: cartItem.stock,
-                }),
-            );
-        }
+    private quantitySubjects = new Map<string, Subject<number>>();
 
-        cartItem.quantity++;
-        this.updateVariantQuantity(cartItem, cartItem.quantity);
-    }
+    async handleUpdateQuantity(cartItemId: string, nextQuantity: number) {
+        const currentList = this.cartItems();
+        const targetItem = currentList.find((i) => i.id === cartItemId);
+        if (!targetItem || nextQuantity < 1 || nextQuantity > targetItem.stock)
+            return;
+        const optimisticList = currentList.map((item) =>
+            item.id === cartItemId ? { ...item, quantity: nextQuantity } : item,
+        );
+        this.localOverride.set(optimisticList);
 
-    decreaseQuantity(cartItem: CartItem) {
-        if (cartItem.quantity <= 1) return;
-        cartItem.quantity--;
-        this.updateVariantQuantity(cartItem, cartItem.quantity);
-    }
-
-    updateVariantQuantity(cartItem: CartItem, quantity: number) {
-        if (!this._quantityMap.has(cartItem.variantId)) {
-            const subject = new Subject<number>();
+        let subject = this.quantitySubjects.get(cartItemId);
+        if (!subject) {
+            subject = new Subject<number>();
             subject
                 .pipe(
-                    debounceTime(500),
+                    debounceTime(400),
                     distinctUntilChanged(),
-                    switchMap((qty) =>
-                        this.cartService.updateQuantityInCart(
-                            cartItem.variantId,
-                            qty,
-                        ),
+                    switchMap((finalQuantity) =>
+                        this.cartService
+                            .updateQuantity({
+                                cartItemId,
+                                quantity: finalQuantity,
+                            })
+                            .pipe(finalize(() => this.localOverride.set(null))),
                     ),
                 )
-                .subscribe((res) => {
-                    cartItem.displayFinalPrice = res.cartItemFinalPrice;
-                    this.subTotal = res.subTotal;
+                .subscribe({
+                    next: (res) => {
+                        console.log(res);
+                        this.cartResource.update((currentCache) => {
+                            if (!currentCache) return currentCache;
+                            return {
+                                ...currentCache,
+                                data: currentCache.data.map((item) =>
+                                    item.id === cartItemId
+                                        ? { ...item, quantity: res.quantity }
+                                        : item,
+                                ),
+                            };
+                        });
+                    },
+                    error(err) {
+                        console.error(
+                            'Đồng bộ số lượng lỗi, khôi phục trạng thái cũ',
+                            err,
+                        );
+                    },
                 });
-            this._quantityMap.set(cartItem.variantId, subject);
+
+            this.quantitySubjects.set(cartItemId, subject);
         }
-        this._quantityMap.get(cartItem.variantId)?.next(quantity);
+
+        subject.next(nextQuantity);
     }
 
-    goToCheckout() {
-        this.router.navigate(['/checkout']);
+    async handleRemoveItem(itemId: string) {
+        const currentList = this.cartItems();
+        const optimisticList = currentList.filter((item) => item.id !== itemId);
+        this.localOverride.set(optimisticList);
+        try {
+            this.isUpdating.set(true);
+            await this.cartStore.deleteItem(itemId);
+            // B. Cập nhật bộ đệm sạch của hệ thống, hạ tổng số lượng (meta.total) xuống 1 đơn vị
+            this.cartResource.update((currentCache) => {
+                if (!currentCache) return currentCache;
+                return {
+                    meta: {
+                        ...currentCache.meta,
+                        total:
+                            currentCache.meta.totalCount > 0
+                                ? currentCache.meta.totalCount - 1
+                                : 0,
+                    },
+                    data: currentCache.data.filter(
+                        (item) => item.id !== itemId,
+                    ),
+                };
+            });
+        } catch (error) {
+            console.error('Xóa sản phẩm lỗi, khôi phục dòng sản phẩm', error);
+        } finally {
+            this.localOverride.set(null);
+            this.isUpdating.set(false);
+        }
     }
 }

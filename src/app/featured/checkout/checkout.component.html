@@ -1,232 +1,221 @@
-<section class="checkout-wrap py-5">
-    <div class="container">
-        <div class="address-border"></div>
-        <div class="my-4 px-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <p class="d-flex align-items-center gap-2">
-                    <svg width="24" height="24" viewBox="0 0 24 24">
-                        <use xlink:href="#location-marker"></use>
-                    </svg>
-                    {{'CHECKOUT.DELIVERY_ADDRESS' | translate}}
-                </p>
-                @if (!selectedAddress) {
-                @if (addresses.length) {
-                <button type="button" class="btn btn-outline-dark" (click)="openAddressListDialog()">
-                    {{'CHECKOUT.SELECT_ADDRESS' | translate}}
-                </button>
-                } @else {
-                <button type="button" class="btn btn-outline-dark" (click)="openAddEditLocationDialog()">
-                    {{'CHECKOUT.ADD_ADDRESS' | translate}}
-                </button>
-                }
-                }
-            </div>
-            @if (selectedAddress) {
-            <div class="d-flex align-item-center gap-5">
-                <b>{{selectedAddress.receiverName}} (+84) {{selectedAddress.phone}}</b>
-                <p class="m-0">{{selectedAddress.street}}, {{selectedAddress.address}}
-                    <span class="badge badge-danger bg-danger">{{'CHECKOUT.DEFAULT' | translate}}</span>
-                </p>
-                <button type="button" class="btn btn-link " (click)="openAddressListDialog()">{{'CHECKOUT.CHANGE' |
-                    translate}}</button>
-            </div>
-            }
-        </div>
-        <div class="row gy-5">
-            <div class="col-12 col-lg-7">
-                <h4 class="text-dark text-uppercase pb-2 border-bottom">{{"CHECKOUT.CART_SUMMARY" | translate}}</h4>
-                <div class="cart-list">
-                    @for (item of orderItems; track item.variantId) {
-                    <div class="row align-items-center w-100">
-                        <div class="col-7">
-                            <div class="cart-info d-flex flex-wrap align-items-center mb-4">
-                                <div class="col-4">
-                                    <a [routerLink]="item.productId | productUrl:item.slug"
-                                        [queryParams]="{ variant: item.variantId}" class="card-image">
-                                        <img [src]="item.imageUrl" alt="cloth" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="col-8">
-                                    <div class="card-detail ps-3">
-                                        <h5 class="card-title">
-                                            <a [routerLink]="item.productId | productUrl:item.slug"
-                                                [queryParams]="{ variant: item.variantId}">
-                                                {{item.name}}
-                                            </a>
-                                        </h5>
-                                        <span class="text-dark d-block">{{item.color}}</span>
-                                        <span class="text-dark">{{item.displayPrice |
-                                            currency:item.currency:'symbol':'1.0-2'}}</span>
-                                    </div>
-                                </div>
-                            </div>
+<div class="min-h-[calc(100vh-var(--spacing-header))] bg-white text-black font-light antialiased">
+    <!-- Main Grid Layout -->
+    <div class="container grid grid-cols-1 lg:grid-cols-12 gap-0">
+        <!-- LEFT COLUMN: Shipping & Payment Form (60%) -->
+        <section class="lg:col-span-7 px-6 lg:px-16 py-12 lg:py-16 border-r border-neutral-100">
+            <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+                <!-- Section 1: Contact Information -->
+                <div class="mb-12">
+                    <h2 class="text-xs font-medium uppercase tracking-[0.15em] mb-6">1. {{'CHECKOUT.CONTACT_INFO' |
+                        translate }}</h2>
+                    <app-input placeholder="name@example.com" autocomplete="email" formControlName="email"
+                        [customErrorMessages]="{pattern: 'VALIDATION.EMAIL_INVALID'}" />
+                </div>
+
+                <!-- Section 2: Delivery Address -->
+                <div class="mb-12">
+                    <div class="flex justify-between items-baseline mb-6">
+                        <h2 class="text-xs font-medium uppercase tracking-[0.15em]">2. {{ 'CHECKOUT.SHIPPING_ADDRESS' |
+                            translate }}</h2>
+
+                        @if (selectedAddress()) {
+                        <button type="button" (click)="openAddressModal()"
+                            class="text-[11px] uppercase tracking-wider text-neutral-500 hover:text-black border-b border-neutral-200 hover:border-black transition-all">
+                            {{'Thay đổi địa chỉ' }}
+                        </button>
+                        }
+                    </div>
+
+                    <!-- Trường hợp: ĐÃ CHỌN hoặc ĐÃ CÓ địa chỉ mặc định -->
+                    @if (selectedAddress(); as address) {
+                    <div class="p-4 border border-black bg-neutral-50 space-y-1.5 transition-all animate-fade-in">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-medium uppercase tracking-wide">{{ address.fullName }}</span>
+                            @if (address.isDefault) {
+                            <span
+                                class="text-[9px] uppercase tracking-widest bg-black text-white px-1.5 py-0.5 rounded-none font-normal">Mặc
+                                định</span>
+                            }
                         </div>
-                        <div class="col-1">
-                            <span class="quantity">x{{item.quantity}}</span>
-                        </div>
-                        <div class="col-4">
-                            <div class="total-price text-center">
-                                <span class="money text-dark">{{item.displayFinalPrice |
-                                    currency:item.currency:'symbol':'1.0-2'}}</span>
-                            </div>
-                        </div>
+                        <p class="text-xs text-neutral-600 font-light">{{ address.phone }}</p>
+                        <p class="text-xs text-neutral-600 font-light">{{ address.addressLine }},
+                            {{ address.wardName }}, {{ address.provinceName }} ({{address.addressExtra}})</p>
+                    </div>
+                    } @else {
+                    <!-- Trường hợp: Chưa chọn địa chỉ nào (Bắt buộc user phải click chọn) -->
+                    <div (click)="openAddressModal()"
+                        class="group p-8 border border-dashed border-neutral-300 hover:border-black cursor-pointer transition-colors text-center bg-transparent">
+                        <p class="text-xs text-neutral-400 group-hover:text-black transition-colors font-light">
+                            + Vui lòng chọn hoặc thêm địa chỉ giao hàng của bạn
+                        </p>
                     </div>
                     }
                 </div>
-            </div>
-            <div class="col-12 col-lg-5">
-                <h4 class="text-dark text-uppercase pb-2 border-bottom">{{"CHECKOUT.ADDITIONAL_INFO" | translate}}</h4>
-                <div class="form-group ps-2">
-                    <div class="billing-details">
-                        <label for="note">{{"CHECKOUT.ORDER_NOTES" | translate}}</label>
-                        <textarea class="form-control p-3 mt-2" id="note" name="note"
-                            [(ngModel)]="order.note" [placeholder]="'CHECKOUT.NOTE_PLACEHOLDER' | translate"></textarea>
-                        <div class="list-group mt-3">
-                            <label class="list-group-item d-flex gap-2 border-0">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="paymentMethod"
-                                    value="banking" [(ngModel)]="order.paymentMethod" required>
-                                <span>
-                                    <strong class="text-uppercase">{{"CHECKOUT.METHOD.BANK" | translate}}</strong>
-                                    <small class="d-block text-body-secondary">{{"CHECKOUT.METHOD.BANK_DECS" |
-                                        translate}}</small>
-                                </span>
-                            </label>
-                            <label class="list-group-item d-flex gap-2 border-0">
-                                <input class="form-check-input flex-shrink-0" type="radio" value="cod"
-                                    name="paymentMethod" [(ngModel)]="order.paymentMethod" required>
-                                <span>
-                                    <strong class="text-uppercase">{{"CHECKOUT.METHOD.CASH" | translate}}</strong>
-                                    <small class="d-block text-body-secondary">{{"CHECKOUT.METHOD.CASH_DESC" |
-                                        translate}}</small>
-                                </span>
-                            </label>
+
+                <!-- Section 3: Payment Method -->
+                <div class="mb-12">
+                    <h2 class="text-xs font-medium uppercase tracking-[0.15em] mb-6">3. {{ 'CHECKOUT.PAYMENT_METHOD' |
+                        translate }}</h2>
+                    <div class="space-y-3">
+                        @for (method of paymentMethods; track method.code) {
+                        <label
+                            class="flex items-center justify-between p-4 border rounded-none cursor-pointer transition-colors"
+                            [class.border-black]="checkoutForm.get('paymentMethod')?.value === method.code && !method.disabled"
+                            [class.border-neutral-200]="checkoutForm.get('paymentMethod')?.value !== method.code || method.disabled"
+                            [class.opacity-40]="method.disabled" [class.pointer-events-none]="method.disabled"
+                            [class.cursor-not-allowed]="method.disabled" [class.cursor-pointer]="!method.disabled">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" formControlName="paymentMethod" [value]="method.code"
+                                    class="accent-black" />
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-medium">
+                                        {{ method.nameKey | translate }}
+                                    </span>
+                                    @if (method.descKey) {
+                                    <span class="text-[11px] text-neutral-400 mt-0.5 leading-relaxed">
+                                        {{ method.descKey | translate }}
+                                    </span>
+                                    }
+                                </div>
+                            </div>
+                        </label>
+                        }
+                    </div>
+                </div>
+
+                <!-- Section 4: Order Note -->
+                <div class="mb-12">
+                    <h2 class="text-xs font-medium uppercase tracking-[0.15em] mb-4">
+                        4. {{ 'CHECKOUT.ORDER_NOTE' | translate }}
+                    </h2>
+                    <div class="relative">
+                        <textarea formControlName="note" rows="3" maxLength="200"
+                            [placeholder]="'CHECKOUT.NOTE_PLACEHOLDER' | translate"
+                            class="w-full p-3.5 text-xs rounded-none border border-neutral-200 focus:outline-none focus:border-black bg-white transition-all duration-200 text-neutral-800 placeholder:text-neutral-400 font-light resize-none leading-relaxed"></textarea>
+
+                        <!-- Bộ đếm ký tự nhỏ góc dưới -->
+                        <div class="text-[10px] text-neutral-400 font-light text-right mt-1 tracking-wider">
+                            {{ checkoutForm.get('note')?.value?.length || 0 }}/200
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-12 offset-0 col-md-7 offset-md-5 align-self-end">
-                <div class="cart-totals bg-grey">
-                    <h4 class="text-dark text-uppercase">{{"COMMON.CART_TOTAL" | translate}}</h4>
-                    <div class="d-flex align-items-center justify-content-between py-3 border-bottom border-top">
-                        <b class="text-dark text-uppercase ">{{"COMMON.SUBTOTAL" |
-                            translate}}</b>
-                        <p class="text-dark">{{subTotal | currency:'VND':'symbol':'1.0-2'}}</p>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
-                        <b class="text-dark text-uppercase ">{{"COMMON.TOTAL" |
-                            translate}}</b>
-                        <p class="text-dark">{{subTotal | currency:'VND':'symbol':'1.0-2'}}</p>
-                    </div>
-                </div>
-                <button class="btn btn-dark btn-lg text-uppercase btn-rounded-none w-100 mt-3"
-                    (click)="submitOrder()">
-                    {{"CHECKOUT.ORDER_BUTTON" | translate}}
-                </button>
-            </div>
-        </div>
-    </div>
-</section>
 
-<ng-template #addressList>
-    <div class="locations mb-2">
-        @for (addr of addresses; track addr.id) {
-        <div class="location-item py-2 d-flex gap-2 border-bottom border-gray-200">
-            <div class="location-radio">
-                <input type="radio" class="form-check-input" name="defaultAddress" [value]="addr.id"
-                    [(ngModel)]="selectedAddresId">
-            </div>
-            <div class="location-info flex-fill">
-                <div class="d-flex justify-content-between align-item-center mb-2">
-                    <span class="fs-6"><b>{{addr.receiverName}}</b> | (+84) {{addr.phone}}</span>
-                    <button class="btn btn-link fs-7 text-capitalize" (click)="openAddEditLocationDialog(addr)">
-                        {{"CHECKOUT.UPDATE" | translate}}
+                    <!-- Submit Button -->
+                    <button type="submit" [disabled]="checkoutForm.invalid || isSubmitting() || !selectedAddress()"
+                        class="w-full h-12 bg-black text-white text-xs uppercase tracking-[0.2em] font-medium transition-all hover:bg-neutral-900 disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                        @if (isSubmitting()) {
+                        <span
+                            class="w-4 h-4 border-2 border-neutral-400 border-t-white rounded-full animate-spin"></span>
+                        {{ 'CHECKOUT.PROCESSING' | translate }}
+                        } @else {
+                        {{ 'CHECKOUT.PLACE_ORDER' | translate }}
+                        }
                     </button>
                 </div>
-                <p class="address">{{addr.street}}</p>
-                <p class="address">{{addr.address}}</p>
+            </form>
+        </section>
+
+        <!-- RIGHT COLUMN: Sticky Order Summary (40%) -->
+        <section
+            class="lg:col-span-5 bg-neutral-50 px-6 lg:px-12 py-12 lg:py-16 lg:h-[calc(100vh-89px)] lg:sticky lg:top-22.25 overflow-y-auto">
+            <!-- VỊ TRÍ MỚI: Header tóm tắt đơn hàng tích hợp nút quay lại giỏ hàng -->
+            <div class="flex justify-between items-baseline mb-8">
+                <h2 class="text-xs font-medium uppercase tracking-[0.15em]">
+                    {{ 'CHECKOUT.ORDER_SUMMARY' | translate }}
+                </h2>
+
+                <!-- Nút Quay Lại Giỏ Hàng đặt kín đáo và tinh tế tại đây -->
+                <a routerLink="/cart"
+                    class="text-[11px] uppercase tracking-wider text-neutral-400 hover:text-black transition-colors border-b border-transparent hover:border-black">
+                    {{ 'CHECKOUT.RETURN_TO_CART' | translate }}
+                </a>
             </div>
-        </div>
-        }
+
+            <!-- Cart Items List -->
+            <div class="divide-y divide-neutral-200 max-h-80 overflow-y-auto pr-2 pt-2 mb-8">
+                @if (cartItemsResource.isLoading()) {
+                @for (item of [1, 2, 3, 4]; track $index) {
+                <div class="flex items-center gap-4 py-4 first:pt-0 last:pb-0 animate-pulse">
+                    <!-- Skeleton Ảnh -->
+                    <div class="w-16 h-20 bg-neutral-200 rounded shrink-0"></div>
+
+                    <!-- Skeleton Thông tin -->
+                    <div class="flex-1 space-y-2 min-w-0">
+                        <!-- Tên sản phẩm -->
+                        <div class="h-3.5 bg-neutral-200 rounded w-3/4"></div>
+                        <!-- Phân loại (Size/Color) -->
+                        <div class="h-3 bg-neutral-200 rounded w-1/2"></div>
+                    </div>
+
+                    <!-- Skeleton Giá tiền -->
+                    <div class="text-right shrink-0 space-y-1.5">
+                        <!-- Giả lập dòng giá gốc nhỏ (nếu có) -->
+                        <div class="h-2.5 bg-neutral-200 rounded w-12 ml-auto"></div>
+                        <!-- Giả lập dòng tổng tiền -->
+                        <div class="h-3.5 bg-neutral-200 rounded w-16 ml-auto"></div>
+                    </div>
+                </div>
+                }
+                }
+
+                @if (cartItemsResource.hasValue()) {
+                @for (item of cartItems().data; track item.id) {
+                <div class="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
+                    <div class="w-16 h-20 bg-white border border-neutral-100 shrink-0 relative">
+                        <img [src]="item.imageUrl" [alt]="item.name" class="w-full h-full object-cover" />
+                        <span
+                            class="absolute -top-2 -right-2 w-5 h-5 bg-neutral-800 text-white text-[10px] rounded-full flex items-center justify-center font-normal z-10 shadow-sm">
+                            {{ item.quantity }}
+                        </span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-xs uppercase tracking-wide font-medium truncate mb-0.5">{{
+                            item.name }}</h3>
+                        <p class="text-[11px] text-neutral-400 uppercase tracking-wider">
+                            {{item.variantSummary}}
+                        </p>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <!-- Giá gốc của 1 variant (Chỉ hiện khi số lượng lớn hơn 1 để tránh trùng lặp thừa thãi) -->
+                        @if (item.quantity > 1) {
+                        <p class="text-[10px] text-neutral-400 mb-0.5 font-normal">
+                            {{ item.price | price:'VND' }} / cái
+                        </p>
+                        }
+                        <!-- Tổng tiền của variant này -->
+                        <p class="text-xs font-medium text-neutral-900">
+                            {{ (item.price * item.quantity) | price:'VND' }}
+                        </p>
+                    </div>
+                </div>
+                } @empty {
+                <p class="text-xs text-neutral-400 py-4 italic">{{ 'CHECKOUT.EMPTY_CART' | translate }}</p>
+                }
+                }
+            </div>
+
+            <!-- Financial Calculation Block -->
+            <div class="border-t border-neutral-200 pt-6 space-y-3.5">
+                <div class="flex justify-between text-xs text-neutral-500">
+                    <span>{{ 'CHECKOUT.SUBTOTAL' | translate }}</span>
+                    <span>{{ subtotal() | price:'VND' }}</span>
+                </div>
+                <div class="flex justify-between text-xs text-neutral-500">
+                    <span>{{ 'CHECKOUT.SHIPPING' | translate }}</span>
+                    <span>{{ shippingFee() === 0 ? ('CHECKOUT.FREE_SHIPPING' | translate) : (shippingFee() |
+                        price:'VND') }}</span>
+                </div>
+
+                <div class="border-t border-neutral-200 pt-4 flex justify-between items-baseline">
+                    <span class="text-xs font-medium uppercase tracking-wider">{{ 'CHECKOUT.TOTAL' | translate }}</span>
+                    <div class="text-right">
+                        <span class="text-lg font-semibold tracking-tight text-neutral-900">
+                            {{ total() | price:'VND' }}
+                        </span>
+                        <p class="text-[10px] text-neutral-400 mt-0.5">{{ 'CHECKOUT.TAX_INCLUDED' | translate }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
-    <button type="button" class="btn btn-outline-dark text-capitalize" (click)="openAddEditLocationDialog()">
-        <svg viewBox="0 0 10 10" width="16" height="16" class="me-2">
-            <path stroke="none" d="m10 4.5h-4.5v-4.5h-1v4.5h-4.5v1h4.5v4.5h1v-4.5h4.5z"></path>
-        </svg>
-        {{"CHECKOUT.ADD_NEW_ADDRESS" | translate}}
-    </button>
-</ng-template>
-
-<ng-template #addEditAddress>
-    <form class="form-group" [formGroup]="addressForm">
-        <div class="mb-4">
-            <label for="fname">{{"CHECKOUT.FULL_NAME" | translate}}</label>
-            <input type="text" formControlName="receiverName" id="fname" name="fullName" class="form-control mt-2 ps-3"
-                [formControlError]>
-        </div>
-
-
-        <div class="mb-4">
-            <label for="cname">{{"CHECKOUT.COUNTRY_REGION" | translate}}</label>
-            <select formControlName="provinceCode" class="form-select form-control mt-2" aria-label="Select country"
-                (change)="onProvinceChange($event)" [formControlError]>
-                <option value="" selected>-- {{"CHECKOUT.COUNTRY_REGION" | translate}} --</option>
-
-                @for (item of provinces; track item.code) {
-                <option [value]="item.code">{{item.name}}</option>
-                }
-            </select>
-        </div>
-
-        <div class="mb-4">
-            <label for="cname">{{"CHECKOUT.DISTRICT" | translate}}</label>
-            <select formControlName="districtCode" class="form-select form-control mt-2" aria-label="Select district"
-                (change)="onDisTrictChange($event)" [formControlError]>
-                <option value="" selected>-- {{"CHECKOUT.DISTRICT" | translate}} --</option>
-
-                @for (item of districts; track item.code) {
-                <option [value]="item.code">{{item.name}}</option>
-                }
-            </select>
-        </div>
-
-        <div class="mb-4">
-            <label for="cname">{{"CHECKOUT.WARD" | translate}}</label>
-            <select formControlName="wardCode" class="form-select form-control mt-2" aria-label="Select district"
-                [formControlError] (change)="onWardChange($event)">
-                <option value="" selected>-- {{"CHECKOUT.WARD" | translate}} --</option>
-
-                @for (item of wards; track item.code) {
-                <option [value]="item.code">{{item.name}}</option>
-                }
-            </select>
-        </div>
-
-        <div class="mb-4">
-            <label for="street">{{"CHECKOUT.STREET_ADDRESS" | translate}}</label>
-            <input type="text" formControlName="street" id="street" name="street"
-                [placeholder]="'CHECKOUT.ADDR_PLACEHOLDER' | translate" class="form-control mt-3 ps-3 mb-2"
-                [formControlError]>
-
-            <input type="text" formControlName="addressExtra" id="adr" name="address"
-                [placeholder]="'CHECKOUT.ADDR_PLACEHOLDER_2' | translate" class="form-control ps-3">
-        </div>
-
-        <div class="mb-4">
-            <label for="phone">{{"COMMON.PHONE" | translate}}</label>
-            <input type="text" formControlName="phone" id="phone" name="phone" class="form-control mt-2 ps-3"
-                [formControlError]>
-        </div>
-
-        <div class="mb-4">
-            <label for="email">{{"COMMON.EMAIL_ADDRESS" | translate}}</label>
-            <input type="text" formControlName="email" id="email" name="email" class="form-control mt-2 ps-3"
-                [formControlError]>
-        </div>
-        <div class="d-flex gap-2">
-            <input class="form-check-input" type="checkbox" formControlName="isDefault" id="defaultAddress">
-            <label class="" for="defaultAddress">
-                {{"CHECKOUT.DEFAULT_ADDRESS" | translate}}
-            </label>
-        </div>
-    </form>
-</ng-template>
+</div>

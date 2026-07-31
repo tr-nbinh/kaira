@@ -1,0 +1,68 @@
+<section aria-labelledby="testimonials-heading" class="bg-white py-section-compact">
+    <div class="container">
+        <!-- Heading -->
+        <app-section-header [title]="'TESTIMONIALS.TITLE' | translate"
+            [subtitle]="'TESTIMONIALS.SUBTITLE' | translate" />
+
+        <!-- Content -->
+        <div class="w-full flex flex-col items-center">
+            <!-- Embla -->
+            <div #emblaViewport class="overflow-hidden cursor-grab active:cursor-grabbing">
+                <div class="flex">
+                    @for (testimonial of testimonials(); track testimonial.id) {
+                    <article class="min-w-0 shrink-0 basis-full px-4 text-center">
+                        <!-- Stars -->
+                        <div class="text-lg tracking-[0.5em] text-neutral-500" aria-label="5 out of 5 stars">
+                            ★★★★★
+                        </div>
+
+                        <!-- Quote -->
+                        <blockquote class="text-neutral-700 mx-auto mt-4 mb-8 max-w-3xl text-2xl italic
+                             font-light leading-relaxed md:text-4xl">
+                            "{{ testimonial.content }}"
+                        </blockquote>
+
+                        <!-- Author -->
+                        <footer class="text-sm uppercase tracking-[0.25em] text-neutral-400">
+                            {{ testimonial.authorName }}
+                        </footer>
+                    </article>
+                    }
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="mt-12 flex items-center justify-center gap-8">
+                <button type="button" aria-label="Previous testimonial" (click)="previous()"
+                    class="transition-opacity hover:opacity-60">
+                    <i class="ti ti-arrow-left text-xl"></i>
+                </button>
+
+                <!-- Dots -->
+                <div class="flex items-center gap-3">
+                    @for (
+                    testimonial of testimonials();
+                    track testimonial.id;
+                    let i = $index
+                    ) {
+                    <button type="button" [attr.aria-label]="'Go to testimonial ' + (i + 1)" (click)="scrollTo(i)"
+                        class="h-2 rounded-full transition-all duration-300" [class.w-8]="i === currentIndex()"
+                        [class.w-2]="i !== currentIndex()" [class.bg-black]="i === currentIndex()"
+                        [class.bg-neutral-300]="i !== currentIndex()"></button>
+                    }
+                </div>
+
+                <button type="button" aria-label="Next testimonial" (click)="next()"
+                    class="transition-opacity hover:opacity-60">
+                    <i class="ti ti-arrow-right text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Counter -->
+
+            <p class="mt-4 text-xs uppercase tracking-[0.25em] text-neutral-500">
+                {{ currentIndex() + 1 }} / {{ testimonials().length }}
+            </p>
+        </div>
+    </div>
+</section>

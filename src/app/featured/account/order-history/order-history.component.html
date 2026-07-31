@@ -1,0 +1,186 @@
+<div class="w-full min-h-[calc(100vh-var(--spacing-header))] bg-white">
+    <div class="container py-section-compact">
+        <section aria-labelledby="orders-heading" class="mb-12 border-b border-neutral-100 pb-6">
+            <h1 id="orders-heading" class="text-lg font-light uppercase tracking-[0.2em] md:text-xl">
+                {{ 'ORDER_LIST.PAGE_TITLE' | translate }}
+            </h1>
+
+            <p role="status" aria-live="polite" class="mt-1 text-[10px] uppercase tracking-widest text-neutral-400">
+                {{ 'ORDER_LIST.PAGE_SUBTITLE' | translate }}
+            </p>
+        </section>
+
+        <!-- Bộ lọc Tabs Trạng thái -->
+        <div class="flex border-b border-neutral-200 overflow-x-auto mb-8 text-sm whitespace-nowrap scrollbar-none">
+            @for (tab of tabs; track tab.key) {
+            <button (click)="activeTab.set(tab.key)" [class.border-black]="activeTab() === tab.key"
+                [class.text-black]="activeTab() === tab.key" [class.text-neutral-400]="activeTab() !== tab.key"
+                class="py-3 px-4 font-medium border-b-2 border-transparent transition-all hover:text-black">
+                {{ tab.label | translate }}
+            </button>
+            }
+        </div>
+
+        <!-- DANH SÁCH ĐƠN HÀNG -->
+        <div class="space-y-6">
+            @if (ordersResource.isLoading()) {
+            <div class="space-y-6">
+                @for (i of [1, 2, 3]; track i) {
+                <div class="border border-neutral-200 bg-white p-6">
+                    <!-- Header của Card -->
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 gap-2 mb-4 border-b border-neutral-100">
+                        <div class="flex items-center gap-3">
+                            <!-- Order ID -->
+                            <div class="h-4 bg-neutral-200 w-24"></div>
+                            <!-- Created Date -->
+                            <div class="h-3 bg-neutral-200 w-20"></div>
+                        </div>
+                        <!-- Status Badge -->
+                        <div class="h-6 bg-neutral-200 w-24"></div>
+                    </div>
+
+                    <!-- Nội dung: Hiển thị tóm tắt sản phẩm -->
+                    <div class="divide-y divide-neutral-100 mb-4">
+                        <div class="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
+                            <!-- Product Image Thumbnail -->
+                            <div class="w-16 h-20 bg-neutral-200 shrink-0"></div>
+
+                            <!-- Product Info -->
+                            <div class="flex-1 min-w-0 space-y-2">
+                                <!-- Product Name -->
+                                <div class="h-4 bg-neutral-200 w-3/4 sm:w-1/2"></div>
+                                <!-- Variant Name -->
+                                <div class="h-3 bg-neutral-200 w-1/3"></div>
+                            </div>
+
+                            <!-- Product Price -->
+                            <div class="text-right shrink-0 space-y-1">
+                                <div class="h-3 bg-neutral-200 w-16 ml-auto"></div>
+                                <div class="h-4 bg-neutral-200 w-20 ml-auto"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer của Card: Tổng tiền & Nút bấm hành động -->
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center justify-between pt-4 gap-4 border-t border-neutral-100">
+                        <!-- Total Payment -->
+                        <div class="flex items-center gap-2">
+                            <div class="h-4 bg-neutral-200 w-24"></div>
+                            <div class="h-5 bg-neutral-200 w-28"></div>
+                        </div>
+                        <!-- Action Buttons -->
+                        <div class="flex gap-2 justify-end">
+                            <div class="h-9 bg-neutral-200 w-28"></div>
+                            <div class="h-9 bg-neutral-200 w-24"></div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+
+            @if (ordersResource.hasValue()) {
+            @if (filteredOrders().length) {
+            @for (order of filteredOrders(); track order.id) {
+            <div class="border border-neutral-200 bg-white p-6 transition-all hover:border-neutral-300">
+                <!-- Header của Card Đơn Hàng -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 gap-2 mb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm font-medium font-mono uppercase">#{{ order.id.substring(0, 8) }}</span>
+                        <span class="text-xs text-neutral-400">{{ order.createdAt | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div>
+                        <span [class]="{
+                    'bg-amber-50 text-amber-800 border-amber-200': order.status === 'pending',
+                    'bg-blue-50 text-blue-800 border-blue-200': order.status === 'shipping',
+                    'bg-emerald-50 text-emerald-800 border-emerald-200': order.status === 'delivered',
+                    'bg-neutral-50 text-neutral-500 border-neutral-200': order.status === 'cancel'
+                  }" class="text-xs px-2.5 py-1 font-medium border uppercase tracking-wider">
+                            {{ 'ORDER_LIST.STATUS.' + (order.status | uppercase) | translate }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Nội dung: Hiển thị tóm tắt sản phẩm -->
+                <div class="divide-y divide-neutral-100 mb-4">
+                    <div class="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
+                        <div class="w-16 h-20 bg-white border border-neutral-100 shrink-0 relative">
+                            <img [src]="order.firstItem.imageUrl" [alt]="order.firstItem.productName"
+                                class="w-full h-full object-cover" />
+                            <span
+                                class="absolute -top-2 -right-2 w-5 h-5 bg-neutral-800 text-white text-[10px] rounded-full flex items-center justify-center font-normal z-10 shadow-sm">
+                                {{ order.firstItem.quantity }}
+                            </span>
+                        </div>
+
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-xs uppercase tracking-wide font-medium truncate mb-0.5">
+                                {{ order.firstItem.productName }}
+                            </h3>
+                            <p class="text-[11px] text-neutral-400 uppercase tracking-wider">
+                                {{ order.firstItem.variantName }}
+                            </p>
+                        </div>
+
+                        <div class="text-right shrink-0">
+                            @if (order.firstItem.quantity > 1) {
+                            <p class="text-[10px] text-neutral-400 mb-0.5 font-normal">
+                                {{ order.firstItem.price | currency:'VND':'symbol':'1.0-0' }} {{ 'ORDER_LIST.PER_ITEM' |
+                                translate }}
+                            </p>
+                            }
+                            <p class="text-xs font-medium text-neutral-900">
+                                {{ order.firstItem.price * order.firstItem.quantity | currency:'VND':'symbol':'1.0-0' }}
+                            </p>
+                        </div>
+                    </div>
+
+                    @if (order.totalItems > 1) {
+                    <div class="py-3 text-left">
+                        <p class="text-xs text-neutral-400 italic pl-2">
+                            {{ 'ORDER_LIST.MORE_ITEMS' | translate:{ count: order.totalItems - 1 } }}
+                        </p>
+                    </div>
+                    }
+                </div>
+
+                <!-- Footer của Card: Tổng tiền & Nút bấm hành động -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-4 gap-4">
+                    <div class="text-sm">
+                        <span class="text-neutral-500">{{ 'ORDER_LIST.TOTAL_PAYMENT' | translate }} </span>
+                        <span class="font-semibold font-mono text-base text-neutral-900 ml-1">
+                            {{ order.totalAmount | currency:'VND':'symbol':'1.0-0' }}
+                        </span>
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <a [routerLink]="['/account/order-history', order.id]"
+                            class="px-4 py-2 text-xs font-medium border border-neutral-200 bg-white hover:bg-neutral-50 transition-colors">
+                            {{ 'ORDER_LIST.VIEW_DETAILS' | translate }}
+                        </a>
+                        @if (order.status === 'pending') {
+                        <button
+                            class="px-4 py-2 text-xs font-medium border border-transparent bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">
+                            {{ 'ORDER_LIST.CANCEL_ORDER' | translate }}
+                        </button>
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+            } @else {
+            <div class="text-center py-16 border border-dashed border-neutral-200 bg-neutral-50">
+                <p class="text-sm text-neutral-400 mb-4">
+                    {{ 'ORDER_LIST.EMPTY_TITLE' | translate }}
+                </p>
+                <button
+                    class="px-4 py-2 text-xs font-medium bg-black text-white hover:bg-neutral-800 transition-colors">
+                    {{ 'ORDER_LIST.SHOP_NOW' | translate }}
+                </button>
+            </div>
+            }
+            }
+        </div>
+    </div>
+</div>

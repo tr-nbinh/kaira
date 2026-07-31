@@ -1,0 +1,19 @@
+@utility container {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: clamp(16px, 2vw, 32px);
+}
+
+@utility container-fluid {
+    width: 100%;
+    max-width: 1600px;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 2vw, 2.5rem);
+}
+
+@utility prose {
+    width: 100%;
+    max-width: 900px;
+    margin-inline: auto;
+}

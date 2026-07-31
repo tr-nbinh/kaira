@@ -1,29 +1,14 @@
-type PAYMENT_METHOD = 'cod' | 'banking' | 'momo';
+import { PaymentMethodType } from '../../../../shared/constants/payment.constant';
+import { UserAddress } from '../../../../shared/models/address.model';
 
-export interface CheckoutRequest {
-    checkoutId: string;
-    addressId: number;
+export interface CheckoutInput {
+    email: string;
     note: string;
-    paymentMethod: PAYMENT_METHOD;
-    shippingFee: number;
-    items: CheckoutItem[];
-}
-
-export interface CheckoutItem {
-    variantId: string;
-    quantity: number;
+    shippingAddress: UserAddress;
+    paymentMethod: PaymentMethodType;
 }
 
 export interface CheckoutResponse {
-    id: number;
-    userId: number;
-    addressId: number;
-    note: string;
-    paymentMethod: string;
-    shippingFee: number;
-    totalAmount: number;
-    status: string;
-    createdAt: string;
-    updatedAt: string;
-    checkout_id: string;
+    orderId: string;
+    cartCount: number;
 }

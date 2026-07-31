@@ -1,0 +1,167 @@
+<section class="flex h-full flex-col bg-white" aria-labelledby="filter-heading">
+    <form class="flex-1 overflow-y-auto px-5 py-6 space-y-10" (submit)="$event.preventDefault()">
+        <fieldset>
+            <legend class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">
+                {{'COMMON.COLOR' | translate}}
+            </legend>
+            <div class="flex flex-wrap gap-3">
+                @if (filterMetadataResource.isLoading()) {
+                @for (i of [1, 2, 3, 4, 5]; track i) {
+                <div
+                    class="flex items-center gap-2 pl-1.5 pr-3 py-1 border border-neutral-100 rounded-full bg-white animate-pulse select-none">
+                    <div class="h-5 w-5 rounded-full bg-neutral-200 shrink-0"></div>
+                    <div class="h-3 w-12 bg-neutral-200 rounded"></div>
+                </div>
+                }
+                }
+
+                @if (filterMetadataResource.hasValue()) {
+                @for (color of filterMetadata().colors; track color.id) {
+                <label class="cursor-pointer group">
+                    <input class="peer sr-only" type="checkbox" [checked]="activeColors().has(color.id)"
+                        (change)="toggleColor(color.id)" />
+                    <span
+                        class="flex items-center gap-2 pl-1.5 pr-3 py-1 border border-neutral-100 rounded-full transition hover:border-neutral-300 peer-checked:border-neutral-900 bg-white">
+                        <span
+                            class="relative flex h-5 w-5 items-center justify-center rounded-full border border-gray-200"
+                            [style.background]="color.value_code">
+                            @if (activeColors().has(color.id)) {
+                            <i class="ti ti-check text-xs text-white mix-blend-difference"></i>
+                            }
+                        </span>
+                        <span
+                            class="text-[11px] uppercase tracking-wider text-neutral-600 font-medium peer-checked:text-neutral-900 transition-colors select-none">
+                            {{ color.name }}
+                        </span>
+                    </span>
+                </label>
+                }
+                }
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">
+                {{'COMMON.SIZE' | translate}}
+            </legend>
+            <div class="flex flex-wrap gap-2">
+                @if (filterMetadataResource.isLoading()) {
+                @for (i of [1, 2, 3, 4, 5]; track i) {
+                <div
+                    class="inline-flex min-w-10 h-9 items-center justify-center border border-gray-100 bg-neutral-100 animate-pulse px-3 select-none">
+                    <div class="h-3 w-4 bg-neutral-200 rounded-sm"></div>
+                </div>
+                }
+                }
+
+                @if (filterMetadataResource.hasValue()) {
+
+                @for (size of filterMetadata().sizes; track size.id) {
+                <label class="cursor-pointer">
+                    <input class="peer sr-only" type="checkbox" [checked]="activeSizes().has(size.id)"
+                        (change)="toggleSize(size.id)" />
+                    <span
+                        class="inline-flex min-w-10 h-9 items-center justify-center border border-gray-200 px-3 text-xs tracking-wider transition rounded-none peer-checked:border-black peer-checked:bg-black peer-checked:text-white hover:border-black">
+                        {{ size.name }}
+                    </span>
+                </label>
+                }
+                }
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">
+                {{'COMMON.PRICE' | translate}}
+            </legend>
+            <div class="space-y-6">
+
+                <div class="px-2 pt-2 relative">
+                    <div class="relative h-1 bg-gray-200 rounded-none w-full">
+                        <div class="absolute h-full bg-black" [style.left.%]="minPercent()"
+                            [style.right.%]="100 - maxPercent()"></div>
+                    </div>
+
+                    <input type="range" [min]="ABSOLUTE_MIN" [max]="filterMetadata().priceRange.max" [step]="100000"
+                        [value]="minPrice()" (input)="onMinSliderChange($event)"
+                        [class.z-30]="minPrice() > (filterMetadata().priceRange.max - PRICE_GAP * 2)"
+                        class="absolute top-1/2 left-0 w-full h-1 -translate-y-1/2 appearance-none bg-transparent pointer-events-none z-20 
+                          [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:cursor-ew-resize [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:transition [&::-webkit-slider-thumb]:hover:scale-110">
+
+                    <input type="range" [min]="ABSOLUTE_MIN" [max]="filterMetadata().priceRange.max" [step]="100000"
+                        [value]="maxPrice()" (input)="onMaxSliderChange($event)"
+                        class="absolute top-1/2 left-0 w-full h-1 -translate-y-1/2 appearance-none bg-transparent pointer-events-none z-20 
+                          [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:cursor-ew-resize [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:transition [&::-webkit-slider-thumb]:hover:scale-110">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="flex-1">
+                        <label class="block text-[10px] uppercase tracking-wider text-gray-400 mb-1">{{'COMMON.FROM' |
+                            translate}}</label>
+                        <div class="relative flex items-center border border-gray-300 px-3 focus-within:border-black">
+                            <input type="text" [value]="displayMinPrice()" (input)="updateMinPrice($event)"
+                                (blur)="validateMinOnBlur($event)"
+                                class="w-full h-9 bg-transparent text-sm font-medium focus:outline-none rounded-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                placeholder="0">
+                            <span class="text-xs text-gray-400 ml-1">₫</span>
+                        </div>
+                    </div>
+
+                    <div class="h-px w-3 bg-gray-300 mt-5"></div>
+
+                    <div class="flex-1">
+                        <label class="block text-[10px] uppercase tracking-wider text-gray-400 mb-1">{{'COMMON.TO' |
+                            translate}}</label>
+                        <div class="relative flex items-center border border-gray-300 px-3 focus-within:border-black">
+                            <input type="text" [value]="displaymaxPrice()" (input)="updateMaxPrice($event)"
+                                (blur)="validateMaxOnBlur($event)"
+                                class="w-full h-9 bg-transparent text-sm font-medium focus:outline-none rounded-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                placeholder="9,999,000">
+                            <span class="text-xs text-gray-400 ml-1">₫</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+    </form>
+    @if (selectedFilters().length) {
+    <div class="flex flex-col gap-2 border-b border-gray-100 px-5 py-4">
+        <div class="flex items-center justify-between">
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">{{'COMMON.SELECTED' |
+                translate}}:</span>
+            <button type="button" (click)="clearFilters()"
+                class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 hover:text-black underline transition rounded-none">
+                {{'COMMON.CLEAR_ALL' | translate}}
+            </button>
+        </div>
+
+        <div class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto py-0.5">
+            @for (chip of selectedFilters(); track chip.id) {
+            <button type="button" (click)="removeChip(chip)"
+                class="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-gray-50 pl-2.5 pr-1.5 py-0.5 text-[11px] hover:bg-black hover:text-white hover:border-black transition">
+                <span>{{ chip.label }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-60" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            }
+        </div>
+    </div>
+    }
+
+    <footer class="border-t border-gray-100 p-5">
+        <div class="grid grid-cols-2 gap-3">
+            <button type="button" (click)="cancel()"
+                class="w-full border border-gray-200 py-3.5 text-xs font-semibold uppercase tracking-widest text-gray-700 transition hover:bg-gray-50 rounded-none">
+                {{'COMMON.CANCEL' | translate}}
+            </button>
+            <button type="button" (click)="applyFilter()"
+                class="w-full bg-black py-3.5 text-xs font-semibold uppercase tracking-widest text-white transition hover:bg-gray-800 rounded-none">
+                {{'COMMON.APPLY_FILTER' | translate}}
+            </button>
+
+        </div>
+    </footer>
+</section>

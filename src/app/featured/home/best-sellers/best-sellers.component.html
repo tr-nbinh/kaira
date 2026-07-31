@@ -1,0 +1,23 @@
+<section aria-labelledby="best-sellers-heading" class="bg-white py-section-compact">
+    <div class="container">
+        <!-- Header -->
+        <app-section-header [title]="'BEST_SELLERS.TITLE' | translate"
+            [subtitle]="'BEST_SELLERS.SUBTITLE' | translate" />
+
+        <!-- Product List -->
+        <ul role="list" class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+            @for (product of products(); track product.id) {
+            <li>
+                <app-product-card [product]="product" />
+            </li>
+            }
+        </ul>
+
+        <!-- CTA -->
+        <div class="mt-10 text-center">
+            <app-section-link routerLink="/shop">
+                {{'BEST_SELLERS.BUTTON' | translate}}
+            </app-section-link>
+        </div>
+    </div>
+</section>

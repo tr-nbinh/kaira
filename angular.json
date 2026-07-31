@@ -7,7 +7,7 @@
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
-                    "style": "scss"
+                    "style": "css"
                 }
             },
             "root": "",
@@ -25,7 +25,7 @@
                             "@angular/localize/init"
                         ],
                         "tsConfig": "tsconfig.app.json",
-                        "inlineStyleLanguage": "scss",
+                        "inlineStyleLanguage": "css",
                         "assets": [
                             "src/assets",
                             "src/_redirects",
@@ -35,16 +35,8 @@
                             }
                         ],
                         "styles": [
-                            "node_modules/bootstrap/dist/css/bootstrap.min.css",
-                            "node_modules/aos/dist/aos.css",
-                            "node_modules/swiper/swiper-bundle.min.css",
-                            "node_modules/leaflet/dist/leaflet.css",
-                            "src/styles.scss"
-                        ],
-                        "scripts": [
-                            "node_modules/aos/dist/aos.js",
-                            "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-                            "node_modules/swiper/swiper-bundle.min.js"
+                            "./node_modules/@tabler/icons-webfont/dist/tabler-icons.min.css",
+                            "src/styles.css"
                         ],
                         "allowedCommonJsDependencies": [
                             "leaflet"
@@ -106,10 +98,7 @@
                             "buildTarget": "kaira:build:development"
                         }
                     },
-                    "defaultConfiguration": "development",
-                    "options": {
-                        "proxyConfig": "proxy.conf.json"
-                    }
+                    "defaultConfiguration": "development"
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n"
@@ -123,7 +112,7 @@
                             "@angular/localize/init"
                         ],
                         "tsConfig": "tsconfig.spec.json",
-                        "inlineStyleLanguage": "scss",
+                        "inlineStyleLanguage": "css",
                         "assets": [
                             {
                                 "glob": "**/*",
@@ -131,7 +120,7 @@
                             }
                         ],
                         "styles": [
-                            "src/styles.scss"
+                            "src/styles.css"
                         ],
                         "scripts": []
                     }
@@ -140,6 +129,6 @@
         }
     },
     "cli": {
-      "analytics": false
+        "analytics": false
     }
 }

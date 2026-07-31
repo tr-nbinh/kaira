@@ -1,0 +1,127 @@
+<div class="w-full min-h-[calc(100vh-var(--spacing-header))] bg-white">
+    <div class="container py-section-compact">
+        <!-- Tiêu đề trang -->
+        <section aria-labelledby="contact-heading" class="mb-12 border-b border-neutral-100 pb-6">
+            <h1 id="wishlist-heading" class="text-lg font-light uppercase tracking-[0.2em] md:text-xl">
+                {{ 'ACCOUNT_SETTINGS.PAGE_TITLE' | translate }}
+            </h1>
+
+            <p role="status" aria-live="polite" class="mt-1 text-[10px] uppercase tracking-widest text-neutral-400">
+                {{ 'ACCOUNT_SETTINGS.PAGE_SUBTITLE' | translate }}
+            </p>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- CỘT TRÁI: Ghi chú / Điều hướng -->
+            <div class="md:col-span-1 space-y-2">
+                <h2 class="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-900 mb-4">
+                    {{ 'ACCOUNT_SETTINGS.SIDEBAR_TITLE' | translate }}
+                </h2>
+                <p class="text-xs text-neutral-400 leading-relaxed">
+                    {{ 'ACCOUNT_SETTINGS.SIDEBAR_NOTE' | translate }}
+                </p>
+            </div>
+
+            <!-- CỘT PHẢI: Khối điền Form -->
+            <div class="md:col-span-2 space-y-12">
+                <!-- PHÂN KHU 1: THÔNG TIN CƠ BẢN -->
+                <form (ngSubmit)="onUpdateProfile()" class="space-y-5">
+                    <h3 class="text-xs uppercase tracking-wider font-medium text-neutral-400 mb-2">
+                        {{ 'ACCOUNT_SETTINGS.BASIC_INFO.SECTION_TITLE' | translate }}
+                    </h3>
+
+                    <!-- Trường Email (Read-only) -->
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-400 block">
+                            {{ 'ACCOUNT_SETTINGS.BASIC_INFO.EMAIL' | translate }}
+                        </label>
+                        <input type="email" [value]="user()?.email" disabled
+                            class="w-full bg-neutral-50 border border-neutral-200 px-4 py-2.5 text-xs text-neutral-400 cursor-not-allowed font-mono outline-none" />
+                    </div>
+
+                    <!-- Trường Họ và Tên -->
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">
+                            {{ 'ACCOUNT_SETTINGS.BASIC_INFO.FULL_NAME' | translate }}
+                        </label>
+                        <input type="text" [value]="user()?.fullName" name="fullName"
+                            class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                    </div>
+
+                    <!-- Trường Số điện thoại (Nếu cần dùng) -->
+                    <!-- 
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">
+                            {{ 'ACCOUNT_SETTINGS.BASIC_INFO.PHONE' | translate }}
+                        </label>
+                        <input type="tel" [value]="user()?.phone" name="phone"
+                            class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                    </div> 
+                    -->
+
+                    <div class="pt-2">
+                        <button type="submit" [disabled]="isSavingProfile"
+                            class="bg-black text-white px-6 py-2.5 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-800 disabled:bg-neutral-200 transition-colors">
+                            {{ (isSavingProfile ? 'ACCOUNT_SETTINGS.BASIC_INFO.SAVING' :
+                            'ACCOUNT_SETTINGS.BASIC_INFO.SUBMIT') | translate }}
+                        </button>
+                    </div>
+                </form>
+
+                <hr class="border-neutral-200" />
+
+                <!-- PHÂN KHU 2: ĐỔI MẬT KHẨU -->
+                <form (ngSubmit)="onChangePassword()" class="space-y-5">
+                    <h3 class="text-xs uppercase tracking-wider font-medium text-neutral-400 mb-2">
+                        {{ 'ACCOUNT_SETTINGS.PASSWORD.SECTION_TITLE' | translate }}
+                    </h3>
+
+                    <!-- Mật khẩu hiện tại -->
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">
+                            {{ 'ACCOUNT_SETTINGS.PASSWORD.CURRENT_PASSWORD' | translate }}
+                        </label>
+                        <input type="password" [(ngModel)]="passwordData.currentPassword" name="currentPassword"
+                            class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                    </div>
+
+                    <!-- Mật khẩu mới -->
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">
+                            {{ 'ACCOUNT_SETTINGS.PASSWORD.NEW_PASSWORD' | translate }}
+                        </label>
+                        <input type="password" [(ngModel)]="passwordData.newPassword" name="newPassword"
+                            class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                    </div>
+
+                    <!-- Xác nhận mật khẩu mới -->
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] uppercase tracking-wider font-medium text-neutral-500 block">
+                            {{ 'ACCOUNT_SETTINGS.PASSWORD.CONFIRM_PASSWORD' | translate }}
+                        </label>
+                        <input type="password" [(ngModel)]="passwordData.confirmPassword" name="confirmPassword"
+                            class="w-full bg-white border border-neutral-200 px-4 py-2.5 text-xs text-neutral-900 focus:border-black outline-none transition-colors" />
+                    </div>
+
+                    <!-- Thông báo -->
+                    @if (passwordError) {
+                    <p class="text-[11px] text-red-600">{{ passwordError }}</p>
+                    }
+                    @if (passwordSuccess) {
+                    <p class="text-[11px] text-emerald-600">
+                        {{ 'ACCOUNT_SETTINGS.PASSWORD.SUCCESS' | translate }}
+                    </p>
+                    }
+
+                    <div class="pt-2">
+                        <button type="submit" [disabled]="isSavingPassword"
+                            class="border border-neutral-200 bg-white text-neutral-900 px-6 py-2.5 text-[11px] font-medium uppercase tracking-wider hover:bg-neutral-50 disabled:bg-neutral-100 transition-colors">
+                            {{ (isSavingPassword ? 'ACCOUNT_SETTINGS.PASSWORD.PROCESSING' :
+                            'ACCOUNT_SETTINGS.PASSWORD.SUBMIT') | translate }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,52 +1,34 @@
-<!-- Product -->
-<div class="my-5 py-5">
+<section class="bg-white pt-section-tight pb-section-compact">
     <div class="container">
-        <div class="product-filter-bar mb-4">
-            <button class="filter-toggler" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilterBar"
-                aria-controls="offcanvasFilterBar" class="btn btn-outline-dark">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-funnel-fill" viewBox="0 0 16 16">
-                    <path
-                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
-                </svg>
-                {{'SHOP.FILTER_BY' | translate }}
+        <!-- Breadcrumb -->
+
+        <!-- Hero -->
+        <header class="mb-20">
+            <!-- <app-breadcrumb [items]="breadcrumbItems" /> -->
+
+            <div class="mt-8">
+                <app-shop-hero />
+            </div>
+        </header>
+
+        <!-- Toolbar -->
+        <div class="mb-12">
+            <app-shop-toolbar [totalProducts]="pagination().totalCount" [gridView]="gridView()"
+                (gridViewChange)="gridView.set($event)" (filterClick)="openFilterDrawer()" />
+        </div>
+
+        <!-- Product Grid -->
+        <app-shop-product-grid [products]="products()" [gridView]="gridView()"
+            [loading]="productResource.isLoading()" />
+
+        <!-- Load More -->
+        <!-- @if(products().length) {
+        <section class="mt-24 text-center">
+            <button type="button" (click)="loadMore()"
+                class="border border-black px-12 py-5 text-[11px] uppercase tracking-[0.25em] transition duration-300 hover:bg-black hover:text-white">
+                Load More
             </button>
-
-            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFilterBar"
-                aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title text-uppercase" id="offcanvasNavbarLabel">{{'SHOP.FILTER_BY' | translate
-                        }}</h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-                </div>
-
-                <div class="offcanvas-body">
-                    <app-side-bar [initialFilterState]="currentFilter()"
-                        (onFilterChange)="handleFilter($event)"></app-side-bar>
-                </div>
-            </div>
-        </div>
-        @if (isLoading()) {
-        <app-product-list [products]="[]"></app-product-list>
-
-        } @else {
-        @if (products().length) {
-        <!-- <div class="row py-2">
-            <div class="col-md-9">
-                <span>{{ "SHOP.RESULTS_SUMMARY" | translate:{start: listDisplayState.startIndex, end:
-                    listDisplayState.endIndex, total:
-                    metadata()?.totalCount} }}</span>
-            </div>
-        </div> -->
-        <app-product-list [products]="products()"></app-product-list>
-        <app-pagination [totalItems]="metadata()?.totalCount || 0" [currentPage]="metadata()?.page || 1"
-            [limit]="metadata()?.limit || 10" [maxPagesToShow]="5" (pageChange)="onPageChange($event)"></app-pagination>
-        } @else {
-        <div class="text-center">
-            <span>{{"SHOP.NO_PRODUCT" | translate}}</span>
-        </div>
-        }
-        }
+        </section>
+        } -->
     </div>
-</div>
+</section>

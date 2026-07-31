@@ -1,107 +1,111 @@
-import { Component, effect, OnInit, signal } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
 import {
-    catchError,
-    debounceTime,
-    distinctUntilChanged,
-    finalize,
-    map,
-    of,
-    shareReplay,
-    switchMap,
-    tap,
-} from 'rxjs';
-import { ProductListComponent } from '../../shared/components/product-list/product-list.component';
-import { ProductFilter } from './models/product.model';
-import { ProductService } from './services/product.service';
-import { SideBarComponent } from './side-bar/side-bar.component';
-import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
-
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    inject,
+    input,
+    signal,
+} from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Meta, Title } from '@angular/platform-browser';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.componet';
+import { DrawerService } from '../../../shared/components/drawer/drawer.service';
+import { PaginationMeta } from '../../../shared/models/list-repsonse.model';
+import { Product, ProductFilter } from '../../../shared/models/product.model';
+import { ProductService } from '../../../shared/services/product.service';
+import { ShopFilterDrawerComponent } from './components/filter-drawer/shop-filter-drawer.component';
+import { ShopHeroComponent } from './components/hero/shop-hero.component';
+import { ShopProductGridComponent } from './components/product-grid/shop-product-grid.component';
+import {
+    GridViewType,
+    ShopToolbarComponent,
+} from './components/toolbar/shop-toolbar.component';
+import { FilterFacade } from './services/filter-facade.service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
     selector: 'app-shop',
-    imports: [
-        ProductListComponent,
-        TranslatePipe,
-        SideBarComponent,
-        PaginationComponent,
-    ],
     templateUrl: './shop.component.html',
-    styleUrl: './shop.component.scss',
+    imports: [
+        ReactiveFormsModule,
+        BreadcrumbComponent,
+        ShopHeroComponent,
+        ShopToolbarComponent,
+        ShopProductGridComponent,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShopComponent implements OnInit {
-    isLoading = signal(true);
+export class ShopComponent {
+    private readonly drawerService = inject(DrawerService);
+    private readonly productService = inject(ProductService);
+    private readonly title = inject(Title);
+    private readonly meta = inject(Meta);
+    private readonly filterFacade = inject(FilterFacade);
+    private readonly translate = inject(TranslateService);
 
-    currentFilter = signal<ProductFilter>({
-        limit: 9,
-        page: 1,
+    // 1. Nhận cờ isCategoryPage từ route data
+    isCategoryPage = input<boolean>(false);
+    // 2. Nhận categoryPath từ posParams của matcher (VD: "women/top/shirt")
+    categoryPath = input<string>('');
+
+    readonly productResource = rxResource({
+        request: () => ({
+            filters: this.filterFacade.filters(),
+            isCategoryPage: this.isCategoryPage(),
+            categoryPath: this.categoryPath(),
+        }),
+        loader: ({ request, previous }) => {
+            if (request.isCategoryPage) {
+                return this.productService.getProductByCategory(
+                    request.categoryPath,
+                    request.filters,
+                );
+            }
+            return this.productService.getProducts(request.filters);
+        },
+        defaultValue: { data: [], meta: { totalCount: 0 } as PaginationMeta },
     });
 
-    private response$ = toObservable(this.currentFilter).pipe(
-        debounceTime(500),
-        distinctUntilChanged((p, c) => JSON.stringify(p) === JSON.stringify(c)),
-        tap(() => this.isLoading.set(true)),
-        switchMap((f) =>
-            this.productService.getProducts(f!).pipe(
-                catchError(() => of({ data: [], meta: null })),
-                finalize(() => this.isLoading.set(false)),
-            ),
-        ),
-        // Rất quan trọng: Chia sẻ kết quả để không gọi API 2 lần
-        shareReplay(1),
-    );
+    readonly products = computed(() => this.productResource.value().data);
+    readonly pagination = computed(() => this.productResource.value().meta);
+    readonly gridView = signal<GridViewType>(4);
 
-    products = toSignal(this.response$.pipe(map((res) => res.data ?? [])), {
-        initialValue: [],
-    });
+    breadcrumbItems = [
+        {
+            label: 'Home',
+            url: '/',
+        },
+        {
+            label: 'Shop',
+        },
+    ];
 
-    metadata = toSignal(this.response$.pipe(map((res) => res.meta)));
+    constructor() {
+        this.setSeo();
+    }
 
-    constructor(
-        private productService: ProductService,
-        private route: ActivatedRoute,
-        private router: Router,
-    ) {
-        effect(() => {
-            const state = this.currentFilter();
-            this.router.navigate([], {
-                relativeTo: this.route,
-                queryParams: {
-                    colors: state?.colors?.length
-                        ? state.colors.join(',')
-                        : null,
-                    minPrice: state?.minPrice,
-                    maxPrice: state?.maxPrice,
-                    limit: state.limit,
-                    page: state.page,
-                },
-                queryParamsHandling: 'merge',
-                replaceUrl: true,
-            });
+    ngOnInit() {
+        this.filterFacade.initFromQueryParams();
+    }
+
+    private setSeo() {
+        this.title.setTitle('Shop | Fashion Store');
+        this.meta.updateTag({
+            name: 'description',
+            content: 'Browse our latest fashion collection.',
         });
     }
 
-    ngOnInit(): void {
-        const params = this.route.snapshot.queryParams;
-        this.currentFilter.set({
-            colors: params['colors'] ? params['colors'].split(',') : [],
-            limit: Number(params['limit']) || 9,
-            page: Number(params['page']) || 1,
-            minPrice: params['minPrice']
-                ? Number(params['minPrice'])
-                : undefined,
-            maxPrice: params['maxPrice']
-                ? Number(params['maxPrice'])
-                : undefined,
+    openFilterDrawer() {
+        this.drawerService.open<ProductFilter>({
+            title: this.translate.instant('COMMON.FILTER'),
+            position: 'left',
+            size: 'xl',
+            content: ShopFilterDrawerComponent,
         });
     }
 
-    handleFilter(filter: ProductFilter) {
-        this.currentFilter.set({ ...filter, page: 1 });
-    }
-
-    onPageChange(page: number) {
-        this.currentFilter.update((state) => ({ ...state, page }));
+    loadMore() {
+        console.log('Load more');
     }
 }

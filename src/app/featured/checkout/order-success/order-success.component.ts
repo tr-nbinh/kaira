@@ -1,32 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { OrderService } from '../../../services/order.service';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-order-success',
-    imports: [RouterLink, TranslatePipe],
     templateUrl: './order-success.component.html',
-    styleUrl: './order-success.component.scss',
+    imports: [RouterLink, TranslatePipe],
 })
 export class OrderSuccessComponent implements OnInit {
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private orderService: OrderService
-    ) {}
+    private route = inject(ActivatedRoute);
+
+    orderCode = signal('');
 
     ngOnInit() {
-        const orderId = this.route.snapshot.queryParamMap.get('orderId');
-        if (!orderId) {
-            this.router.navigate(['/']);
-            return;
-        }
-
-        this.orderService.getOrderById(+orderId).subscribe({
-            error: () => {
-                this.router.navigate(['/']);
-            },
+        // 2. Dự phòng lấy từ queryParams khi F5 lại trang (ví dụ: /order-success?code=ORD-12345)
+        this.route.queryParams.subscribe((params) => {
+            if (params['code']) {
+                this.orderCode.set(params['code']);
+            } else {
+                this.orderCode.set('N/A');
+            }
         });
     }
 }

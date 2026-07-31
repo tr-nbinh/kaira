@@ -1,37 +1,18 @@
-import {
-    Component,
-    OnInit,
-    TemplateRef,
-    ViewChild,
-    ViewContainerRef,
-} from '@angular/core';
+import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { filter, takeUntil } from 'rxjs';
-import { BaseComponent } from './base/base.component';
-import { FollowUsComponent } from './layout/follow-us/follow-us.component';
-import { FooterComponent } from './layout/footer/footer.component';
-import { HeaderComponent } from './layout/header/header.component';
-import { NewsletterComponent } from './layout/newsletter/newsletter.component';
-import { DialogService } from './services/dialog.service';
-import { SvgIconService } from './services/svg-icon.service';
-import { ToastService } from './services/toast.service';
-import { ToastComponent } from './shared/components/toast/toast.component';
+import { filter } from 'rxjs';
+import { FooterComponent } from '../core/layout/footer/footer.component';
+import { untilDestroyed } from '../core/utils/rxjs.helper';
+import { HeaderComponent } from '../core/layout/header/header.component';
 
 @Component({
     selector: 'app-root',
-    imports: [
-        HeaderComponent,
-        NewsletterComponent,
-        FollowUsComponent,
-        FooterComponent,
-        RouterOutlet,
-        ToastComponent,
-    ],
+    imports: [HeaderComponent, FooterComponent, RouterOutlet],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
 })
-export class AppComponent extends BaseComponent {
+export class AppComponent {
     title = 'kaira';
     currentLang: string = '';
     showLayout = false;
@@ -41,44 +22,23 @@ export class AppComponent extends BaseComponent {
         '/coming-soon',
         '/error',
         '/not-found',
-        '/404',
         '/admin',
     ];
 
     constructor(
         private translate: TranslateService,
-        private svgIconService: SvgIconService,
         private route: Router,
-        protected toast: ToastService,
-        private dialogService: DialogService,
     ) {
-        super();
-
         this.route.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
-                takeUntil(this.ngUnsubscribe),
+                untilDestroyed(),
             )
             .subscribe((event: NavigationEnd) => {
                 this.showLayout = !this.noLayoutRoutes.some((path) =>
                     event.urlAfterRedirects.startsWith(path),
                 );
             });
-        // Register SVG icons
-        this.svgIconService.registerIcons([
-            'flag-usa',
-            'flag-usa-sm',
-            'flag-vietnam-sm',
-            'search',
-            'list',
-            'close',
-        ]);
-
-        // Register icons for mobile navigation
-        this.svgIconService.registerIcons(
-            ['home', 'bag-heart', 'subtask', 'envelope'],
-            'nav-mobile',
-        );
 
         // Configure language translation
         const savedLang = localStorage.getItem('userLanguage');
@@ -97,13 +57,5 @@ export class AppComponent extends BaseComponent {
         this.translate.onLangChange.subscribe((event) => {
             this.currentLang = event.lang;
         });
-    }
-
-    @ViewChild('dialogPlaceholder', { read: ViewContainerRef })
-    dialogPlaceholder!: ViewContainerRef;
-
-    ngAfterViewInit() {
-        // Khởi tạo root container để dialog service tạo vào
-        this.dialogService.init(this.dialogPlaceholder);
     }
 }

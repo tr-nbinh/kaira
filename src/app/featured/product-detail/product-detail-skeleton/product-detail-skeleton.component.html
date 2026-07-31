@@ -1,56 +1,92 @@
-<div class="product-detail-skeleton mt-5">
-    <section class="single-product py-5">
-        <div class="container">
-            <div class="row g-5">
-                <!-- LEFT SECTION -->
-                <div class="col-12 col-lg-7">
-                    <div class="row flex-column-reverse flex-lg-row">
-                        <!-- Thumbnails -->
-                        <div class="col-md-12 col-lg-3">
-                            <div class="d-flex flex-lg-column gap-3 thumb-skeleton-list">
-                                @for (item of [1,2,3]; track $index) {
-                                <div class="skeleton thumb-skeleton"></div>
-                                }
-                            </div>
-                        </div>
+<article class="container py-6 lg:py-12 flex flex-col lg:flex-row gap-8 xl:gap-16 items-start animate-pulse">
+    <section class="w-full lg:w-[58%] shrink-0 flex flex-col gap-0.5" aria-hidden="true">
+        <div class="w-full aspect-square bg-neutral-200"></div>
 
-                        <!-- Large image slider -->
-                        <div class="col-md-12 col-lg-9">
-                            <div class="skeleton large-img-skeleton"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RIGHT SECTION -->
-                <div class="col-12 col-lg-5">
-                    <section class="product-info pt-3">
-                        <div class="skeleton title"></div>
-
-                        <!-- Price -->
-                        <div class="price-skeleton">
-                            <div class="skeleton price-main"></div>
-                        </div>
-
-                        <!-- Description -->
-                        <div class="skeleton desc-line"></div>
-                        <div class="skeleton desc-line short"></div>
-
-                        <!-- Quantity -->
-                        <div class="qty-skeleton mt-4">
-                            <div class="skeleton qty-box"></div>
-                            <div class="skeleton stock"></div>
-                        </div>
-
-                        <!-- Buttons -->
-                        <div class="btn-skeleton mt-4 d-flex gap-3">
-                            <div class="skeleton btn-lg"></div>
-                            <div class="skeleton btn-icon"></div>
-                        </div>
-
-                    </section>
-                </div>
-
-            </div>
+        <div class="grid grid-cols-2 gap-0.5">
+            <div class="w-full aspect-square bg-neutral-100"></div>
+            <div class="w-full aspect-square bg-neutral-100"></div>
         </div>
     </section>
-</div>
+
+    <section class="flex-1 py-6 md:py-0 md:sticky md:top-16 flex flex-col justify-between h-fit w-full"
+        aria-hidden="true">
+        <div>
+            <div class="h-3 w-1/3 bg-neutral-200 rounded"></div>
+
+            <header class="mt-4 mb-8">
+                <div class="h-4 w-1/4 bg-neutral-200 rounded mb-3"></div>
+
+                <div class="space-y-2 mb-4">
+                    <div class="h-7 w-3/4 bg-neutral-200 rounded"></div>
+                    <div class="h-7 w-1/2 bg-neutral-200 rounded"></div>
+                </div>
+
+                <div class="mt-4 flex flex-col gap-2">
+                    <div class="flex items-end gap-3">
+                        <div class="h-8 w-28 bg-neutral-200 rounded"></div>
+                        <div class="h-4 w-16 bg-neutral-100 rounded"></div>
+                    </div>
+                    <div class="h-3 w-20 bg-neutral-100 rounded"></div>
+                </div>
+
+                <div class="h-3 w-32 bg-neutral-100 rounded mt-6"></div>
+            </header>
+
+            <div class="border-t border-black/10 my-6"></div>
+
+            <div class="space-y-2 mb-8">
+                <div class="h-3.5 w-full bg-neutral-200 rounded"></div>
+                <div class="h-3.5 w-full bg-neutral-200 rounded"></div>
+                <div class="h-3.5 w-4/5 bg-neutral-200 rounded"></div>
+            </div>
+
+            <div class="mb-8">
+                <div class="h-3 w-24 bg-neutral-100 rounded mb-3"></div>
+                <div class="flex gap-2">
+                    <div class="w-8 h-8 rounded-full bg-neutral-200"></div>
+                    <div class="w-8 h-8 rounded-full bg-neutral-200"></div>
+                    <div class="w-8 h-8 rounded-full bg-neutral-200"></div>
+                </div>
+            </div>
+
+            <div class="mb-10">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="h-3 w-16 bg-neutral-100 rounded"></div>
+                    <div class="h-3 w-20 bg-neutral-100 rounded"></div>
+                </div>
+                <div class="flex gap-2">
+                    <div class="w-12 h-10 bg-neutral-200 rounded-sm"></div>
+                    <div class="w-12 h-10 bg-neutral-200 rounded-sm"></div>
+                    <div class="w-12 h-10 bg-neutral-200 rounded-sm"></div>
+                    <div class="w-12 h-10 bg-neutral-200 rounded-sm"></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <div class="h-3 w-20 bg-neutral-100 rounded mb-3"></div>
+                <div class="w-32 h-11 bg-neutral-200 rounded-sm"></div>
+            </div>
+
+            <div class="space-y-3 mb-10">
+                <div class="w-full h-14 bg-neutral-300"></div>
+                <div class="w-full h-14 bg-neutral-100 border border-neutral-200"></div>
+            </div>
+
+            <div class="border-t border-black/10 divide-y divide-black/10">
+                <div class="py-4 flex justify-between items-center">
+                    <div class="h-4 w-40 bg-neutral-200 rounded"></div>
+                    <div class="w-3 h-3 bg-neutral-300 rounded-full"></div>
+                </div>
+                <div class="py-4 flex justify-between items-center">
+                    <div class="h-4 w-32 bg-neutral-200 rounded"></div>
+                    <div class="w-3 h-3 bg-neutral-300 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-16 flex flex-col items-center md:items-start gap-2">
+            <div class="h-3 w-36 bg-neutral-100 rounded"></div>
+            <div class="h-3.5 w-52 bg-neutral-200 rounded"></div>
+        </footer>
+    </section>
+</article>

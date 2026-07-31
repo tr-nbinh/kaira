@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
+import { authGuard } from '../core/auth/auth.guard';
+import { categoryExistsGuard } from '../core/layout/header/guards/category-exist.guard';
+import { categoryMatcher } from '../core/layout/header/matchers/category.matcher';
 
 export const routes: Routes = [
     {
@@ -7,6 +9,20 @@ export const routes: Routes = [
         redirectTo: 'home',
         pathMatch: 'full',
     },
+    // {
+    //     path: 'add-product',
+    //     loadComponent: () =>
+    //         import('./admin/product-form/product-form.component').then(
+    //             (m) => m.ProductFormComponent,
+    //         ),
+    // },
+    // {
+    //     path: 'add-product-image',
+    //     loadComponent: () =>
+    //         import('./admin/product-image-form/product-image-form.component').then(
+    //             (m) => m.ProductImageFormComponent,
+    //         ),
+    // },
     {
         path: 'home',
         loadComponent: () =>
@@ -16,23 +32,26 @@ export const routes: Routes = [
     },
     {
         path: 'shop',
+        data: { isCategoryPage: false },
         loadComponent: () =>
             import('./featured/shop/shop.component').then(
                 (m) => m.ShopComponent,
             ),
+        title: 'PAGES.SHOP',
     },
     {
-        path: 'blog',
+        path: 'editorial',
         loadComponent: () =>
-            import('./featured/blog/blog.component').then(
-                (m) => m.BlogComponent,
+            import('./featured/blog/blog-list/blog-list.component').then(
+                (m) => m.BlogListComponent,
             ),
+        title: 'PAGES.EDITORIAL',
     },
     {
-        path: 'blog/:slug',
+        path: 'editorial/:slug',
         loadComponent: () =>
-            import('./featured/blog/pages/blog-detail/blog-detail.component').then(
-                (m) => m.BlogDetailComponent,
+            import('./featured/blog/blog-post/blog-post.component').then(
+                (m) => m.BlogPostComponent,
             ),
     },
     {
@@ -41,6 +60,7 @@ export const routes: Routes = [
             import('./featured/contact/contact.component').then(
                 (m) => m.ContactComponent,
             ),
+        title: 'PAGES.CONTACT',
     },
     {
         path: 'cart',
@@ -49,6 +69,7 @@ export const routes: Routes = [
             import('./featured/cart/cart.component').then(
                 (m) => m.CartComponent,
             ),
+        title: 'PAGES.CART',
     },
     {
         path: 'wishlist',
@@ -57,12 +78,22 @@ export const routes: Routes = [
             import('./featured/wishlist/wishlist.component').then(
                 (m) => m.WishlistComponent,
             ),
+        title: 'PAGES.WISHLIST',
     },
     {
         path: 'checkout',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./featured/checkout/checkout.component').then(
                 (m) => m.CheckoutComponent,
+            ),
+        title: 'PAGES.CHECKOUT',
+    },
+    {
+        path: 'order-success',
+        loadComponent: () =>
+            import('./featured/checkout/order-success/order-success.component').then(
+                (m) => m.OrderSuccessComponent,
             ),
     },
     {
@@ -78,62 +109,69 @@ export const routes: Routes = [
             {
                 path: 'register',
                 loadComponent: () =>
-                    import('./featured/auth/pages/register/register.component').then(
+                    import('./featured/auth/register/register.component').then(
                         (m) => m.RegisterComponent,
                     ),
+                title: 'PAGES.REGISTER',
             },
             {
                 path: 'login',
                 loadComponent: () =>
-                    import('./featured/auth/pages/login/login.component').then(
+                    import('./featured/auth/login/login.component').then(
                         (m) => m.LoginComponent,
                     ),
+                title: 'PAGES.LOGIN',
             },
             {
                 path: 'verify-email',
                 loadComponent: () =>
-                    import('./featured/auth/pages/verify-email/verify-email.component').then(
+                    import('./featured/auth/verify-email/verify-email.component').then(
                         (m) => m.VerifyEmailComponent,
                     ),
-            },
-            {
-                path: 'confirm-email',
-                loadComponent: () =>
-                    import('./featured/auth/pages/confirm-email/confirm-email.component').then(
-                        (m) => m.ConfirmEmailComponent,
-                    ),
+                title: 'PAGES.VERIFY_EMAIL',
             },
             {
                 path: 'forgot-password',
                 loadComponent: () =>
-                    import('./featured/auth/pages/forgot-password/forgot-password.component').then(
+                    import('./featured/auth/forgot-password/forgot-password.component').then(
                         (m) => m.ForgotPasswordComponent,
                     ),
+                title: 'PAGES.FORGOT_PASSWORD',
             },
             {
                 path: 'reset-password',
                 loadComponent: () =>
-                    import('./featured/auth/pages/reset-password/reset-password.component').then(
+                    import('./featured/auth/reset-password/reset-password.component').then(
                         (m) => m.ResetPasswordComponent,
                     ),
+                title: 'PAGES.RESET_PASSWORD',
             },
         ],
     },
     {
-        path: 'order-success',
-        async loadComponent() {
-            const m =
-                await import('./featured/checkout/order-success/order-success.component');
-            return m.OrderSuccessComponent;
-        },
+        path: 'account',
+        canActivate: [authGuard],
+        loadChildren: () =>
+            import('./featured/account/account.routes').then(
+                (m) => m.ACCOUNT_ROUTES,
+            ),
     },
     {
-        path: 'not-found',
+        path: '404',
         loadComponent: () =>
-            import('./nolayout/nolayout.component').then(
-                (m) => m.NolayoutComponent,
+            import('./featured/not-found/not-found.component').then(
+                (m) => m.NotFoundComponent,
             ),
-        data: { title: 'COMMON.ERROR_404', desc: 'COMMON.ERROR_PAGE_DESC' },
+        title: 'PAGES.NOT_FOUND',
+    },
+    {
+        matcher: categoryMatcher,
+        canMatch: [categoryExistsGuard],
+        data: { isCategoryPage: true },
+        loadComponent: () =>
+            import('./featured/shop/shop.component').then(
+                (m) => m.ShopComponent,
+            ),
     },
     {
         path: '**',

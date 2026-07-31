@@ -1,0 +1,22 @@
+<cdk-accordion-item #item="cdkAccordionItem">
+    <div class="border-b border-black/10 py-5">
+        <button type="button" (click)="item.toggle()" [attr.aria-expanded]="item.expanded"
+            class="group flex w-full items-center justify-between text-left">
+            <div class="text-xs font-medium uppercase tracking-[0.15em] transition-colors group-hover:text-neutral-500">
+                <ng-content select="[accordionTitle]" />
+            </div>
+
+            <span class="text-sm font-light text-neutral-400 transition-transform duration-300"
+                [class.rotate-45]="item.expanded">
+                ＋
+            </span>
+        </button>
+
+        <div class="grid overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]"
+            [style.grid-template-rows]="item.expanded ? '1fr' : '0fr'" [style.opacity]="item.expanded ? 1 : 0">
+            <div class="min-h-0 overflow-hidden">
+                <ng-content select="[accordionContent]" />
+            </div>
+        </div>
+    </div>
+</cdk-accordion-item>

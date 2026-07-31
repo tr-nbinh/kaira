@@ -1,0 +1,184 @@
+<nav aria-label="Luxury Category Menu"
+    class="w-full h-full overflow-y-auto bg-white text-black px-8 py-12 selection:bg-black selection:text-white font-serif selection:not-italic">
+    <!-- Header Action: ALL PRODUCTS -->
+    <div class="mb-12 pb-6 border-b border-black/10 flex justify-between items-center group">
+        <a routerLink="/shop" (click)="
+                $event.preventDefault();
+                onCategoryClick({
+                    id: 'all',
+                    name: 'TẤT CẢ SẢN PHẨM',
+                    slug: 'all',
+                })
+            " class="text-[11px] tracking-[0.3em] uppercase transition-all duration-300 font-sans" [class.font-bold]="
+                selectedCategoryId === 'all' || !selectedCategoryId
+            " [class.text-black]="
+                selectedCategoryId === 'all' || !selectedCategoryId
+            " [class.hover:text-black]="
+                selectedCategoryId !== 'all' && selectedCategoryId
+            ">
+            {{ "CATEGORY_DRAWER.ALL_COLLECTION" | translate }}
+        </a>
+        <span class="text-[9px] uppercase tracking-widest font-sans transition-opacity duration-300"
+            [class.opacity-100]="
+                selectedCategoryId === 'all' || !selectedCategoryId
+            " [class.opacity-0]="
+                selectedCategoryId !== 'all' && selectedCategoryId
+            ">[ ALL ]</span>
+    </div>
+
+    <!-- Danh sách Cây Danh Mục 3 Cấp (Celine / Saint Laurent Vibe) -->
+    <ul class="space-y-8 font-sans" role="list">
+        @if (categoriesResource.isLoading()) {
+        <app-category-skeleton />
+        }
+
+        @if (categoriesResource.hasValue()) {
+        @for (cat of categoriesResource.value().categories; track cat.id) {
+        <li class="relative transition-all duration-300">
+            <ng-container *ngTemplateOutlet="
+                            categoryTree;
+                            context: { $implicit: cat, level: 1 }
+                        ">
+            </ng-container>
+        </li>
+        } @empty {
+        <li class="py-16 text-center text-[10px] tracking-[0.3em] uppercase text-black/30">
+            NO CATEGORIES FOUND
+        </li>
+        }
+        }
+    </ul>
+
+    <!-- Footer / Branding Note ở cuối Menu -->
+    <div class="mt-20 pt-8 border-t border-black/10 text-center">
+        <p class="text-[9px] tracking-[0.35em] uppercase text-black/30">
+            {{ "CATEGORY_DRAWER.FOOTER" | translate }}
+        </p>
+    </div>
+</nav>
+
+<!-- RECURSIVE TEMPLATE FOR CATEGORY TREE -->
+<ng-template #categoryTree let-item let-level="level">
+    <!-- ITEM CONTAINER -->
+    <div class="flex items-center justify-between group cursor-pointer" [class.py-1]="level === 1"
+        [class.py-0.5]="level > 1">
+        @if (item.path) {
+        <a [routerLink]="item.path" (click)="$event.preventDefault(); onCategoryClick(item)"
+            class="transition-all duration-300 relative inline-block uppercase" [class]="{
+                    'text-xs': level === 1,
+                    'tracking-[0.28em]': level === 1,
+
+                    'text-[11px]': level === 2,
+                    'tracking-[0.22em]': level === 2,
+
+                    'text-[10px]': level >= 3,
+                    'tracking-[0.2em]': level >= 3,
+
+                    'font-bold':
+                        level === 1 &&
+                        (selectedCategoryId === item.id || isExpanded(item.id)),
+
+                    'font-semibold':
+                        level > 1 && selectedCategoryId === item.id,
+
+                    'text-black':
+                        selectedCategoryId === item.id || isExpanded(item.id),
+
+                    'hover:text-black':
+                        selectedCategoryId !== item.id && !isExpanded(item.id),
+
+                    'translate-x-1':
+                        level >= 3 && selectedCategoryId === item.id,
+                }">
+            {{ item.name }}
+
+            <!-- Underline mỏng ở Cấp 1 khi Active -->
+        </a>
+        } @else {
+        <span class="transition-all duration-300 relative inline-block uppercase" [class]="{
+                    'text-xs': level === 1,
+                    'tracking-[0.28em]': level === 1,
+
+                    'text-[11px]': level === 2,
+                    'tracking-[0.22em]': level === 2,
+
+                    'text-[10px]': level >= 3,
+                    'tracking-[0.2em]': level >= 3,
+
+                    'font-bold':
+                        level === 1 &&
+                        (selectedCategoryId === item.id || isExpanded(item.id)),
+
+                    'font-semibold':
+                        level > 1 && selectedCategoryId === item.id,
+
+                    'text-black':
+                        selectedCategoryId === item.id || isExpanded(item.id),
+
+                    'hover:text-black':
+                        selectedCategoryId !== item.id && !isExpanded(item.id),
+
+                    'translate-x-1':
+                        level >= 3 && selectedCategoryId === item.id,
+                }">{{ item.name }}</span>
+        }
+        @if (level === 1 && selectedCategoryId === item.id) {
+        <span class="absolute bottom-0 left-0 w-full h-px bg-black"></span>
+        }
+
+        <!-- ICON / BUTTON TOGGLE EXPAND -->
+        @if (item.children && item.children.length > 0) {
+        <button type="button" (click)="toggleExpand(item.id, $event)" [attr.aria-expanded]="isExpanded(item.id)"
+            class="flex-1 flex items-center justify-end transition-colors focus:outline-none" [class]="{
+                    'w-6': level === 1,
+                    'h-6': level === 1,
+                    'p-1': level > 1,
+                    'text-black/40': level === 1,
+                    'text-black/30': level > 1,
+                    'hover:text-black': true,
+                }">
+            @if (level === 1) {
+            <!-- Toggle Cấp 1 (+ / —) -->
+            <span class="text-[10px] tracking-tighter transition-transform duration-300"
+                [class.rotate-180]="isExpanded(item.id)">
+                {{ isExpanded(item.id) ? "—" : "+" }}
+            </span>
+            } @else {
+            <!-- Toggle từ Cấp 2 trở đi (Mũi tên →) -->
+            <span class="text-[9px] transition-transform duration-300 inline-block"
+                [class.rotate-90]="isExpanded(item.id)">
+                →
+            </span>
+            }
+        </button>
+        }
+    </div>
+
+    <!-- RENDER CÁC CẤP CON (CHILDREN) -->
+    @if (item.children && item.children.length > 0 && isExpanded(item.id)) {
+    <ul class="role-list transition-all duration-300 space-y-3" [class]="{
+                'mt-4': level === 1,
+                'ml-3': level === 1,
+                'border-l': true,
+                'border-black/10': level === 1,
+                'pl-5': level === 1,
+
+                'mt-3': level >= 2,
+                'ml-2': level >= 2,
+                'border-black': level >= 2,
+                'pl-4': level >= 2,
+                'py-1': level >= 2,
+            }">
+        @for (child of item.children; track child.id) {
+        <li>
+            <!-- Gọi lại chính nó đệ quy cho child và tăng level + 1 -->
+            <ng-container *ngTemplateOutlet="
+                            categoryTree;
+                            context: { $implicit: child, level: level + 1 }
+                        ">
+            </ng-container>
+        </li>
+        }
+    </ul>
+    }
+</ng-template>

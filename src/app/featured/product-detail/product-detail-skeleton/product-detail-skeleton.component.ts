@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
     selector: 'app-product-detail-skeleton',
     templateUrl: './product-detail-skeleton.component.html',
-    styleUrl: './product-detail-skeleton.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailSkeletonComponent {}

@@ -1,0 +1,12 @@
+<section aria-labelledby="categories-heading" class="bg-white py-section-compact">
+    <div class="container">
+        <app-section-header [title]="'CATEGORIES.TITLE' | translate" [subtitle]="'CATEGORIES.SUBTITLE' | translate" />
+
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            @for (category of categories(); track category.id) {
+            <app-category-card [id]="category.id" [name]="category.name" [slug]="category.slug"
+                [image]="category.imageUrl" />
+            }
+        </div>
+    </div>
+</section>

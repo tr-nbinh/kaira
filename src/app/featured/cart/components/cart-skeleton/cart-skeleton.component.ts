@@ -1,11 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-cart-skeleton',
-  imports: [],
-  templateUrl: './cart-skeleton.component.html',
-  styleUrl: './cart-skeleton.component.scss'
+    selector: 'app-cart-skeleton',
+    templateUrl: './cart-skeleton.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CartSkeletonComponent {
-
-}
+export class CartSkeletonComponent {}

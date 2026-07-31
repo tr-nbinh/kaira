@@ -1,0 +1,16 @@
+<div class="flex flex-wrap gap-3">
+    @for (color of options(); track color.value; let i = $index) {
+    <button type="button" (click)="select.emit(color)" [disabled]="color.disabled"
+        [attr.aria-label]="'Color ' + color.label + (color.disabled ? ' - out of stock' : '')"
+        [attr.aria-disabled]="color.disabled" [attr.aria-pressed]="selectedOptionValue()?.value == color.value" class="rounded-full border-2 flex items-center justify-center p-0.5 transition-all duration-300 focus:outline-none relative
+               disabled:opacity-30 disabled:border-neutral-200 disabled:cursor-not-allowed"
+        [class]="(selectedOptionValue()?.value == color.value ? 'border-black ' : 'border-neutral-200 hover:border-neutral-400 ') + sizeClasses()">
+        <span class="w-full h-full rounded-full border border-black/5" [style.background-color]="color.hex"></span>
+        @if (color.disabled) {
+        <span class="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+            <span class="w-[120%] h-0.5 bg-black rotate-45 transform origin-center"></span>
+        </span>
+        }
+    </button>
+    }
+</div>

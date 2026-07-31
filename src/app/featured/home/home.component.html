@@ -1,7 +1,15 @@
-<app-banner></app-banner>
-<app-features></app-features>
-<app-category></app-category>
-<app-product></app-product>
-<app-testimonial></app-testimonial>
-<app-blog></app-blog>
-<app-client></app-client>
+<app-hero />
+
+<!-- <app-categories [categories]="categories()" /> -->
+
+<app-best-sellers [products]="bestSellers()" />
+
+<app-collections />
+
+<app-brand-values />
+
+@if (testimonials().length) {
+<app-testimonials [testimonials]="testimonials()" />
+}
+
+<app-newsletter>

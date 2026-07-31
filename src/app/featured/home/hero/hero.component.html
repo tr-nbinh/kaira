@@ -1,0 +1,37 @@
+<section aria-labelledby="hero-heading" class="bg-white pb-section-compact">
+    <div class="relative overflow-hidden min-h-[70vh] lg:min-h-[calc(100vh-var(--spacing-header))]">
+        <!-- Image -->
+        <img src="assets/images/hero/hero.jpg" alt="Timeless Pieces For Modern Living" fetchpriority="high"
+            class="absolute inset-0 h-full w-full object-cover" />
+
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-linear-to-r from-black/75 via-black/40 to-black/10"></div>
+
+        <!-- Content -->
+        <div class="relative z-10 flex h-full items-end p-8 md:p-16">
+            <div class="max-w-2xl text-white">
+                <!-- Eyebrow -->
+                <p class="text-xs uppercase tracking-[0.35em]">
+                    {{ 'HERO.EYE_BROW' | translate }}
+                </p>
+
+                <!-- Heading -->
+                <h1 id="hero-heading" class="mt-6 text-5xl font-light leading-tight md:text-7xl">
+                    {{ 'HERO.TITLE' | translate }}
+
+                </h1>
+
+                <!-- Description -->
+                <p class="mt-6 mb-10 max-w-lg text-sm leading-7 text-white/90 md:text-base">
+                    {{ 'HERO.SUBTITLE' | translate }}
+
+                </p>
+
+                <!-- CTA -->
+                <app-section-link routerLink="/collection">
+                    {{ 'HERO.CTA' | translate }}
+                </app-section-link>
+            </div>
+        </div>
+    </div>
+</section>

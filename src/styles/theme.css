@@ -1,0 +1,33 @@
+@theme {
+    --font-sans: "Inter", system-ui, sans-serif;
+
+    --spacing-header: 64px;
+
+    /* color */
+    --color-primary: #111111;
+    --color-background: #ffffff;
+    --color-foreground: #111111;
+    --color-muted: #f5f5f5;
+    --color-border: #e5e5e5;
+
+    /* radius */
+    --radius-md: 12px;
+    --radius-lg: 16px;
+
+    /* shadow */
+    --shadow-card:
+        0 2px 8px rgb(0 0 0 / 0.04),
+        0 8px 24px rgb(0 0 0 / 0.08);
+
+    /* container */
+    --container-width: 1440px;
+
+    /* section spacing */
+    /* Giới hạn nhỏ nhất là 32px (trên mobile), lớn nhất là 64px (trên desktop) */
+    /* Khoảng giữa sẽ tự co giãn theo 5% độ rộng màn hình (5vw) */
+    --spacing-section-compact: clamp(2rem, 5vw, 4rem);
+    /* Mức siêu gọn: Nhỏ nhất 24px, lớn nhất 48px */
+    --spacing-section-tight: clamp(1.5rem, 4vw, 3rem);
+    --spacing-heading-tight: 6px;
+    --spacing-heading-base: 12px;
+}
