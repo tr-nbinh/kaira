@@ -12,7 +12,7 @@ import {
     ValidationErrors,
     Validators,
 } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -36,12 +36,14 @@ import { ControlErrorPipe } from '../../../../shared/pipes/control-error.pipe';
 export class ResetPasswordComponent {
     private fb = inject(FormBuilder);
     private route = inject(ActivatedRoute);
+    private router = inject(Router);
     private authService = inject(AuthService);
 
     isSubmitting = signal(false);
     verificationId = signal('');
     isLoading = signal(false);
     isVerificationIdInvalid = signal(false);
+    showAlert = signal(false);
     serverError = signal<ValidationErrors | null>(null);
 
     otpInputs = viewChildren<ElementRef<HTMLInputElement>>('otpInput');
@@ -137,7 +139,10 @@ export class ResetPasswordComponent {
             .pipe(finalize(() => this.isSubmitting.set(false)))
             .subscribe({
                 next: (res) => {
-                    console.log(res);
+                    this.showAlert.set(true);
+                    setTimeout(() => {
+                        this.router.navigate(['/auth/login']);
+                    }, 3000);
                 },
                 error: (err) => {
                     if (err.code) {

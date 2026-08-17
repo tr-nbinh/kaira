@@ -408,69 +408,6 @@
             "PRIVACY_TITLE": "Privacy Policy",
             "AGREEMENT_PREFIX": "I agree to the",
             "AGREEMENT_AND": "and"
-        },
-        "CONFIRM_EMAIL": {
-            "SUCCESS": {
-                "TITLE": "Successfully completed",
-                "DESC": "You can now log in to your account.",
-                "BUTTON": "Login now"
-            },
-            "ERROR": {
-                "TITLE": "Verification failed",
-                "ALERT": "The verification code is invalid or has expired.",
-                "BUTTON": "Go back Register page",
-                "LINK": "Contact support"
-            },
-            "LOADING": {
-                "TITLE": "Verifying your email...",
-                "DES": "Please wait..."
-            }
-        },
-        "VERIFICATION": {
-            "RETRY_AFTER": "Re-try after",
-            "ERROR": {
-                "TITLE": "Invalid access",
-                "DESC": "You may have accessed this page directly. Please create an account to receive a verification email.",
-                "BUTTON": "Register now",
-                "LINK": "Go home"
-            },
-            "SUCCESS": {
-                "TITLE": "Email Verification",
-                "DESC": "We’ve sent you a verification email. Please check your inbox.",
-                "ALERT": "Be sure to check your Spam or Junk folder if the email doesn’t appear in your inbox.",
-                "BUTTON": "Resend verification email",
-                "LINK": "Go back register page"
-            }
-        },
-        "FOGOT_PASSWORD": {
-            "TITLE": "Forgot password?",
-            "DESC": "Provide your email and we’ll send you a link to reset your password.",
-            "BUTTON": "Send reset link",
-            "LINK": "Go back register page",
-            "SUCCESS": {
-                "TITLE": "Please check your email",
-                "DESC": "A password reset link has been sent to your email address:",
-                "ALERT": "This link expires in 30 minutes.",
-                "BUTTON": "Use a different email",
-                "FOOTER": "Haven’t received the email?",
-                "BTN_RESEND": "Resend"
-            }
-        },
-        "RESET_PASSWORD": {
-            "ERROR": {
-                "TITLE": "Reset password",
-                "DESC": "Please enter a new password for your account.",
-                "BUTTON": "Update password",
-                "LOADING_BTN": "Please wait"
-            },
-            "NO_TOKEN": {
-                "ALERT": "This reset link is invalid or has expired.",
-                "BUTTON": "Request new link"
-            },
-            "SUCCESS": {
-                "TITLE": "Updated successfully!",
-                "DESC": "Redirecting to the login page"
-            }
         }
     },
     "VERIFY_EMAIL": {
@@ -505,7 +442,8 @@
     "RESET_PASSWORD": {
         "TITLE": "Reset your password",
         "DESC": "Enter all the information to reset your password",
-        "SUBMIT_BTN": "Reset password"
+        "SUBMIT_BTN": "Reset password",
+        "ALERT": "Your password has been successfully changed. You will now be redirected to the login page..."
     },
     "VALIDATION": {
         "INVALID": "Invalid data",

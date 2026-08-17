@@ -1,4 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import {
+    Component,
+    computed,
+    ErrorHandler,
+    inject,
+    signal,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
     FormBuilder,
@@ -99,6 +105,15 @@ export class LoginComponent {
                             this.loginForm.setErrors({
                                 emailNotVerified: { email: error.data.email },
                             });
+
+                            setTimeout(() => {
+                                this.router.navigate(['/auth/verify-email'], {
+                                    queryParams: {
+                                        id: error.data.verificationId,
+                                    },
+                                });
+                            }, 3000);
+
                             return;
                         }
                         const errorKey =

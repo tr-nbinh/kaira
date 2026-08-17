@@ -430,53 +430,6 @@
                 "BUTTON": "Gửi lại Email xác nhận",
                 "LINK": "Quay lại trang Đăng nhập"
             }
-        },
-        "CONFIRM_EMAIL": {
-            "SUCCESS": {
-                "TITLE": "Thành công!",
-                "DESC": "Bây giờ bạn có thể đăng nhập.",
-                "BUTTON": "Đăng nhập ngay"
-            },
-            "ERROR": {
-                "TITLE": "Xác thực lỗi",
-                "ALERT": "Mã xác thực không tồn tại hoặc không hợp lệ.",
-                "BUTTON": "Quay lại trang Đăng ký",
-                "LINK": "Liên hệ hỗ trợ"
-            },
-            "LOADING": {
-                "TITLE": "Đang xác thực email",
-                "DES": "Vui lòng đợi trong giây lát."
-            }
-        },
-        "FOGOT_PASSWORD": {
-            "TITLE": "Quên mật khẩu?",
-            "DESC": "Nhập email của bạn và chúng tôi sẽ gửi hướng dẫn khôi phục mật khẩu.",
-            "BUTTON": "Gửi link khôi phục",
-            "LINK": "Quay lại trang Đăng nhập",
-            "SUCCESS": {
-                "TITLE": "Kiểm tra Email",
-                "DESC": "Chúng tôi đã gửi link đặt lại mật khẩu tới:",
-                "ALERT": "Link này sẽ hết hạn sau 30 phút.",
-                "BUTTON": "Thử lại với email khác",
-                "FOOTER": "Không nhận được email?",
-                "BTN_RESEND": "Gửi lại"
-            }
-        },
-        "RESET_PASSWORD": {
-            "ERROR": {
-                "TITLE": "Đặt lại mật khẩu",
-                "DESC": "Vui lòng nhập mật khẩu mới cho tài khoản của bạn.",
-                "BUTTON": "Cập nhật",
-                "LOADING_BTN": "Đang xử lý"
-            },
-            "NO_TOKEN": {
-                "ALERT": "Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.",
-                "BUTTON": "Yêu cầu link mới"
-            },
-            "SUCCESS": {
-                "TITLE": "Đã cập nhật!",
-                "DESC": "Bạn đang được chuyển hướng về trang Đăng nhập"
-            }
         }
     },
     "VERIFY_EMAIL": {
@@ -511,7 +464,8 @@
     "RESET_PASSWORD": {
         "TITLE": "Đặt lại mật khẩu",
         "DESC": "Nhập đầy đủ thông tin để đặt lại mật khẩu",
-        "SUBMIT_BTN": "Xác nhận"
+        "SUBMIT_BTN": "Xác nhận",
+        "ALERT": "Mật khẩu đã đổi thành công, bạn sẽ được chuyển qua trang đăng nhập..."
     },
     "VALIDATION": {
         "INVALID": "Dữ liệu không hợp lệ",
